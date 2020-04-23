@@ -14,7 +14,7 @@
         <span>返回</span>
       </div>
       <div class="title-container">
-        <h3 class="title">验证手机号</h3>
+        <h3 class="title">欢迎使用管理系统</h3>
         <span class="warning">与你的团队成员和朋友进行交流与协作。</span>
       </div>
 
@@ -120,16 +120,16 @@ export default {
 /* Detail see https://github.com/PanJiaChen/vue-element-admin/pull/927 */
 
 .el-select .el-input {
-  width: 1rem;
+  width: 100px;
   color: #333;
 }
 .el-select {
-  height: 0.6rem;
-  line-height: 0.6rem;
+  height: 60px;
+  line-height: 60px;
 }
 
 .el-input__inner {
-  height: 0.6rem;
+  height: 60px;
 }
 
 .input-with-select .el-input-group__prepend {
@@ -137,24 +137,24 @@ export default {
 }
 
 .el-form-item__content {
-  width: 4.3rem;
+  width: 430px;
   margin: auto;
 }
 
 .el-checkbox {
-  margin-top: 2rem;
-  margin-bottom: 0.21rem;
+  margin-top: 200px;
+  margin-bottom: 21px;
   color: #999;
-  font-size: 0.19rem;
+  font-size: 19px;
 }
 </style>
 
 <style lang="scss" scoped>
 $h-color: #333;
 $s-color: #999;
-$h-fs: 0.27rem;
-$s-fs: 0.17rem;
-$i-fs: 0.19rem;
+$h-fs: 27px;
+$s-fs: 17px;
+$i-fs: 19px;
 
 .login-container {
   min-height: 100%;
@@ -165,26 +165,26 @@ $i-fs: 0.19rem;
   font-family: PingFangSC-Regular, PingFang SC;
 
   .login-img {
-    width: 5.1rem;
-    height: 3.4rem;
-    margin-left: 1rem;
+    width: 510px;
+    height: 340px;
+    margin-left: 100px;
   }
 
   .login-form {
-    width: 4.88rem;
+    width: 488px;
     max-width: 100%;
-    height: 6.75rem;
+    height: 675px;
     text-align: center;
-    border: 0.01rem solid #e4e5e7;
-    border-radius: 0.07rem;
+    border: 1px solid #e4e5e7;
+    border-radius: 7px;
 
     .back {
       display: flex;
-      margin: 0.31rem 0 0 0.28rem;
+      margin: 31px 0 0 28px;
       img {
-        width: 0.21rem;
-        height: 0.21rem;
-        margin-right: 0.12rem;
+        width: 21px;
+        height: 21px;
+        margin-right: 12px;
       }
       span {
         color: $s-color;
@@ -193,36 +193,36 @@ $i-fs: 0.19rem;
     }
 
     .title-container {
-      margin: 0.57rem 0 0.64rem 0;
+      margin: 57px 0 64px 0;
 
       .title {
         color: $h-color;
         font-size: $h-fs;
-        margin-right: 2.08rem;
+        margin-right: 208px;
       }
       .warning {
         color: $s-color;
         font-size: $s-fs;
-        margin-right: 1.22rem;
+        margin-right: 122px;
       }
     }
 
     .login-button {
-      width: 4.3rem !important;
-      height: 0.6rem;
+      width: 430px !important;
+      height: 60px;
       font-size: $i-fs;
     }
   }
 }
 
-// @media screen and (max-width: 14.4rem) {
-//   .login-img {
-//     display: none;
-//   }
-// }
-// @media screen and (max-height: 7.2rem) {
-//   .login-img {
-//     display: none;
-//   }
-// }
+@media screen and (max-width: 1440px) {
+  .login-img {
+    display: none;
+  }
+}
+@media screen and (max-height: 720px) {
+  .login-img {
+    display: none;
+  }
+}
 </style>

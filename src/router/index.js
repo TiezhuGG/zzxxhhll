@@ -32,8 +32,7 @@ import Layout from '@/layout'
  */
 
 
-export const constantRoutes = [
-  {
+export const constantRoutes = [{
     path: '/login',
     component: resolve => require(['@/views/login/login'], resolve),
     hidden: true,
@@ -44,26 +43,24 @@ export const constantRoutes = [
 
   {
     path: '/register',
-    name: 'register',
     component: resolve => require(['@/views/register/register'], resolve),
     hidden: true,
     meta: {
       title: '注册'
+
     },
-    children: [
-      {
-        path: '/verify-code',
-        name: 'verify-code',
-        component: resolve => require(['@/views/verify-code/verify-code'], resolve),
-        hidden: true,
-        meta: {
-          title: '验证码'
-        },
+    children: [{
+      path: '/verify-code',
+      name: 'verify-code',
+      component: resolve => require(['@/views/verify-code/verify-code'], resolve),
+      hidden: true,
+      meta: {
+        title: '验证码'
       },
-    ]
+    }, ]
+
   },
-
-
+  
   {
     path: '/',
     component: Layout,

@@ -15,6 +15,20 @@ export function isExternal(path) {
  * @returns {Boolean}
  */
 export function validUsername(str) {
-  const valid_map = ['admin', 'editor']
+  // 验证用户名
+  const valid_map = ['admin', 'editor', 'xixi']
   return valid_map.indexOf(str.trim()) >= 0
+}
+
+/**
+ * @param {string} str
+ */
+export function validRegisterUsername(str) {
+  // 验证注册手机号
+  const phoneReg = /^(13[0-9]{9})|(15[0-9][0-9]{8})|(18[0-9][0-9]{8})$/;
+  if (!phoneReg.test(str)) {
+    return false
+  } else {
+    return true
+  }
 }

@@ -1,5 +1,14 @@
 import request from '@/utils/request'
 
+export function register(data) {
+  // console.log('发起注册请求')
+  return request({
+    url: '/vue-admin-template/user/register',
+    method: 'post',
+    data
+  })
+}
+
 export function login(data) {
   return request({
     url: '/vue-admin-template/user/login',

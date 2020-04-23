@@ -35,15 +35,23 @@ import Layout from '@/layout'
 export const constantRoutes = [
   {
     path: '/login',
-    component: resolve => require(['@/views/login/index'], resolve),
-    hidden: true
+    component: resolve => require(['@/views/login/login'], resolve),
+    hidden: true,
+    meta: {
+      title: '登录'
+    }
   },
 
   {
-    path: '/404',
-    component: resolve => require(['@/views/404'], resolve),
-    hidden: true
+    path: '/register',
+    name: 'register',
+    component: resolve => require(['@/views/register/register'], resolve),
+    meta: {
+      title: '注册'
+    },
   },
+
+
 
   {
     path: '/',
@@ -51,123 +59,37 @@ export const constantRoutes = [
     redirect: '/index',
     children: [{
       path: 'index',
-      name: '工作台',
+      name: 'index',
       component: resolve => require(['@/views/index/index'], resolve),
-      meta: { title: '工作台', icon: 'workbench' }
+      meta: {
+        title: '工作台',
+        icon: 'workbench'
+      }
     }]
   },
 
   {
-    path: '/example',
-    component: Layout,
-    redirect: '/example/table',
-    name: 'Example',
-    meta: { title: 'Example', icon: 'example' },
-    children: [
-      {
-        path: 'table',
-        name: 'Table',
-        component: resolve => require(['@/views/table/index'], resolve),
-        meta: { title: 'Table', icon: 'table' }
-      },
-      {
-        path: 'tree',
-        name: 'Tree',
-        component: resolve => require(['@/views/tree/index'], resolve),
-        meta: { title: 'Tree', icon: 'tree' }
-      }
-    ]
-  },
-
-  {
-    path: '/form',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        name: 'Form',
-        component: resolve => require(['@/views/form/index'], resolve),
-        meta: { title: 'Form', icon: 'form' }
-      }
-    ]
-  },
-
-  // {
-  //   path: '/nested',
-  //   component: Layout,
-  //   redirect: '/nested/menu1',
-  //   name: 'Nested',
-  //   meta: {
-  //     title: 'Nested',
-  //     icon: 'nested'
-  //   },
-  //   children: [
-  //     {
-  //       path: 'menu1',
-  //       component:  resolve => require(['@/views/nested/menu1/index'], resolve),// Parent router-view
-  //       name: 'Menu1',
-  //       meta: { title: 'Menu1' },
-  //       children: [
-  //         {
-  //           path: 'menu1-1',
-  //           component: resolve => require(['@/views/nested/menu1/menu1-1'], resolve),
-  //           name: 'Menu1-1',
-  //           meta: { title: 'Menu1-1' }
-  //         },
-  //         {
-  //           path: 'menu1-2',
-  //           component: resolve => require(['@/views/nested/menu1/menu1-2'], resolve),
-  //           name: 'Menu1-2',
-  //           meta: { title: 'Menu1-2' },
-  //           children: [
-  //             {
-  //               path: 'menu1-2-1',
-  //               component: resolve => require(['@/views/nested/menu1/menu1-2-1'], resolve),
-  //               name: 'Menu1-2-1',
-  //               meta: { title: 'Menu1-2-1' }
-  //             },
-  //             {
-  //               path: 'menu1-2-2',
-  //               component: resolve => require(['@/views/nested/menu1/menu1-2-2'], resolve),
-  //               name: 'Menu1-2-2',
-  //               meta: { title: 'Menu1-2-2' }
-  //             }
-  //           ]
-  //         },
-  //         {
-  //           path: 'menu1-3',
-  //           component: resolve => require(['@/views/nested/menu1/menu1-3'], resolve),
-  //           name: 'Menu1-3',
-  //           meta: { title: 'Menu1-3' }
-  //         }
-  //       ]
-  //     },
-  //     {
-  //       path: 'menu2',
-  //       component: resolve => require(['@/views/nested/menu2/index'], resolve),
-  //       meta: { title: 'menu2' }
-  //     }
-  //   ]
-  // },
-
-  {
-    path: 'external-link',
-    component: Layout,
-    children: [
-      {
-        path: 'https://panjiachen.github.io/vue-element-admin-site/#/',
-        meta: { title: 'External Link', icon: 'link' }
-      }
-    ]
+    path: '/404',
+    component: resolve => require(['@/views/404/404'], resolve),
+    hidden: true,
+    meta: {
+      title: '404 Not Found'
+    }
   },
 
   // 404 page must be placed at the end !!!
-  { path: '*', redirect: '/404', hidden: true }
+  {
+    path: '*',
+    redirect: '/404',
+    hidden: true
+  }
 ]
 
 const createRouter = () => new Router({
   mode: 'history', // require service support
-  scrollBehavior: () => ({ y: 0 }),
+  scrollBehavior: () => ({
+    y: 0
+  }),
   routes: constantRoutes
 })
 

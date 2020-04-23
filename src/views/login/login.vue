@@ -31,21 +31,12 @@
           >
             <el-select v-model="select" slot="prepend" placeholder="+86">
               <el-option label="+86" value="1"></el-option>
-              <el-option label="2222" value="2"></el-option>
+              <!-- <el-option label="2222" value="2"></el-option>
               <el-option label="3333" value="3"></el-option>
-              <el-option label="4444" value="4"></el-option>
+              <el-option label="4444" value="4"></el-option> -->
             </el-select>
           </el-input>
         </div>
-        <!-- <el-input
-          ref="username"
-          v-model="loginForm.username"
-          placeholder="请输入你的手机号"
-          name="username"
-          type="text"
-          tabindex="1"
-          auto-complete="on"
-        />-->
       </el-form-item>
 
       <el-form-item prop="password">
@@ -78,7 +69,7 @@
       >登录</el-button>
 
       <div class="tips">
-        <p> 
+        <p>
           <span class="txt">或</span>
           <span class="business">创建企业</span>
         </p>
@@ -124,7 +115,7 @@ export default {
       loading: false,
       passwordType: "password",
       redirect: undefined,
-      select: '',
+      select: "",
       checked: true
     };
   },
@@ -171,9 +162,7 @@ export default {
 </script>
 
 <style lang="scss">
-/* 修复input 背景不协调 和光标变色 */
 /* Detail see https://github.com/PanJiaChen/vue-element-admin/pull/927 */
-
 .el-select .el-input {
   width: 100px;
   color: #333;
@@ -202,48 +191,6 @@ export default {
   color: #999;
   font-size: 19px;
 }
-
-// $bg: #283443;
-// $light_gray: #fff;
-// $cursor: #fff;
-
-// @supports (-webkit-mask: none) and (not (cater-color: $cursor)) {
-//   .login-container .el-input input {
-//     color: $cursor;
-//   }
-// }
-
-// /* reset element-ui css */
-// .login-container {
-//   .el-input {
-//     display: inline-block;
-//     height: 47px;
-//     width: 85%;
-
-//     input {
-//       background: transparent;
-//       border: 0px;
-//       -webkit-appearance: none;
-//       border-radius: 0px;
-//       padding: 12px 5px 12px 15px;
-//       color: $light_gray;
-//       height: 47px;
-//       caret-color: $cursor;
-
-//       &:-webkit-autofill {
-//         box-shadow: 0 0 0px 1000px $bg inset !important;
-//         -webkit-text-fill-color: $cursor !important;
-//       }
-//     }
-//   }
-
-//   .el-form-item {
-//     border: 1px solid rgba(255, 255, 255, 0.1);
-//     background: rgba(0, 0, 0, 0.1);
-//     border-radius: 5px;
-//     color: #454545;
-//   }
-// }
 </style>
 
 <style lang="scss" scoped>
@@ -271,9 +218,9 @@ $i-fs: 19px;
     max-width: 100%;
     height: 675px;
     text-align: center;
-    border: 1px solid #E4E5E7;
-    border-radius: 5px;
-    font-family:PingFangSC-Regular,PingFang SC;
+    border: 1px solid #e4e5e7;
+    border-radius: 7px;
+    font-family: PingFangSC-Regular, PingFang SC;
 
     .title-container {
       margin: 88px 0 64px 0;
@@ -291,13 +238,13 @@ $i-fs: 19px;
     }
 
     .login-button {
-      width: 430px!important;
+      width: 430px !important;
       height: 60px;
       font-size: $i-fs;
     }
 
     .tips {
-      width:430px;
+      width: 430px;
       margin: 0 0 30px 29px;
       display: flex;
       justify-content: space-between;
@@ -306,18 +253,22 @@ $i-fs: 19px;
       .txt {
         color: $s-color;
       }
-      
-      .business, .forget {
-        color: #409EFF;
+
+      .business,
+      .forget {
+        color: #409eff;
       }
     }
   }
 }
-
 @media screen and (max-width: 1440px) {
-  .login-img {display: none}
+  .login-img {
+    display: none;
+  }
 }
 @media screen and (max-height: 720px) {
-  .login-img {display: none}
+  .login-img {
+    display: none;
+  }
 }
 </style>

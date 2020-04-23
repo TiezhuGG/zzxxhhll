@@ -5,6 +5,10 @@ const tokens = {
   },
   editor: {
     token: 'editor-token'
+  },
+  // 注册测试
+  13559422200: {
+    token: '13559422200'
   }
 }
 
@@ -24,6 +28,28 @@ const users = {
 }
 
 export default [
+  // user register
+  {
+    url: '/vue-admin-template/user/register',
+    type: 'post',
+    response: config => {
+      const { username } = config.body
+      const token = tokens[username]
+
+      // mock error
+      if (!token) {
+        return {
+          code: 60204,
+          message: 'Account is incorrect.'
+        }
+      }
+      return {
+        code: 20000,
+        data: token
+      }
+    }
+  },
+
   // user login
   {
     url: '/vue-admin-template/user/login',

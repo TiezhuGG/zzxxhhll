@@ -29,6 +29,19 @@ module.exports = {
   assetsDir: 'static',
   lintOnSave: process.env.NODE_ENV === 'development',
   productionSourceMap: false,
+  css: {
+    loaderOptions: {
+      css: {
+        // options here will be passed to css-loader
+      },
+      postcss: {
+        // options here will be passed to postcss-loader
+        plugins: [require('postcss-px2rem')({
+          remUnit: 16
+        })]
+      }
+    }
+  },
   devServer: {
     port: port,
     open: true,

@@ -44,11 +44,11 @@ export const constantRoutes = [
 
   {
     path: '/register',
-    name: 'register',
     component: resolve => require(['@/views/register/register'], resolve),
+    hidden: true,
     meta: {
       title: '注册'
-    },
+    }
   },
 
   {

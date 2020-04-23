@@ -1,6 +1,6 @@
 <template>
   <div class="login-container">
-    <img class="login-img" src="../../assets/test.jpg" />
+    <img class="login-img" src="../../assets/imgs/register.png" />
     <el-form
       ref="loginForm"
       :model="loginForm"
@@ -10,7 +10,7 @@
       label-position="left"
     >
       <div class="back" @click="back">
-        <img src="../../assets/back.png" />
+        <img src="../../assets/imgs/back.png" />
         <span>返回</span>
       </div>
       <div class="title-container">
@@ -45,9 +45,9 @@
 
       <el-checkbox v-model="checked">
         <span>我已阅读并同意</span>
-        <span>服务协议</span>
+        <span style="color:#409EFF">服务协议</span>
         <span>与</span>
-        <span>隐私政策</span>
+        <span style="color:#409EFF">隐私政策</span>
       </el-checkbox>
 
       <el-button
@@ -142,7 +142,7 @@ export default {
 }
 
 .el-checkbox {
-  margin-top: 200px;
+  margin-top: 231px;
   margin-bottom: 21px;
   color: #999;
   font-size: 19px;
@@ -161,7 +161,7 @@ $i-fs: 19px;
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-evenly;
   font-family: PingFangSC-Regular, PingFang SC;
 
   .login-img {
@@ -175,6 +175,7 @@ $i-fs: 19px;
     max-width: 100%;
     height: 675px;
     text-align: center;
+    margin-right: 100px;
     border: 1px solid #e4e5e7;
     border-radius: 7px;
 
@@ -193,17 +194,18 @@ $i-fs: 19px;
     }
 
     .title-container {
-      margin: 57px 0 64px 0;
+      display: flex;
+      flex-wrap: wrap;
+      margin: 37px 0 65px 29px;
 
       .title {
         color: $h-color;
         font-size: $h-fs;
-        margin-right: 208px;
+        margin-bottom: 20px;
       }
       .warning {
         color: $s-color;
         font-size: $s-fs;
-        margin-right: 122px;
       }
     }
 

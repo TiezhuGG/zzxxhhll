@@ -1,6 +1,7 @@
 <template>
   <div class="login-container">
-    <img class="login-img" src="../../assets/test.jpg" />
+    
+    <img class="login-img" src="../../assets/imgs/login.png" />
     <el-form
       ref="loginForm"
       :model="loginForm"
@@ -33,7 +34,7 @@
               <el-option label="+86" value="1"></el-option>
               <!-- <el-option label="2222" value="2"></el-option>
               <el-option label="3333" value="3"></el-option>
-              <el-option label="4444" value="4"></el-option> -->
+              <el-option label="4444" value="4"></el-option>-->
             </el-select>
           </el-input>
         </div>
@@ -205,7 +206,7 @@ $i-fs: 19px;
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-evenly;
 
   .login-img {
     width: 510px;
@@ -218,22 +219,24 @@ $i-fs: 19px;
     max-width: 100%;
     height: 675px;
     text-align: center;
+    margin-right: 100px;
     border: 1px solid #e4e5e7;
     border-radius: 7px;
     font-family: PingFangSC-Regular, PingFang SC;
 
     .title-container {
-      margin: 88px 0 64px 0;
+      display: flex;
+      flex-wrap: wrap;
+      margin: 88px 0 64px 29px;
 
       .title {
         color: $h-color;
         font-size: $h-fs;
-        margin-right: 268px;
+        margin-bottom: 20px;
       }
       .warning {
         color: $s-color;
         font-size: $s-fs;
-        margin-right: 122px;
       }
     }
 
@@ -245,7 +248,7 @@ $i-fs: 19px;
 
     .tips {
       width: 430px;
-      margin: 0 0 30px 29px;
+      margin: 19px 0 30px 29px;
       display: flex;
       justify-content: space-between;
       font-size: $i-fs;
@@ -265,6 +268,9 @@ $i-fs: 19px;
   .login-img {
     display: none;
   }
+}
+@media screen and (max-width: 1000px) {
+  
 }
 @media screen and (max-height: 720px) {
   .login-img {

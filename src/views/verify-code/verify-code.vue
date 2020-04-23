@@ -1,6 +1,6 @@
 <template>
   <div class="login-container">
-    <img class="login-img" src="../../assets/test.jpg" />
+    <img class="login-img" src="../../assets/imgs/login.png" />
     <el-form
       ref="loginForm"
       :model="loginForm"
@@ -10,20 +10,23 @@
       label-position="left"
     >
       <div class="back" @click="back">
-        <img src="../../assets/back.png" />
+        <img src="../../assets/imgs/back.png" />
         <span>返回</span>
       </div>
       <div class="title-container">
-        <h3 class="title">欢迎使用管理系统</h3>
-        <span class="warning">与你的团队成员和朋友进行交流与协作。</span>
+        <h3 class="title">验证手机号</h3>
+        <p class="warning">
+          <span>请输入发送至 +86 13559422200 的 6 位验证码，有效</span>
+          <span>期十分钟。如未收到，请尝试重新获取验证码。</span>
+        </p>
       </div>
 
       <el-form-item prop="username">
         <!-- <span class="svg-container">
           <svg-icon icon-class="user" />
         </span>-->
-        <div>
-          <el-input
+        <div class="code">
+          <!-- <el-input
             placeholder="请输入你的手机号"
             ref="username"
             v-model="loginForm.username"
@@ -32,14 +35,7 @@
             tabindex="1"
             auto-complete="on"
             class="input-with-select"
-          >
-            <el-select v-model="select" slot="prepend" placeholder="+86">
-              <el-option label="+86" value="1"></el-option>
-              <!-- <el-option label="2222" value="2"></el-option>
-              <el-option label="3333" value="3"></el-option>
-              <el-option label="4444" value="4"></el-option>-->
-            </el-select>
-          </el-input>
+          ></el-input> -->
         </div>
       </el-form-item>
 
@@ -84,7 +80,7 @@ export default {
       },
       loading: false,
       select: "",
-      checked: true
+      checked: true,
     };
   },
   methods: {
@@ -94,7 +90,7 @@ export default {
     register() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
-          console.log('valid',this.loginForm)
+          console.log("valid", this.loginForm);
           this.loading = true;
           this.$store
             .dispatch("user/register", this.loginForm)
@@ -161,7 +157,7 @@ $i-fs: 19px;
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-evenly;
   font-family: PingFangSC-Regular, PingFang SC;
 
   .login-img {
@@ -175,6 +171,7 @@ $i-fs: 19px;
     max-width: 100%;
     height: 675px;
     text-align: center;
+    margin-right: 100px;
     border: 1px solid #e4e5e7;
     border-radius: 7px;
 
@@ -193,17 +190,23 @@ $i-fs: 19px;
     }
 
     .title-container {
-      margin: 57px 0 64px 0;
+      width: 425px;
+      display: flex;
+      flex-wrap: wrap;
+      margin: 37px 0 64px 29px;
 
       .title {
         color: $h-color;
         font-size: $h-fs;
-        margin-right: 208px;
+        margin-bottom: 20px;
       }
       .warning {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        line-height: 25px;
         color: $s-color;
         font-size: $s-fs;
-        margin-right: 122px;
       }
     }
 

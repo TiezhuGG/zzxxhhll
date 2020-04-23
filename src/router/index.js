@@ -48,17 +48,17 @@ export const constantRoutes = [{
     meta: {
       title: '注册'
 
+    }
+  },
+  
+  {
+    path: '/verify-code',
+    name: 'verify-code',
+    component: resolve => require(['@/views/verify-code/verify-code'], resolve),
+    hidden: true,
+    meta: {
+      title: '验证码'
     },
-    children: [{
-      path: '/verify-code',
-      name: 'verify-code',
-      component: resolve => require(['@/views/verify-code/verify-code'], resolve),
-      hidden: true,
-      meta: {
-        title: '验证码'
-      },
-    }, ]
-
   },
   
   {

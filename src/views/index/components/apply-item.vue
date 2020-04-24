@@ -27,12 +27,8 @@ export default {
     border-radius:7px;
     display: flex;
     align-items: center;
-    &:nth-child(n+7) {
-       margin-top: 21px;
-    }
-    &:not(:nth-child(6n+1)) {
-      margin-left: 21px;
-   }
+    margin-left: 21px;
+    margin-top: 21px;
     svg {
       font-size: 53px;
       margin-left: 21px;

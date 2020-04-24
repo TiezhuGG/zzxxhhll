@@ -7,6 +7,7 @@
       <common-apply/>
       <!--全部应用-->
       <apply/>
+      <perfect/>
     </div>
   </div>
 </template>
@@ -16,12 +17,14 @@ import { mapGetters } from 'vuex'
 import Search from './components/search'
 import Apply from './components/apply'
 import CommonApply from './components/common-apply'
+import Perfect from './components/perfect'
 export default {
   name: 'Index',
   components: {
     Search,
     Apply,
-    CommonApply
+    CommonApply,
+    Perfect
   },
   computed: {
     ...mapGetters([
@@ -40,5 +43,7 @@ export default {
 .apply-list {
   display: flex;
   flex-wrap: wrap;
+  padding-top: 10px;
+  margin-left: -21px;
 }
 </style>

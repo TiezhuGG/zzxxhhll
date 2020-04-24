@@ -14,7 +14,8 @@ import router from './router'
 
 import '@/icons' // icon
 import '@/permission' // permission control
-import '@/utils/rem'
+// import '@/utils/rem'
+import 'lib-flexible/flexible'
 
 /**
  * If you don't want to use mock-server

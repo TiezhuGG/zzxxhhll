@@ -1,6 +1,6 @@
 <template>
   <div class="login-container">
-    <img class="login-img" src="../../assets/imgs/login.png" />
+    <img class="login-img" src="../../assets/imgs/code.png" />
     <el-form
       ref="loginForm"
       :model="loginForm"
@@ -21,35 +21,26 @@
         </p>
       </div>
 
-      <el-form-item prop="username">
-        <!-- <span class="svg-container">
-          <svg-icon icon-class="user" />
-        </span>-->
-        <div class="code">
-          <!-- <el-input
-            placeholder="请输入你的手机号"
-            ref="username"
-            v-model="loginForm.username"
-            name="username"
-            type="text"
-            tabindex="1"
-            auto-complete="on"
-            class="input-with-select"
-          ></el-input> -->
-        </div>
+      <!-- <el-form-item prop="username" class="code"> -->
+      <el-form-item class="code">
+        <el-input
+          v-for="(code, index) in codes"
+          v-model="code.value"
+          :key="index"
+          name="code"
+          maxlength="1"
+          type="text"
+          autofocus="true"
+          class="code-input"
+        ></el-input>
       </el-form-item>
 
-      <el-checkbox v-model="checked">
-        <span>我已阅读并同意</span>
-        <span>服务协议</span>
-        <span>与</span>
-        <span>隐私政策</span>
-      </el-checkbox>
+      <span class="prompt">46秒后可重新获取验证码</span>
 
       <el-button
         :loading="loading"
         type="primary"
-        @click.native.prevent="register"
+        @click.native.prevent="toNext"
         class="login-button"
       >下一步</el-button>
     </el-form>
@@ -79,13 +70,22 @@ export default {
         ]
       },
       loading: false,
-      select: "",
-      checked: true,
+      codes: [
+        { value: "" },
+        { value: "" },
+        { value: "" },
+        { value: "" },
+        { value: "" },
+        { value: "" }
+      ]
     };
   },
   methods: {
     back() {
       this.$router.go(-1);
+    },
+    toNext() {
+      this.$router.push("/set-password");
     },
     register() {
       this.$refs.loginForm.validate(valid => {
@@ -112,20 +112,8 @@ export default {
 </script>
 
 <style lang="scss">
-/* 修复input 背景不协调 和光标变色 */
-/* Detail see https://github.com/PanJiaChen/vue-element-admin/pull/927 */
-
-.el-select .el-input {
-  width: 100px;
-  color: #333;
-}
-.el-select {
-  height: 60px;
-  line-height: 60px;
-}
-
 .el-input__inner {
-  height: 60px;
+  height: 59px;
 }
 
 .input-with-select .el-input-group__prepend {
@@ -133,15 +121,9 @@ export default {
 }
 
 .el-form-item__content {
-  width: 430px;
-  margin: auto;
-}
-
-.el-checkbox {
-  margin-top: 200px;
-  margin-bottom: 21px;
-  color: #999;
-  font-size: 19px;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
 }
 </style>
 
@@ -187,6 +169,20 @@ $i-fs: 19px;
         color: $s-color;
         font-size: $i-fs;
       }
+    }
+
+    .code {
+      .code-input {
+        width: 59px;
+        height: 59px;
+      }
+    }
+
+    .prompt {
+      display: inline-block;
+      color: $s-color;
+      font-size: $s-fs;
+      margin-bottom: 233px;
     }
 
     .title-container {

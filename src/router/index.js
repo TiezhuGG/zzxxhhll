@@ -57,11 +57,11 @@ export const constantRoutes = [
     redirect: '/index',
     children: [{
       path: 'index',
-      name: 'index',
+      name: 'Index',
       component: resolve => require(['@/views/index/index'], resolve),
       meta: {
         title: '工作台',
-        icon: 'workbench'
+        icon: 'use'
       }
     }]
   },

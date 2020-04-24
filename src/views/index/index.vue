@@ -1,14 +1,25 @@
 <template>
   <div class="index-container">
-    <div class="index-text">name: {{ name }}</div>
+    <search/>
+    <div class="index-wrap">
+      <common-apply/>
+      <apply/>
+    </div>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-
+import Search from './components/search'
+import Apply from './components/apply'
+import CommonApply from './components/common-apply'
 export default {
   name: 'Index',
+  components: {
+    Search,
+    Apply,
+    CommonApply
+  },
   computed: {
     ...mapGetters([
       'name'
@@ -17,14 +28,14 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .index {
-  &-container {
-    margin: 30px;
+  &-wrap {
+    padding: 51px;
   }
-  &-text {
-    font-size: 30px;
-    line-height: 46px;
-  }
+}
+.apply-list {
+  display: flex;
+  flex-wrap: wrap;
 }
 </style>

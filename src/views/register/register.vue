@@ -99,7 +99,7 @@ export default {
           this.$store
             .dispatch("user/register", this.loginForm)
             .then(() => {
-              this.$router.push({ path: "/" });
+              this.$router.push({ path: "/verify-code" });
               this.loading = false;
             })
             .catch(() => {

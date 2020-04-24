@@ -35,9 +35,9 @@ const actions = {
     return new Promise((resolve, reject) => {
       register({ username: username.trim() }).then(response => {
         const { data } = response
-        // commit('SET_TOKEN', data.token)
-        // setToken(data.token)
-        console.log('注册',data)
+        commit('SET_TOKEN', data.token)
+        setToken(data.token)
+        // console.log('注册',data)
         resolve()
       }).catch(error => {
         reject(error)

@@ -1,8 +1,11 @@
 <template>
   <div class="index-container">
+    <!--搜索-->
     <search/>
     <div class="index-wrap">
+      <!--常用应用-->
       <common-apply/>
+      <!--全部应用-->
       <apply/>
     </div>
   </div>

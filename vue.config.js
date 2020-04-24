@@ -37,10 +37,10 @@ module.exports = {
       postcss: {
         // options here will be passed to postcss-loader
         plugins: [require('postcss-px2rem')({
-          remUnit: 54,
-          exclude: false,
-          mediaQuery: false,
-          minPixelValue: 3
+          remUnit: 16,
+          // exclude: false,
+          // mediaQuery: false,
+          // minPixelValue: 3
         })]
       }
     }
@@ -75,7 +75,7 @@ module.exports = {
       .use('px2rem')
       .loader('px2rem-loader')
       .options({
-        remUnit: 54
+        remUnit: 16
       })
     // set svg-sprite-loader
     config.module

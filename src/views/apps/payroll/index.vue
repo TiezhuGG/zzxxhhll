@@ -1,5 +1,11 @@
 <template>
-  <div></div>
+  <div class="payroll-container">
+    <div class="choose">
+      <div class="choose-container">
+
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>

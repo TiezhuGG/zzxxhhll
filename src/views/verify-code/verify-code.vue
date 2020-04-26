@@ -1,6 +1,6 @@
 <template>
   <div class="login-container">
-    <img class="login-img" src="../../assets/test.jpg" />
+    <img class="login-img" src="../../assets/imgs/code.png" />
     <el-form
       ref="loginForm"
       :model="loginForm"
@@ -10,50 +10,37 @@
       label-position="left"
     >
       <div class="back" @click="back">
-        <img src="../../assets/back.png" />
+        <img src="../../assets/imgs/back.png" />
         <span>返回</span>
       </div>
       <div class="title-container">
         <h3 class="title">验证手机号</h3>
-        <span class="warning">与你的团队成员和朋友进行交流与协作。</span>
+        <p class="warning">
+          <span>请输入发送至 +86 13559422200 的 6 位验证码，有效</span>
+          <span>期十分钟。如未收到，请尝试重新获取验证码。</span>
+        </p>
       </div>
 
-      <el-form-item prop="username">
-        <!-- <span class="svg-container">
-          <svg-icon icon-class="user" />
-        </span>-->
-        <div>
-          <el-input
-            placeholder="请输入你的手机号"
-            ref="username"
-            v-model="loginForm.username"
-            name="username"
-            type="text"
-            tabindex="1"
-            auto-complete="on"
-            class="input-with-select"
-          >
-            <el-select v-model="select" slot="prepend" placeholder="+86">
-              <el-option label="+86" value="1"></el-option>
-              <!-- <el-option label="2222" value="2"></el-option>
-              <el-option label="3333" value="3"></el-option>
-              <el-option label="4444" value="4"></el-option>-->
-            </el-select>
-          </el-input>
-        </div>
+      <!-- <el-form-item prop="username" class="code"> -->
+      <el-form-item class="code">
+        <el-input
+          v-for="(code, index) in codes"
+          v-model="code.value"
+          :key="index"
+          name="code"
+          maxlength="1"
+          type="text"
+          autofocus="true"
+          class="code-input"
+        ></el-input>
       </el-form-item>
 
-      <el-checkbox v-model="checked">
-        <span>我已阅读并同意</span>
-        <span>服务协议</span>
-        <span>与</span>
-        <span>隐私政策</span>
-      </el-checkbox>
+      <span class="prompt">46秒后可重新获取验证码</span>
 
       <el-button
         :loading="loading"
         type="primary"
-        @click.native.prevent="register"
+        @click.native.prevent="toNext"
         class="login-button"
       >下一步</el-button>
     </el-form>
@@ -83,18 +70,27 @@ export default {
         ]
       },
       loading: false,
-      select: "",
-      checked: true
+      codes: [
+        { value: "" },
+        { value: "" },
+        { value: "" },
+        { value: "" },
+        { value: "" },
+        { value: "" }
+      ]
     };
   },
   methods: {
     back() {
       this.$router.go(-1);
     },
+    toNext() {
+      this.$router.push("/set-password");
+    },
     register() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
-          console.log('valid',this.loginForm)
+          console.log("valid", this.loginForm);
           this.loading = true;
           this.$store
             .dispatch("user/register", this.loginForm)
@@ -116,20 +112,8 @@ export default {
 </script>
 
 <style lang="scss">
-/* 修复input 背景不协调 和光标变色 */
-/* Detail see https://github.com/PanJiaChen/vue-element-admin/pull/927 */
-
-.el-select .el-input {
-  width: 1rem;
-  color: #333;
-}
-.el-select {
-  height: 0.6rem;
-  line-height: 0.6rem;
-}
-
 .el-input__inner {
-  height: 0.6rem;
+  height: 59px;
 }
 
 .input-with-select .el-input-group__prepend {
@@ -137,54 +121,49 @@ export default {
 }
 
 .el-form-item__content {
-  width: 4.3rem;
-  margin: auto;
-}
-
-.el-checkbox {
-  margin-top: 2rem;
-  margin-bottom: 0.21rem;
-  color: #999;
-  font-size: 0.19rem;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
 }
 </style>
 
 <style lang="scss" scoped>
 $h-color: #333;
 $s-color: #999;
-$h-fs: 0.27rem;
-$s-fs: 0.17rem;
-$i-fs: 0.19rem;
+$h-fs: 27px;
+$s-fs: 17px;
+$i-fs: 19px;
 
 .login-container {
   min-height: 100%;
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-evenly;
   font-family: PingFangSC-Regular, PingFang SC;
 
   .login-img {
-    width: 5.1rem;
-    height: 3.4rem;
-    margin-left: 1rem;
+    width: 510px;
+    height: 340px;
+    margin-left: 100px;
   }
 
   .login-form {
-    width: 4.88rem;
+    width: 488px;
     max-width: 100%;
-    height: 6.75rem;
+    height: 675px;
     text-align: center;
-    border: 0.01rem solid #e4e5e7;
-    border-radius: 0.07rem;
+    margin-right: 100px;
+    border: 1px solid #e4e5e7;
+    border-radius: 7px;
 
     .back {
       display: flex;
-      margin: 0.31rem 0 0 0.28rem;
+      margin: 31px 0 0 28px;
       img {
-        width: 0.21rem;
-        height: 0.21rem;
-        margin-right: 0.12rem;
+        width: 21px;
+        height: 21px;
+        margin-right: 12px;
       }
       span {
         color: $s-color;
@@ -192,37 +171,57 @@ $i-fs: 0.19rem;
       }
     }
 
+    .code {
+      .code-input {
+        width: 59px;
+        height: 59px;
+      }
+    }
+
+    .prompt {
+      display: inline-block;
+      color: $s-color;
+      font-size: $s-fs;
+      margin-bottom: 233px;
+    }
+
     .title-container {
-      margin: 0.57rem 0 0.64rem 0;
+      width: 425px;
+      display: flex;
+      flex-wrap: wrap;
+      margin: 37px 0 64px 29px;
 
       .title {
         color: $h-color;
         font-size: $h-fs;
-        margin-right: 2.08rem;
+        margin-bottom: 20px;
       }
       .warning {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        line-height: 25px;
         color: $s-color;
         font-size: $s-fs;
-        margin-right: 1.22rem;
       }
     }
 
     .login-button {
-      width: 4.3rem !important;
-      height: 0.6rem;
+      width: 430px !important;
+      height: 60px;
       font-size: $i-fs;
     }
   }
 }
 
-// @media screen and (max-width: 14.4rem) {
-//   .login-img {
-//     display: none;
-//   }
-// }
-// @media screen and (max-height: 7.2rem) {
-//   .login-img {
-//     display: none;
-//   }
-// }
+@media screen and (max-width: 1440px) {
+  .login-img {
+    display: none;
+  }
+}
+@media screen and (max-height: 720px) {
+  .login-img {
+    display: none;
+  }
+}
 </style>

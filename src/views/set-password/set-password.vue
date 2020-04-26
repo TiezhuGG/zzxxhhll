@@ -1,6 +1,6 @@
 <template>
   <div class="login-container">
-    <img class="login-img" src="../../assets/imgs/register.png" />
+    <img class="login-img" src="../../assets/imgs/code.png" />
     <el-form
       ref="loginForm"
       :model="loginForm"
@@ -14,79 +14,78 @@
         <span>返回</span>
       </div>
       <div class="title-container">
-        <h3 class="title">欢迎使用管理系统</h3>
-        <span class="warning">与你的团队成员和朋友进行交流与协作。</span>
+        <h3 class="title">设置密码</h3>
+        <span class="warning">请输入6-20位密码，且同时包含数字与字母。</span>
       </div>
 
-      <el-form-item prop="username">
-        <div>
-          <el-input
-            placeholder="请输入你的手机号"
-            ref="username"
-            v-model="loginForm.username"
-            name="username"
-            type="text"
-            tabindex="1"
-            auto-complete="on"
-            class="input-with-select"
-          >
-            <el-select v-model="select" slot="prepend" placeholder="+86">
-              <el-option label="+86" value="1"></el-option>
-              <!-- <el-option label="2222" value="2"></el-option>
-              <el-option label="3333" value="3"></el-option>
-              <el-option label="4444" value="4"></el-option>-->
-            </el-select>
-          </el-input>
-        </div>
+      <el-form-item prop="password">
+        <el-input
+          :key="passwordType"
+          ref="password"
+          v-model="loginForm.password"
+          :type="passwordType"
+          placeholder="请输入你的密码"
+          name="password"
+          tabindex="1"
+          auto-complete="on"
+          @keyup.enter.native="register"
+        />
       </el-form-item>
 
-      <el-checkbox v-model="checked">
-        <span>我已阅读并同意</span>
-        <span style="color:#409EFF">服务协议</span>
-        <span>与</span>
-        <span style="color:#409EFF">隐私政策</span>
-      </el-checkbox>
+      <el-form-item prop="password">
+        <el-input
+          :key="passwordType"
+          ref="password"
+          v-model="loginForm.password"
+          :type="passwordType"
+          placeholder="请输入你的密码"
+          name="password"
+          tabindex="2"
+          auto-complete="on"
+          @keyup.enter.native="register"
+        />
+      </el-form-item>
 
       <el-button
         :loading="loading"
         type="primary"
         @click.native.prevent="toNext"
         class="login-button"
-      >下一步</el-button>
+      >注册</el-button>
     </el-form>
   </div>
 </template>
 
 <script>
-import { validRegisterUsername } from "@/utils/validate";
+import { validUsername } from "@/utils/validate";
 
 export default {
-  name: "Register",
+  name: "Set-password",
   data() {
-    const validateUsername = (rule, value, callback) => {
-      if (!validRegisterUsername(value)) {
-        callback(new Error("请输入正确的用户名"));
+    const validatePassword = (rule, value, callback) => {
+      if (value.length < 6) {
+        callback(new Error("密码不能少于6位"));
       } else {
         callback();
       }
     };
     return {
       loginForm: {
-        username: ""
+        password: "111111"
       },
       loginRules: {
-        username: [
-          { required: true, trigger: "blur", validator: validateUsername }
+        password: [
+          { required: true, trigger: "blur", validator: validatePassword }
         ]
       },
       loading: false,
-      select: "",
-      checked: true
+      passwordType: "password"
     };
   },
+
   methods: {
     toNext() {
-      this.$router.push('/verify-code')
+      this.$router.push("/login");
     },
     back() {
       this.$router.go(-1);
@@ -94,19 +93,18 @@ export default {
     register() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
-          console.log('valid',this.loginForm)
           this.loading = true;
           this.$store
-            .dispatch("user/register", this.loginForm)
+            .dispatch("user/login", this.loginForm)
             .then(() => {
-              this.$router.push({ path: "/verify-code" });
+              this.$router.push({ path: this.redirect || "/" });
               this.loading = false;
             })
             .catch(() => {
               this.loading = false;
             });
         } else {
-          console.log("注册失败");
+          console.log("error submit!!");
           return false;
         }
       });
@@ -116,18 +114,6 @@ export default {
 </script>
 
 <style lang="scss">
-/* 修复input 背景不协调 和光标变色 */
-/* Detail see https://github.com/PanJiaChen/vue-element-admin/pull/927 */
-
-.el-select .el-input {
-  width: 100px;
-  color: #333;
-}
-.el-select {
-  height: 60px;
-  line-height: 60px;
-}
-
 .el-input__inner {
   height: 60px;
 }
@@ -139,13 +125,6 @@ export default {
 .el-form-item__content {
   width: 430px;
   margin: auto;
-}
-
-.el-checkbox {
-  margin-top: 231px;
-  margin-bottom: 21px;
-  color: #999;
-  font-size: 19px;
 }
 </style>
 
@@ -162,7 +141,6 @@ $i-fs: 19px;
   display: flex;
   align-items: center;
   justify-content: space-evenly;
-  font-family: PingFangSC-Regular, PingFang SC;
 
   .login-img {
     width: 510px;
@@ -178,6 +156,7 @@ $i-fs: 19px;
     margin-right: 100px;
     border: 1px solid #e4e5e7;
     border-radius: 7px;
+    font-family: PingFangSC-Regular, PingFang SC;
 
     .back {
       display: flex;
@@ -194,9 +173,10 @@ $i-fs: 19px;
     }
 
     .title-container {
+      width: 425px;
       display: flex;
       flex-wrap: wrap;
-      margin: 37px 0 65px 29px;
+      margin: 51px 0 64px 29px;
 
       .title {
         color: $h-color;
@@ -213,14 +193,16 @@ $i-fs: 19px;
       width: 430px !important;
       height: 60px;
       font-size: $i-fs;
+      margin-top: 183px;
     }
   }
 }
-
 @media screen and (max-width: 1440px) {
   .login-img {
     display: none;
   }
+}
+@media screen and (max-width: 1000px) {
 }
 @media screen and (max-height: 720px) {
   .login-img {

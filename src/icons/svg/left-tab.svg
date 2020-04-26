@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="12px" height="12px" viewBox="0 0 12 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 61.2 (89653) - https://sketch.com -->
+    <title>形状结合@2x</title>
+    <desc>Created with Sketch.</desc>
+    <g id="针线互联用户端" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="联系人_组织架构" transform="translate(-79.000000, -250.000000)" fill="#409EFF">
+            <g id="编组-4" transform="translate(79.000000, 250.000000)">
+                <path d="M1,0 C1.55228475,-1.01453063e-16 2,0.44771525 2,1 L2,10 L11,10 C11.5522847,10 12,10.4477153 12,11 C12,11.5522847 11.5522847,12 11,12 L1,12 L1,12 C0.44771525,12 6.76353751e-17,11.5522847 0,11 L0,1 C-6.76353751e-17,0.44771525 0.44771525,1.01453063e-16 1,0 Z" id="形状结合"></path>
+            </g>
+        </g>
+    </g>
+</svg>

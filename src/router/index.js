@@ -31,7 +31,6 @@ import Layout from '@/layout'
  * all roles can be accessed
  */
 
-
 export const constantRoutes = [{
   path: '/login',
   component: resolve => require(['@/views/login/login'], resolve),
@@ -48,17 +47,66 @@ export const constantRoutes = [{
   meta: {
     title: '注册'
 
-  },
+  }
+},
+
+{
+  path: '/verify-code',
+  name: 'verify-code',
+  component: resolve => require(['@/views/verify-code/verify-code'], resolve),
+  hidden: true,
+  meta: {
+    title: '验证码'
+  }
+},
+
+{
+  path: '/set-password',
+  name: 'set-password',
+  component: resolve => require(['@/views/set-password/set-password'], resolve),
+  hidden: true,
+  meta: {
+    title: '设置密码'
+  }
+},
+
+{
+  path: '/enterprise',
+  name: 'enterprise',
+  component: resolve => require(['@/views/enterprise/enterprise'], resolve),
+  hidden: true,
+  meta: {
+    title: '注册企业'
+  }
+},
+
+{
+  path: '/',
+  component: Layout,
+  redirect: '/index',
   children: [{
-    path: '/verify-code',
-    name: 'verify-code',
-    component: resolve => require(['@/views/verify-code/verify-code'], resolve),
-    hidden: true,
+    path: 'index',
+    name: 'Index',
+    component: resolve => require(['@/views/index/index'], resolve),
     meta: {
-      title: '验证码'
+      title: '工作台',
+      icon: 'use'
     }
   }]
+},
 
+{
+  path: '/contact',
+  component: Layout,
+  children: [{
+    path: 'contact',
+    name: 'Contact',
+    component: resolve => require(['@/views/contact/contact'], resolve),
+    meta: {
+      title: '联系人',
+      icon: 'workbench'
+    }
+  }]
 },
 {
   path: '/apps',
@@ -72,20 +120,6 @@ export const constantRoutes = [{
     meta: {
       title: '公司工资薪资表',
       icon: 'payroll'
-    }
-  }]
-},
-{
-  path: '/',
-  component: Layout,
-  redirect: '/index',
-  children: [{
-    path: 'index',
-    name: 'Index',
-    component: resolve => require(['@/views/index/index'], resolve),
-    meta: {
-      title: '工作台',
-      icon: 'use'
     }
   }]
 },

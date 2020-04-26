@@ -12,7 +12,10 @@
         @click.middle.native="!isAffix(tag)?closeSelectedTag(tag):''"
         @contextmenu.prevent.native="openMenu(tag,$event)"
       >
-        {{ tag.title }}
+        <div>
+          <svg-icon :icon-class="tag.meta.icon"></svg-icon>
+          {{ tag.title }}
+        </div>
         <span v-if="!isAffix(tag)" class="el-icon-close" @click.prevent.stop="closeSelectedTag(tag)" />
       </router-link>
     </scroll-pane>
@@ -22,6 +25,7 @@
       <li @click="closeOthersTags">Close Others</li>
       <li @click="closeAllTags(selectedTag)">Close All</li>
     </ul>
+    <div class="app-title" v-if="isApp">{{ $route.meta.title }}</div>
   </div>
 </template>
 
@@ -43,6 +47,9 @@ export default {
   computed: {
     visitedViews() {
       return this.$store.state.tagsView.visitedViews
+    },
+    isApp() {
+      return this.$route.path.includes('apps')
     }
     // routes() {
     //   return this.$store.state.permission.routes
@@ -198,35 +205,44 @@ export default {
 
 <style lang="scss" scoped>
 .tags-view-container {
-  height: 45px;
+  min-width: 45px;
   width: 100%;
-  background: #fff;
+  background: #F5F6F7;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .12), 0 0 3px 0 rgba(0, 0, 0, .04);
   .tags-view-wrapper {
+    height: 45px;
+    overflow: hidden;
     .tags-view-item {
       display: inline-block;
       position: relative;
       cursor: pointer;
+      width: 200px;
       height: 45px;
       line-height: 45px;
       color: #495060;
-      background: #fff;
-      padding: 0 8px;
-      font-size: 12px;
+      padding: 0 16px;
+      font-size: 16px;
+      font-weight: 500;
       margin-top: 0;
+      box-sizing: border-box;
       &.active {
-        background-color: #42b983;
-        color: #fff;
+        background: #fff;
         border-color: #42b983;
-        &::before {
-          content: '';
-          background: #fff;
-          display: inline-block;
-          width: 8px;
-          height: 8px;
-          border-radius: 50%;
-          position: relative;
-          margin-right: 2px;
+      }
+      > .svg-icon {
+        font-size: 16px;
+        color: #6A6F82;
+      }
+      div {
+        display: inline-block;
+        width: 155px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        .svg-icon {
+          font-size: 21px;
+          vertical-align: middle;
+          margin-right: 11px;
         }
       }
     }
@@ -252,6 +268,14 @@ export default {
       }
     }
   }
+  .app-title {
+    width: 100%;
+    height:48px;
+    line-height: 48px;
+    font-weight:500;
+    text-align: center;
+    background:rgba(255,255,255,1);
+  }
 }
 </style>
 
@@ -260,18 +284,12 @@ export default {
 .tags-view-wrapper {
   .tags-view-item {
     .el-icon-close {
-      width: 16px;
-      height: 16px;
-      vertical-align: 2px;
+      font-size: 16px;
+      vertical-align: 15px;
       border-radius: 50%;
       text-align: center;
       transition: all .3s cubic-bezier(.645, .045, .355, 1);
       transform-origin: 100% 50%;
-      &:before {
-        transform: scale(.6);
-        display: inline-block;
-        vertical-align: -3px;
-      }
       &:hover {
         background-color: #b4bccc;
         color: #fff;

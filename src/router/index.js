@@ -33,64 +33,78 @@ import Layout from '@/layout'
 
 
 export const constantRoutes = [{
-    path: '/login',
-    component: resolve => require(['@/views/login/login'], resolve),
-    hidden: true,
-    meta: {
-      title: '登录'
-    }
-  },
-
-  {
-    path: '/register',
-    component: resolve => require(['@/views/register/register'], resolve),
-    hidden: true,
-    meta: {
-      title: '注册'
-
-    },
-    children: [{
-      path: '/verify-code',
-      name: 'verify-code',
-      component: resolve => require(['@/views/verify-code/verify-code'], resolve),
-      hidden: true,
-      meta: {
-        title: '验证码'
-      },
-    }, ]
-
-  },
-  
-  {
-    path: '/',
-    component: Layout,
-    redirect: '/index',
-    children: [{
-      path: 'index',
-      name: 'Index',
-      component: resolve => require(['@/views/index/index'], resolve),
-      meta: {
-        title: '工作台',
-        icon: 'use'
-      }
-    }]
-  },
-
-  {
-    path: '/404',
-    component: resolve => require(['@/views/404/404'], resolve),
-    hidden: true,
-    meta: {
-      title: '404 Not Found'
-    }
-  },
-
-  // 404 page must be placed at the end !!!
-  {
-    path: '*',
-    redirect: '/404',
-    hidden: true
+  path: '/login',
+  component: resolve => require(['@/views/login/login'], resolve),
+  hidden: true,
+  meta: {
+    title: '登录'
   }
+},
+
+{
+  path: '/register',
+  component: resolve => require(['@/views/register/register'], resolve),
+  hidden: true,
+  meta: {
+    title: '注册'
+
+  },
+  children: [{
+    path: '/verify-code',
+    name: 'verify-code',
+    component: resolve => require(['@/views/verify-code/verify-code'], resolve),
+    hidden: true,
+    meta: {
+      title: '验证码'
+    }
+  }]
+
+},
+{
+  path: '/apps',
+  component: Layout,
+  redirect: '/apps/payroll',
+  hidden: true,
+  children: [{
+    path: 'payroll',
+    name: 'Payroll',
+    component: resolve => require(['@/views/apps/payroll/index'], resolve),
+    meta: {
+      title: '公司工资薪资表',
+      icon: 'payroll'
+    }
+  }]
+},
+{
+  path: '/',
+  component: Layout,
+  redirect: '/index',
+  children: [{
+    path: 'index',
+    name: 'Index',
+    component: resolve => require(['@/views/index/index'], resolve),
+    meta: {
+      title: '工作台',
+      icon: 'use'
+    }
+  }]
+},
+
+{
+  path: '/404',
+  component: resolve => require(['@/views/404/404'], resolve),
+  hidden: true,
+  meta: {
+    title: '404 Not Found'
+  }
+},
+
+// 404 page must be placed at the end !!!
+{
+  path: '*',
+  redirect: '/404',
+  hidden: true
+}
 ]
 
 const createRouter = () => new Router({

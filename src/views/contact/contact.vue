@@ -20,7 +20,7 @@
       <RightOrganize v-show="index===0" />
       <RightDepartment v-show="index===1" />
       <RightNewMember v-show="index===2" />
-      <RightMemberDetail v-show="memberIndex===0" />
+      <RightMemberDetail v-show="index===3" />
     </el-container>
   </div>
 </template>
@@ -41,8 +41,7 @@ export default {
       member: true,
       organize: false,
       // 测试用
-      memberIndex: 0,
-      index: '',
+      index: 3,
     };
   },
   mounted() {},
@@ -50,9 +49,7 @@ export default {
     // 获取成员详细信息
     getMemberDetail(data) {
       console.log(data)
-      // 右侧不显示其他组件
-      this.index = ''
-      this.memberIndex = data.member
+      this.index = data.member
     },
     getNewMember(data) {
       console.log(data);

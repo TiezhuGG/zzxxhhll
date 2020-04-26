@@ -90,7 +90,7 @@ export default {
     choiceMember(member) {
       // 测试用
       if (member.name === "白") {
-        this.memberIndex = 0;
+        this.memberIndex = 3;
         this.$emit("memberDetail", { member: this.memberIndex });
       }
     },

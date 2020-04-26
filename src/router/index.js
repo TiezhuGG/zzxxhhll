@@ -47,10 +47,9 @@ export const constantRoutes = [{
     hidden: true,
     meta: {
       title: '注册'
-
     }
   },
-  
+
   {
     path: '/verify-code',
     name: 'verify-code',
@@ -80,13 +79,12 @@ export const constantRoutes = [{
       title: '注册企业'
     },
   },
-  
+
   {
     path: '/',
     component: Layout,
     redirect: '/index',
-    children: [
-    {
+    children: [{
       path: 'index',
       name: 'Index',
       component: resolve => require(['@/views/index/index'], resolve),
@@ -94,8 +92,14 @@ export const constantRoutes = [{
         title: '工作台',
         icon: 'use'
       }
-    },
-    {
+    }]
+  },
+
+  {
+    path: '/index',
+    component: Layout,
+    redirect: '/contact',
+    children: [{
       path: '/contact',
       name: 'contact',
       component: resolve => require(['@/views/contact/contact'], resolve),
@@ -103,8 +107,7 @@ export const constantRoutes = [{
         title: '联系人',
         icon: 'workbench'
       }
-    },
-  ]
+    }]
   },
 
   {

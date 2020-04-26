@@ -34,6 +34,7 @@ html {
 *:before,
 *:after {
   box-sizing: inherit;
+  border-color: #EBEEF5;
 }
 
 a:focus,
@@ -67,4 +68,9 @@ div:focus {
 // main-container global css
 .app-container {
   padding: 20px;
+}
+
+.scroll-y {
+  height: 100%;
+  overflow-y: scroll;
 }

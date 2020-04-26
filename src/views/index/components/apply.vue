@@ -7,15 +7,7 @@
       <div class="classify">样板部</div>
     </div>
     <div class="apply-list">
-      <apply-item icon="client" title="产品系统"></apply-item>
-      <apply-item icon="client" title="产品系统"></apply-item>
-      <apply-item icon="client" title="产品系统"></apply-item>
-      <apply-item icon="client" title="产品系统"></apply-item>
-      <apply-item icon="client" title="产品系统"></apply-item>
-      <apply-item icon="client" title="产品系统"></apply-item>
-      <apply-item icon="client" title="产品系统"></apply-item>
-      <apply-item icon="client" title="产品系统"></apply-item>
-      <apply-item icon="client" title="产品系统"></apply-item>
+      <apply-item v-for="item of applyList" :icon="item.icon" :name="item.name"></apply-item>
     </div>
   </div>
 </template>
@@ -24,6 +16,9 @@
 import ApplyItem from './apply-item'
 export default {
   name: 'Apply',
+  props: {
+    applyList: Array
+  },
   components: {
     ApplyItem
   }

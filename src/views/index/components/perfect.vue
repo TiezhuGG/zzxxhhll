@@ -6,7 +6,7 @@
     </div>
     <el-form :model="form" :rules="rules">
       <el-form-item prop="name" label="企业规模">
-        <el-radio-group v-model="form.region">
+        <el-radio-group v-model="form.name">
           <el-radio-button label="1-25人"></el-radio-button>
           <el-radio-button label="26-100人"></el-radio-button>
           <el-radio-button label="101-300人"></el-radio-button>
@@ -44,7 +44,7 @@
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
-      <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+      <el-button type="primary" @click="dialogFormVisible = false">下一步</el-button>
     </div>
   </el-dialog>
 </template>
@@ -54,16 +54,9 @@ export default {
   name: 'Perfect',
   data() {
     return {
-      dialogFormVisible: true,
+      dialogFormVisible: false,
       form: {
-        name: '',
-        region: '',
-        date1: '',
-        date2: '',
-        delivery: false,
-        type: [],
-        resource: '',
-        desc: ''
+        name: ''
       },
       options: [{
         value: '选项1',
@@ -93,6 +86,12 @@ export default {
 <style lang="scss" scoped>
   >>>.el-dialog{
     width: 880px!important;
+    padding: 20px 0;
+    border-radius:5px;
+    .el-dialog__body {
+      padding: 0 53px;
+      padding-top: 61px;
+    }
     * {
       font-size: 19px;
     }
@@ -108,14 +107,15 @@ export default {
   >>>.el-form {
     padding-top: 50px;
     .el-form-item__label {
-      width: 110px;
+      width: 125px;
+      padding-right: 16px;
     }
     .el-radio-group{
       font-size: 0;
     }
     .el-radio-button__inner {
-      padding-left: 21px;
-      padding-right: 21px;
+      padding-left: 20px;
+      padding-right: 20px;
     }
     .el-form-item__content{
       font-size: 0;

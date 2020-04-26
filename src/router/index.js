@@ -104,7 +104,7 @@ export const constantRoutes = [{
     component: resolve => require(['@/views/contact/contact'], resolve),
     meta: {
       title: '联系人',
-      icon: 'workbench'
+      icon: 'record'
     }
   }]
 },

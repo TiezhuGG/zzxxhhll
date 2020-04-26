@@ -61,3 +61,17 @@
   }
 }
 
+.el-pagination {
+  text-align: right;
+}
+
+.el-table {
+  &:before {
+    height: 0;
+  }
+  .el-table__row:last-child {
+    td {
+      border: 0;
+    }
+  }
+}

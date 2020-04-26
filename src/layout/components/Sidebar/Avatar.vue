@@ -15,6 +15,7 @@ export default {
 .sidebar-avatar-container {
   padding: 24px 13px;
   position: relative;
+  cursor: pointer;
   .user-setting {
     background:rgba(255,255,255,1);
     box-shadow:0px 3px 13px 0px rgba(0,0,0,0.15);

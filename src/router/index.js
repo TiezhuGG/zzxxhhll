@@ -31,7 +31,6 @@ import Layout from '@/layout'
  * all roles can be accessed
  */
 
-
 export const constantRoutes = [{
     path: '/login',
     component: resolve => require(['@/views/login/login'], resolve),
@@ -47,6 +46,7 @@ export const constantRoutes = [{
     hidden: true,
     meta: {
       title: '注册'
+
     }
   },
 
@@ -57,7 +57,7 @@ export const constantRoutes = [{
     hidden: true,
     meta: {
       title: '验证码'
-    },
+    }
   },
 
   {
@@ -67,7 +67,7 @@ export const constantRoutes = [{
     hidden: true,
     meta: {
       title: '设置密码'
-    },
+    }
   },
 
   {
@@ -77,7 +77,7 @@ export const constantRoutes = [{
     hidden: true,
     meta: {
       title: '注册企业'
-    },
+    }
   },
 
   {
@@ -96,16 +96,30 @@ export const constantRoutes = [{
   },
 
   {
-    path: '/index',
+    path: '/contact',
     component: Layout,
-    redirect: '/contact',
     children: [{
-      path: '/contact',
-      name: 'contact',
+      path: 'contact',
+      name: 'Contact',
       component: resolve => require(['@/views/contact/contact'], resolve),
       meta: {
         title: '联系人',
-        icon: 'workbench'
+        icon: 'record'
+      }
+    }]
+  },
+  {
+    path: '/apps',
+    component: Layout,
+    redirect: '/apps/payroll',
+    hidden: true,
+    children: [{
+      path: 'payroll',
+      name: 'Payroll',
+      component: resolve => require(['@/views/apps/payroll/index'], resolve),
+      meta: {
+        title: '公司工资薪资表',
+        icon: 'payroll'
       }
     }]
   },

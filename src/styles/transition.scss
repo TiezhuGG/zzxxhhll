@@ -46,3 +46,16 @@
 .breadcrumb-leave-active {
   position: absolute;
 }
+
+.combobox-enter-active,
+.combobox-leave-active,
+,combobox-move{
+  transition: all .4s;
+}
+
+.combobox-enter,
+.combobox-leave-active {
+  opacity: 0;
+  transform: translateY(-20px);
+}
+

@@ -18,10 +18,16 @@
 
 // to fixed https://github.com/ElemeFE/element/issues/2461
 .el-dialog {
+  border-radius:5px;
   transform: none;
   left: 0;
   position: relative;
   margin: 0 auto;
+  .el-dialog__header {
+    padding: 33px 0;
+    font-weight: bold;
+    font-size: 24px;
+  }
 }
 
 // refine element ui upload
@@ -47,3 +53,11 @@
 .el-range-separator {
   box-sizing: content-box;
 }
+
+.el-radio-group{
+  .el-radio-button__inner {
+    color: #C0C4CC;
+    background:rgba(245,247,250,1);
+  }
+}
+

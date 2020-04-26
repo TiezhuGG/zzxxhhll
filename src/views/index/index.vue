@@ -6,8 +6,9 @@
       <!--常用应用-->
       <common-apply/>
       <!--全部应用-->
-      <apply/>
+      <apply :apply-list="applyList"/>
       <perfect/>
+      <combo-box :apply-list="applyList" :pop-show="false"/>
     </div>
   </div>
 </template>
@@ -20,6 +21,32 @@ import CommonApply from './components/common-apply'
 import Perfect from './components/perfect'
 export default {
   name: 'Index',
+  data() {
+    return {
+      applyList: [{
+        icon: 'client',
+        name: '产品系统'
+      },{
+        icon: 'client',
+        name: '产品系统'
+      },{
+        icon: 'client',
+        name: '产品系统'
+      },{
+        icon: 'client',
+        name: '产品系统'
+      },{
+        icon: 'client',
+        name: '产品系统'
+      },{
+        icon: 'client',
+        name: '产品系统'
+      },{
+        icon: 'client',
+        name: '产品系统'
+      }]
+    }
+  },
   components: {
     Search,
     Apply,
@@ -43,7 +70,5 @@ export default {
 .apply-list {
   display: flex;
   flex-wrap: wrap;
-  padding-top: 10px;
-  margin-left: -21px;
 }
 </style>

@@ -5,7 +5,7 @@
       完善您的企业信息，马上邀请同事加入协作吧。
     </div>
     <el-form :model="form" :rules="rules">
-      <el-form-item prop="name" label="企业规模" :label-width="formLabelWidth">
+      <el-form-item prop="name" label="企业规模">
         <el-radio-group v-model="form.region">
           <el-radio-button label="1-25人"></el-radio-button>
           <el-radio-button label="26-100人"></el-radio-button>
@@ -14,8 +14,8 @@
           <el-radio-button label="1000人以上"></el-radio-button>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="所在行业" :label-width="formLabelWidth">
-        <el-select v-model="value" placeholder="请选择" style="width: 100%;">
+      <el-form-item label="所在行业">
+        <el-select v-model="value" placeholder="请选择" style="width: 667px;">
           <el-option
             v-for="item in options"
             :key="item.value"
@@ -24,8 +24,8 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="所在地区" :label-width="formLabelWidth">
-        <el-select v-model="value" placeholder="请选择">
+      <el-form-item label="所在地区">
+        <el-select v-model="value" placeholder="请选择" style="width: 320px;">
           <el-option
             v-for="item in options"
             :key="item.value"
@@ -33,7 +33,7 @@
             :value="item.value">
           </el-option>
         </el-select>
-        <el-select v-model="value" placeholder="请选择">
+        <el-select v-model="value" placeholder="请选择" style="width: 320px;margin-left: 27px">
           <el-option
             v-for="item in options"
             :key="item.value"
@@ -65,7 +65,6 @@ export default {
         resource: '',
         desc: ''
       },
-      formLabelWidth: '113px',
       options: [{
         value: '选项1',
         label: '黄金糕'
@@ -94,6 +93,9 @@ export default {
 <style lang="scss" scoped>
   >>>.el-dialog{
     width: 880px!important;
+    * {
+      font-size: 19px;
+    }
   }
   .desc {
     color: #606266;
@@ -103,7 +105,20 @@ export default {
       color: #409EFF;
     }
   }
-  .el-form {
+  >>>.el-form {
     padding-top: 50px;
+    .el-form-item__label {
+      width: 110px;
+    }
+    .el-radio-group{
+      font-size: 0;
+    }
+    .el-radio-button__inner {
+      padding-left: 21px;
+      padding-right: 21px;
+    }
+    .el-form-item__content{
+      font-size: 0;
+    }
   }
 </style>

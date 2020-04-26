@@ -43,7 +43,5 @@ export default {
 .apply-list {
   display: flex;
   flex-wrap: wrap;
-  padding-top: 10px;
-  margin-left: -21px;
 }
 </style>

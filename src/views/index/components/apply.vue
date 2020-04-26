@@ -38,6 +38,7 @@ export default {
     padding-bottom: 45px;
   }
   .classifys {
+    padding-bottom: 30px;
     font-size: 0;
     .classify {
       position: relative;

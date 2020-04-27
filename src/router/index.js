@@ -117,10 +117,12 @@ export const constantRoutes = [{
     path: 'payroll',
     name: 'Payroll',
     component: resolve => require(['@/views/apps/payroll/index'], resolve),
-    meta: {
-      title: '公司工资薪资表',
-      icon: 'payroll'
-    }
+    meta: { title: '公司工资薪资表', icon: 'payroll', activeMenu: '/index' }
+  }, {
+    path: 'detail',
+    name: 'Detail',
+    component: resolve => require(['@/views/apps/payroll/detail'], resolve),
+    meta: { title: '个人信息', icon: 'payroll', activeMenu: '/index' }
   }]
 },
 

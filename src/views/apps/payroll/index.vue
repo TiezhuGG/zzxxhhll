@@ -43,7 +43,7 @@
               <el-table-column prop="date" label="设置时间"/>
               <el-table-column prop="date" label="操作" align="center" width="100">
                 <template slot-scope="scope">
-                  <el-tooltip class="button" effect="dark" content="查看" placement="top">
+                  <el-tooltip class="button" effect="dark" content="查看" placement="top" @click.native="topage">
                     <i class="el-icon-search"/>
                   </el-tooltip>
                 </template>
@@ -151,6 +151,13 @@ export default {
       }],
       currentPage4: 4
     }
+  },
+  methods: {
+    topage(id) {
+      this.$router.push({ path: 'detail', query: {
+        id: 23
+      }})
+    }
   }
 }
 </script>
@@ -206,15 +213,6 @@ export default {
         padding: 33px;
         padding-bottom: 0;
         border:1px solid rgba(235,238,245,1);
-        .button {
-          width:29px;
-          height:29px;
-          line-height: 29px;
-          margin: 0 auto;
-          font-size: 16px;
-          border-radius:3px;
-          border:1px solid rgba(220,223,230,1);
-        }
       }
       .el-pagination {
         margin-top: 15px;

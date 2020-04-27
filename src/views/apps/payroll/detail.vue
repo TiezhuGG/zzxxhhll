@@ -1,9 +1,19 @@
 <template>
   <div class="payroll-container">
     <el-tabs type="border-card" v-model="activeName" @tab-click="handleClick" label-width="144px">
-      <el-tab-pane label="个人信息" name="info"></el-tab-pane>
+      <el-tab-pane label="个人信息" name="info">
+        <img src="/img/userinfo.png" alt="">
+<!--        <el-steps direction="vertical" :active="1" simple="true">-->
+<!--          <el-step title="步骤 1">-->
+<!--            22312312-->
+<!--          </el-step>-->
+<!--          <el-step title="步骤 2">34234</el-step>-->
+<!--          <el-step title="步骤 3">456456464566</el-step>-->
+<!--        </el-steps>-->
+      </el-tab-pane>
+
       <el-tab-pane label="薪资情况" name="condition">
-        <el-form class="condition" prop="" disabled>
+        <el-form class="condition" prop="" label-width="auto" disabled>
           <el-form-item label="员工编号">
             <el-input/>
           </el-form-item>
@@ -16,8 +26,48 @@
           <el-form-item label="职务">
             <el-input/>
           </el-form-item>
+          <el-form-item label="试用期工资">
+            <el-input/>
+          </el-form-item>
+          <el-form-item label="转正工资">
+            <el-input/>
+          </el-form-item>
+          <el-form-item label="底薪">
+            <el-input/>
+          </el-form-item>
+          <el-form-item label="加班津贴">
+            <el-input/>
+          </el-form-item>
+          <el-form-item label="工龄补贴">
+            <el-input/>
+          </el-form-item>
+          <el-form-item label="技能补贴">
+            <el-input/>
+          </el-form-item>
+          <el-form-item label="岗位补贴">
+            <el-input/>
+          </el-form-item>
+          <el-form-item label="职位津贴">
+            <el-input/>
+          </el-form-item>
+          <el-form-item label="电话补贴">
+            <el-input/>
+          </el-form-item>
+          <el-form-item label="绩效奖金">
+            <el-input/>
+          </el-form-item>
+          <el-form-item label="其他奖金">
+            <el-input/>
+          </el-form-item>
+          <el-form-item label="年终奖比率">
+            <el-input/>
+          </el-form-item>
+          <el-form-item label="上一次涨薪">
+            <el-input/>
+          </el-form-item>
         </el-form>
       </el-tab-pane>
+
       <el-tab-pane label="历史薪资" name="history">
         <div class="table-container">
           <el-table
@@ -63,14 +113,18 @@
             </el-table-column>
             <el-table-column prop="date" label="操作" width="100" fixed="right" align="center">
               <template slot-scope="scope">
-                <el-tooltip class="button" effect="dark" content="打印" placement="top">
-                  <i class="el-icon-search"/>
+                <el-tooltip effect="dark" content="打印" placement="top">
+                  <div class="button">
+                    <svg-icon icon-class="print"/>
+                  </div>
+<!--                  <i class="el-icon-search"/>-->
                 </el-tooltip>
               </template>
             </el-table-column>
           </el-table>
         </div>
       </el-tab-pane>
+
       <el-tab-pane label="涨薪情况" name="highs">
         <div class="table-container">
           <el-table
@@ -117,7 +171,7 @@ export default {
   name: 'Detail',
   data() {
     return {
-      activeName: 'history',
+      activeName: 'info',
       tableData: [{
         id: 3,
         date: '2016-05-02',
@@ -149,7 +203,12 @@ export default {
 .payroll-container {
   padding: 27px;
   >>>.el-tabs__content {
-    padding: 40px 45px;
+      padding: 40px 45px;
+    .el-tab-pane:first-child {
+      img {
+        width: 100%;
+      }
+    }
   }
   .condition {
     font-size: 0;

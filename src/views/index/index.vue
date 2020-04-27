@@ -4,11 +4,11 @@
     <search/>
     <div class="index-wrap">
       <!--常用应用-->
-      <common-apply/>
+      <common-apply @add="comboBoxShow = true"/>
       <!--全部应用-->
       <apply :apply-list="applyList"/>
       <perfect/>
-      <combo-box :apply-list="applyList" :pop-show="false"/>
+      <combo-box @close="comboBoxShow = false" :apply-list="applyList" :pop-show="comboBoxShow"/>
     </div>
   </div>
 </template>
@@ -23,6 +23,7 @@ export default {
   name: 'Index',
   data() {
     return {
+      comboBoxShow: false,
       applyList: [{
         url: '/apps/payroll',
         icon: 'payroll',

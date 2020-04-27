@@ -1,8 +1,12 @@
 <template>
-  <router-link :to="url" class="apply-item">
+  <router-link :to="url" class="apply-item" v-if="url !== ''">
     <svg-icon :icon-class="icon"/>
     <div>{{ name }}</div>
   </router-link>
+  <div v-else class="apply-item">
+    <svg-icon :icon-class="icon"/>
+    <div>{{ name }}</div>
+  </div>
 </template>
 
 <script>
@@ -15,8 +19,8 @@ export default {
     },
     name: String,
     url: {
-      typr: String,
-      default: '/apps'
+      type: String,
+      default: ''
     }
   },
   methods: {

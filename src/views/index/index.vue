@@ -14,33 +14,29 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import Search from "./components/search";
-import Apply from "./components/apply";
-import CommonApply from "./components/common-apply";
-import Perfect from "./components/perfect";
+import { mapGetters } from 'vuex'
+import Search from './components/search'
+import Apply from './components/apply'
+import CommonApply from './components/common-apply'
+import Perfect from './components/perfect'
 export default {
-  name: "Index",
+  name: 'Index',
   data() {
     return {
+      comboBoxShow: false,
       applyList: [
         {
-          url: "/apps/payroll",
-          icon: "payroll",
-          name: "公司工资薪资表"
+          url: '/apps/payroll',
+          icon: 'payroll',
+          name: '公司工资薪资表'
         },
         {
-          url: "/apps/payroll",
-          icon: "client",
-          name: "产品系统"
-        },
-        {
-          url: "/order/order-management",
-          icon: "collect",
-          name: "订单汇总"
+          url: '/order/order-management',
+          icon: 'collect',
+          name: '订单汇总'
         }
       ]
-    };
+    }
   },
   components: {
     Search,
@@ -51,13 +47,13 @@ export default {
   computed: {
     ...mapGetters(["name"])
   }
-};
+}
 </script>
 
 <style lang="scss">
 .index {
   &-wrap {
-    padding: 51px;
+    padding: 51px
   }
 }
 .apply-list {

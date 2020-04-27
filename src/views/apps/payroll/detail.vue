@@ -1,15 +1,8 @@
 <template>
   <div class="payroll-container">
-    <el-tabs type="border-card" v-model="activeName" @tab-click="handleClick" label-width="144px">
+    <el-tabs type="border-card" v-model="activeName" label-width="144px">
       <el-tab-pane label="个人信息" name="info">
-        <img src="/img/userinfo.png" alt="">
-<!--        <el-steps direction="vertical" :active="1" simple="true">-->
-<!--          <el-step title="步骤 1">-->
-<!--            22312312-->
-<!--          </el-step>-->
-<!--          <el-step title="步骤 2">34234</el-step>-->
-<!--          <el-step title="步骤 3">456456464566</el-step>-->
-<!--        </el-steps>-->
+        <archives/>
       </el-tab-pane>
 
       <el-tab-pane label="薪资情况" name="condition">
@@ -74,8 +67,6 @@
             :data="tableData"
             row-key="id"
             default-expand-all
-            lazy
-            load=""
             :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
             <el-table-column
               prop="date"
@@ -167,6 +158,7 @@
 </template>
 
 <script>
+import Archives from '@/components/Archives'
 export default {
   name: 'Detail',
   data() {
@@ -195,6 +187,11 @@ export default {
         address: '上海市普陀区金沙江路 1518 弄'
       }]
     }
+  },
+  components: {
+    Archives
+  },
+  methods: {
   }
 }
 </script>

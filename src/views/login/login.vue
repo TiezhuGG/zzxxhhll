@@ -1,6 +1,6 @@
 <template>
   <div class="login-container">
-    
+
     <img class="login-img" src="../../assets/imgs/login.png" />
     <el-form
       ref="loginForm"
@@ -162,7 +162,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 /* Detail see https://github.com/PanJiaChen/vue-element-admin/pull/927 */
 .el-select .el-input {
   width: 100px;
@@ -270,7 +270,7 @@ $i-fs: 19px;
   }
 }
 @media screen and (max-width: 1000px) {
-  
+
 }
 @media screen and (max-height: 720px) {
   .login-img {

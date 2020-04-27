@@ -1,6 +1,6 @@
 <template>
   <div class="sidebar-avatar-container">
-    <el-avatar :size="53" src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
+    <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
     <div class="user-setting"></div>
   </div>
 </template>
@@ -16,6 +16,10 @@ export default {
   padding: 24px 13px;
   position: relative;
   cursor: pointer;
+  .el-avatar {
+    width: 53px;
+    height: 53px;
+  }
   .user-setting {
     background:rgba(255,255,255,1);
     box-shadow:0px 3px 13px 0px rgba(0,0,0,0.15);

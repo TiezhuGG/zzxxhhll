@@ -7,7 +7,7 @@
       <div class="classify">样板部</div>
     </div>
     <div class="apply-list">
-      <apply-item v-for="item of applyList" :url="item.url" :icon="item.icon" :name="item.name"></apply-item>
+      <apply-item v-for="(item, index) of applyList" :key="index" :url="item.url" :icon="item.icon" :name="item.name"/>
     </div>
   </div>
 </template>

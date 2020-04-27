@@ -1,5 +1,6 @@
   <template>
   <div class="order-management">
+  
     <div class="table-wrap">
       <div class="table-header">
         <span>合同备案流水号NO：2020039</span>
@@ -183,15 +184,21 @@ export default {
 .order-management {
   display: flex;
   justify-content: center;
+
   .table-wrap {
     width: 95%;
     background-color: #fff;
     padding: 0 27px;
     border-radius: 11px;
+
     .table-header {
       height: 99px;
       display: flex;
       align-items: center;
+
+      span:nth-child(1)  {
+        margin-right: 67px;
+      }
     }
   }
 }

@@ -1,6 +1,12 @@
   <template>
-  <div class="order-management">
-  
+  <div class="order-detail">
+    <div class="title-header">
+      <div class="svg-wrap">
+        <svg-icon icon-class="back" @click="goBack" />
+        <svg-icon icon-class="gohead" />
+      </div>
+      <span>客户订单汇总管理</span>
+    </div>
     <div class="table-wrap">
       <div class="table-header">
         <span>合同备案流水号NO：2020039</span>
@@ -10,7 +16,7 @@
       <el-table
         :data="tableData"
         border
-        height="600"
+        height="500"
         :summary-method="getSummaries"
         show-summary
         style="width: 100%; margin-top: 20px"
@@ -52,7 +58,7 @@ export default {
           contract_no: "63137(2020069)",
           customer_fund_no: "BP71G8NMC99AS1BNC",
           product_no: "BH-18180背包",
-          image: "",
+          image: "未上传",
           QC_test: "1",
           number: 2950,
           technology: "丝印",
@@ -65,7 +71,7 @@ export default {
           contract_no: "63137(2020069)",
           customer_fund_no: "BP71G8NMC99AS1BNC",
           product_no: "BH-18180背包",
-          image: "",
+          image: "未上传",
           QC_test: "1",
           number: 2950,
           technology: "丝印",
@@ -78,7 +84,7 @@ export default {
           contract_no: "63137(2020069)",
           customer_fund_no: "BP71G8NMC99AS1BNC",
           product_no: "BH-18180背包",
-          image: "",
+          image: "未上传",
           QC_test: "1",
           number: 2950,
           technology: "丝印",
@@ -91,7 +97,7 @@ export default {
           contract_no: "63137(2020069)",
           customer_fund_no: "BP71G8NMC99AS1BNC",
           product_no: "BH-18180背包",
-          image: "",
+          image: "未上传",
           QC_test: "1",
           number: 2950,
           technology: "丝印",
@@ -104,7 +110,7 @@ export default {
           contract_no: "63137(2020069)",
           customer_fund_no: "BP71G8NMC99AS1BNC",
           product_no: "BH-18180背包",
-          image: "",
+          image: "未上传",
           QC_test: "1",
           number: 2950,
           technology: "丝印",
@@ -117,7 +123,7 @@ export default {
           contract_no: "63137(2020069)",
           customer_fund_no: "BP71G8NMC99AS1BNC",
           product_no: "BH-18180背包",
-          image: "",
+          image: "未上传",
           QC_test: "1",
           number: 2950,
           technology: "丝印",
@@ -130,7 +136,7 @@ export default {
           contract_no: "63137(2020069)",
           customer_fund_no: "BP71G8NMC99AS1BNC",
           product_no: "BH-18180背包",
-          image: "",
+          image: "未上传",
           QC_test: "1",
           number: 2950,
           technology: "丝印",
@@ -139,17 +145,20 @@ export default {
           final_processing_charges: ""
         }
       ],
-      content: null,
+      content: "未上传",
       editorOption: {}
     };
   },
   methods: {
+    goBack() {
+      this.$router.go(-1)
+    },
     getSummaries(param) {
       const { columns, data } = param;
       const sums = [];
       columns.forEach((column, index) => {
         if (index === 0) {
-          sums[index] = "总价";
+          sums[index] = "合计";
           return;
         }
         const values = data.map(item => Number(item[column.property]));
@@ -162,9 +171,9 @@ export default {
               return prev;
             }
           }, 0);
-          sums[index] += " 元";
+          sums[index] += "";
         } else {
-          sums[index] = "N/A";
+          sums[index] = "";
         }
       });
 
@@ -178,12 +187,35 @@ export default {
 </script>
 
 <style lang="scss">
-.el-table__row:last-child {
-  //   color: red;
-}
-.order-management {
+.order-detail {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
+
+  .title-header {
+    width: 100%;
+    height: 48px;
+    line-height: 48px;
+    display: flex;
+    background-color: #fff;
+    margin-bottom: 27px;
+
+    .svg-wrap {
+      flex: 1;
+      font-size: 19px;
+
+      svg {
+        margin-left: 27px;
+      }
+    }
+
+    span {
+      display: inline-block;
+      margin-right: 112px;
+      text-align: center;
+      flex: 9;
+    }
+  }
 
   .table-wrap {
     width: 95%;
@@ -196,7 +228,11 @@ export default {
       display: flex;
       align-items: center;
 
-      span:nth-child(1)  {
+      span:nth-child(1) {
+        margin-right: 67px;
+      }
+
+      span:nth-child(2) {
         margin-right: 67px;
       }
     }

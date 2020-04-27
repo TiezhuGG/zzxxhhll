@@ -134,32 +134,27 @@ export const constantRoutes = [{
         }
       },
       {
-        path: '/order/order-management',
-        name: 'Order-management',
-        component: resolve => require(['@/views/order/order-management'], resolve),
+        path: '/order',
+        name: 'Order',
+        component: resolve => require(['@/views/order/order'], resolve),
         meta: {
           title: '客户订单汇总管理',
           icon: "collect",
           activeMenu: '/index'
-        }
-      }
+        },
+      },
+      {
+        path: '/order/order-detail',
+        name: 'Order-detail',
+        component: resolve => require(['@/views/order/order-detail'], resolve),
+        meta: {
+          title: '客户订单汇总管理',
+          icon: "collect",
+          activeMenu: '/index'
+        },
+      },
     ]
   },
-
-  // {
-  //   path: '/order',
-  //   component: Layout,
-  //   redirect: '/order/order-management',
-  //   hidden: true,
-  //   children: [{
-  //     path: 'order-management',
-  //     name: 'Order-management',
-  //     component: resolve => require(['@/views/order/order-management'], resolve),
-  //     meta: {
-  //       title: '客户订单汇总管理'
-  //     }
-  //   }]
-  // },
 
   {
     path: '/404',

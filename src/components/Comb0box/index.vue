@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-dialog :title="title" center :visible.sync="show" top="100px">
+    <el-dialog :title="title" center :visible.sync="show" top="100px" @close="$emit('close')">
       <div class="custom-locale">
         <div class="left">
             <zx-search @change="search"/>
@@ -78,6 +78,11 @@ export default {
     popShow: {
       type: Boolean,
       default: false
+    }
+  },
+  watch: {
+    popShow(val) {
+      this.show = val
     }
   },
   methods: {

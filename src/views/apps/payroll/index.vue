@@ -22,7 +22,7 @@
       </el-form>
       <div class="buttons">
         <el-button type="primary" icon="el-icon-search">查询</el-button>
-        <el-button><svg-icon icon-class="msg"/>导出Excel</el-button>
+        <el-button><svg-icon icon-class="excel"/>导出Excel</el-button>
       </div>
     </div>
     <div class="payroll-content">
@@ -193,6 +193,12 @@ export default {
       }
       .buttons {
         text-align: right;
+        .svg-icon {
+          margin-right: 10px;
+        }
+        button:nth-child(n+2) {
+          color: #409EFF;
+        }
       }
     }
     .payroll-content {

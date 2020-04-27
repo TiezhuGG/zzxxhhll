@@ -1,8 +1,8 @@
 <template>
-  <div class="apply-item">
+  <router-link :to="url" class="apply-item">
     <svg-icon :icon-class="icon"/>
     <div>{{ name }}</div>
-  </div>
+  </router-link>
 </template>
 
 <script>
@@ -13,7 +13,14 @@ export default {
       type: String,
       default: 'cliect'
     },
-    name: String
+    name: String,
+    url: {
+      typr: String,
+      default: '/apps'
+    }
+  },
+  methods: {
+
   }
 }
 </script>

@@ -125,6 +125,21 @@ export const constantRoutes = [{
   },
 
   {
+    path: '/order',
+    component: Layout,
+    redirect: '/order/order-management',
+    hidden: true,
+    children: [{
+      path: 'order-management',
+      name: 'Order-management',
+      component: resolve => require(['@/views/order/order-management'], resolve),
+      meta: {
+        title: '客户订单汇总管理',
+      }
+    }]
+  },
+
+  {
     path: '/404',
     component: resolve => require(['@/views/404/404'], resolve),
     hidden: true,

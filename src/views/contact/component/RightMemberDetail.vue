@@ -887,8 +887,8 @@
             </div>
 
             <el-table :data="tableData" style="width: 100%">
-              <el-table-column fixed prop="date" label="日期" width="150"></el-table-column>
-              <el-table-column prop="personal_income_tax" label="应扣个人所得税(￥)" width="140"></el-table-column>
+              <el-table-column fixed prop="date" label="日期" width="120"></el-table-column>
+              <el-table-column prop="personal_income_tax" label="应扣个人所得税(￥)" width="180"></el-table-column>
               <el-table-column prop="salary" label="实发工资(￥)" width="120"></el-table-column>
               <el-table-column prop="first_salary" label="首发工资(￥)" width="120"></el-table-column>
               <el-table-column prop="performance_salary" label="绩效工资(￥)" width="120"></el-table-column>

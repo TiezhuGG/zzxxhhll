@@ -1,7 +1,7 @@
 <template>
   <div class="contact">
     <el-container>
-      <el-aside width="390px">
+      <el-aside>
         <!-- 分别监听两个组件的事件, 切换为不同组件-->
         <LeftSideMember
           @currentIndex="getNewMember"
@@ -41,15 +41,15 @@ export default {
       member: true,
       organize: false,
       // 测试用
-      index: 3,
+      index: 3
     };
   },
   mounted() {},
   methods: {
     // 获取成员详细信息
     getMemberDetail(data) {
-      console.log(data)
-      this.index = data.member
+      console.log(data);
+      this.index = data.member;
     },
     getNewMember(data) {
       console.log(data);
@@ -95,6 +95,7 @@ export default {
   }
 
   .el-aside {
+    width: 390px;
     border-right: 1px solid rgb(241, 241, 241);
     color: #333;
   }

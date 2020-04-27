@@ -26,12 +26,22 @@
         <el-table-column prop="suggestion_processing_charges" label="建议加工费"></el-table-column>
         <el-table-column prop="final_processing_charges" label="终审加工费"></el-table-column>
       </el-table>
+      <quill-editor
+        v-model="content"
+        ref="myQuillEditor"
+        style="height: 500px;"
+        :options="editorOption"
+      ></quill-editor>
     </div>
   </div>
 </template>
-</template>
 
-  <script>
+<script>
+import { quillEditor } from "vue-quill-editor";
+import "quill/dist/quill.core.css";
+import "quill/dist/quill.snow.css";
+import "quill/dist/quill.bubble.css";
+
 export default {
   data() {
     return {
@@ -127,7 +137,9 @@ export default {
           suggestion_processing_charges: "",
           final_processing_charges: ""
         }
-      ]
+      ],
+      content: null,
+      editorOption: {}
     };
   },
   methods: {
@@ -157,14 +169,16 @@ export default {
 
       return sums;
     }
+  },
+  components: {
+    quillEditor
   }
 };
 </script>
 
 <style lang="scss">
 .el-table__row:last-child {
-  height: 30px;
-  color: red;
+  //   color: red;
 }
 .order-management {
   display: flex;
@@ -172,7 +186,8 @@ export default {
   .table-wrap {
     width: 95%;
     background-color: #fff;
-    padding-left: 27px;
+    padding: 0 27px;
+    border-radius: 11px;
     .table-header {
       height: 99px;
       display: flex;

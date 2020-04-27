@@ -15,7 +15,7 @@ export default {
     },
     name: String,
     url: {
-      typr: String,
+      type: String,
       default: '/apps'
     }
   },

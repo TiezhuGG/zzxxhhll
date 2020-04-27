@@ -34,47 +34,51 @@
               </div>
             </div>
 
+            <el-divider content-position="right">
+              <span @click="base_info_show = true">编辑</span>
+              <span @click="base_info_show = false" v-show="base_info_show">保存</span>
+            </el-divider>
             <el-table :data="tabledatas">
-              <el-table-column label="基础信息">
+              <el-table-column>
                 <template slot-scope="scope">
                   <div class="table-item">
-                    <el-input placeholder="请输入内容" v-show="scope.row.show" v-model="scope.row.name"></el-input>
-                    <div class="item" v-show="!scope.row.show">
+                    <el-input placeholder="请输入内容" v-show="base_info_show" v-model="scope.row.name"></el-input>
+                    <div class="item" v-show="!base_info_show">
                       <label>姓名：</label>
                       <span>{{scope.row.name}}</span>
                     </div>
                   </div>
                   <div class="table-item">
-                    <el-input placeholder="请输入内容" v-show="scope.row.show" v-model="scope.row.name"></el-input>
-                    <div class="item" v-show="!scope.row.show">
+                    <el-input placeholder="请输入内容" v-show="base_info_show" v-model="scope.row.name"></el-input>
+                    <div class="item" v-show="!base_info_show">
                       <label>部门：</label>
                       <span>{{scope.row.department}}</span>
                     </div>
                   </div>
                   <div class="table-item">
-                    <el-input placeholder="请输入内容" v-show="scope.row.show" v-model="scope.row.name"></el-input>
-                    <div class="item" v-show="!scope.row.show">
+                    <el-input placeholder="请输入内容" v-show="base_info_show" v-model="scope.row.name"></el-input>
+                    <div class="item" v-show="!base_info_show">
                       <label>职位：</label>
                       <span>{{scope.row.position}}</span>
                     </div>
                   </div>
                   <div class="table-item">
-                    <el-input placeholder="请输入内容" v-show="scope.row.show" v-model="scope.row.name"></el-input>
-                    <div class="item" v-show="!scope.row.show">
+                    <el-input placeholder="请输入内容" v-show="base_info_show" v-model="scope.row.name"></el-input>
+                    <div class="item" v-show="!base_info_show">
                       <label>工号：</label>
                       <span>{{scope.row.job_num}}</span>
                     </div>
                   </div>
                   <div class="table-item">
-                    <el-input placeholder="请输入内容" v-show="scope.row.show" v-model="scope.row.name"></el-input>
-                    <div class="item" v-show="!scope.row.show">
+                    <el-input placeholder="请输入内容" v-show="base_info_show" v-model="scope.row.name"></el-input>
+                    <div class="item" v-show="!base_info_show">
                       <label>办公地点：</label>
                       <span>{{scope.row.office_location}}</span>
                     </div>
                   </div>
                   <div class="table-item">
-                    <el-input placeholder="请输入内容" v-show="scope.row.show" v-model="scope.row.name"></el-input>
-                    <div class="item" v-show="!scope.row.show">
+                    <el-input placeholder="请输入内容" v-show="base_info_show" v-model="scope.row.name"></el-input>
+                    <div class="item" v-show="!base_info_show">
                       <label>入职时间：</label>
                       <span>{{scope.row.hire_date}}</span>
                     </div>
@@ -84,55 +88,55 @@
               <el-table-column>
                 <template slot-scope="scope">
                   <div class="table-item">
-                    <el-input placeholder="请输入内容" v-show="scope.row.show" v-model="scope.row.name"></el-input>
-                    <div class="item" v-show="!scope.row.show">
+                    <el-input placeholder="请输入内容" v-show="base_info_show" v-model="scope.row.name"></el-input>
+                    <div class="item" v-show="!base_info_show">
                       <label>邮箱：</label>
                       <span>{{scope.row.email}}</span>
                     </div>
                   </div>
                   <div class="table-item">
-                    <el-input placeholder="请输入内容" v-show="scope.row.show" v-model="scope.row.name"></el-input>
-                    <div class="item" v-show="!scope.row.show">
+                    <el-input placeholder="请输入内容" v-show="base_info_show" v-model="scope.row.name"></el-input>
+                    <div class="item" v-show="!base_info_show">
                       <label>主部门：</label>
                       <span>{{scope.row.main_department}}</span>
                     </div>
                   </div>
                   <div class="table-item">
-                    <el-input placeholder="请输入内容" v-show="scope.row.show" v-model="scope.row.name"></el-input>
-                    <div class="item" v-show="!scope.row.show">
+                    <el-input placeholder="请输入内容" v-show="base_info_show" v-model="scope.row.name"></el-input>
+                    <div class="item" v-show="!base_info_show">
                       <label>手机号：</label>
                       <span>{{scope.row.phone}}</span>
                     </div>
                   </div>
                   <div class="table-item">
-                    <el-input placeholder="请输入内容" v-show="scope.row.show" v-model="scope.row.name"></el-input>
-                    <div class="item" v-show="!scope.row.show">
+                    <el-input placeholder="请输入内容" v-show="base_info_show" v-model="scope.row.name"></el-input>
+                    <div class="item" v-show="!base_info_show">
                       <label>分机号：</label>
                       <span>{{scope.row.extension_num}}</span>
                     </div>
                   </div>
                   <div class="table-item">
-                    <el-input placeholder="请输入内容" v-show="scope.row.show" v-model="scope.row.name"></el-input>
-                    <div class="item" v-show="!scope.row.show">
+                    <el-input placeholder="请输入内容" v-show="base_info_show" v-model="scope.row.name"></el-input>
+                    <div class="item" v-show="!base_info_show">
                       <label>备注：</label>
                       <span>{{scope.row.remarks}}</span>
                     </div>
                   </div>
                   <div class="table-item">
-                    <el-input placeholder="请输入内容" v-show="scope.row.show" v-model="scope.row.name"></el-input>
-                    <div class="item" v-show="!scope.row.show">
+                    <el-input placeholder="请输入内容" v-show="base_info_show" v-model="scope.row.name"></el-input>
+                    <div class="item" v-show="!base_info_show">
                       <label>司龄：</label>
                       <span>{{scope.row.job_year}}</span>
                     </div>
                   </div>
                 </template>
               </el-table-column>
-              <el-table-column>
+              <!-- <el-table-column>
                 <template slot-scope="scope">
                   <el-button @click="scope.row.show = true">编辑</el-button>
                   <el-button @click="scope.row.show = false">保存</el-button>
                 </template>
-              </el-table-column>
+              </el-table-column>-->
             </el-table>
 
             <!-- 工作信息 -->
@@ -147,22 +151,22 @@
               <el-table-column label="工作信息">
                 <template slot-scope="scope">
                   <div class="table-item">
-                    <el-input placeholder="请输入内容" v-show="scope.row.show" v-model="scope.row.name"></el-input>
-                    <div class="item" v-show="!scope.row.show">
+                    <el-input placeholder="请输入内容" v-show="show" v-model="scope.row.name"></el-input>
+                    <div class="item" v-show="!show">
                       <label>员工类型：</label>
                       <span>{{scope.row.employee_type}}</span>
                     </div>
                   </div>
                   <div class="table-item">
-                    <el-input placeholder="请输入内容" v-show="scope.row.show" v-model="scope.row.name"></el-input>
-                    <div class="item" v-show="!scope.row.show">
+                    <el-input placeholder="请输入内容" v-show="show" v-model="scope.row.name"></el-input>
+                    <div class="item" v-show="!show">
                       <label>试用期：</label>
                       <span>{{scope.row.probation_period}}</span>
                     </div>
                   </div>
                   <div class="table-item">
-                    <el-input placeholder="请输入内容" v-show="scope.row.show" v-model="scope.row.name"></el-input>
-                    <div class="item" v-show="!scope.row.show">
+                    <el-input placeholder="请输入内容" v-show="show" v-model="scope.row.name"></el-input>
+                    <div class="item" v-show="!show">
                       <label>岗位职责：</label>
                       <span>{{scope.row.job_grade}}</span>
                     </div>
@@ -172,15 +176,15 @@
               <el-table-column>
                 <template slot-scope="scope">
                   <div class="table-item">
-                    <el-input placeholder="请输入内容" v-show="scope.row.show" v-model="scope.row.name"></el-input>
-                    <div class="item" v-show="!scope.row.show">
+                    <el-input placeholder="请输入内容" v-show="show" v-model="scope.row.name"></el-input>
+                    <div class="item" v-show="!show">
                       <label>员工状态：</label>
                       <span>{{scope.row.employee_status}}</span>
                     </div>
                   </div>
                   <div class="table-item">
-                    <el-input placeholder="请输入内容" v-show="scope.row.show" v-model="scope.row.name"></el-input>
-                    <div class="item" v-show="!scope.row.show">
+                    <el-input placeholder="请输入内容" v-show="show" v-model="scope.row.name"></el-input>
+                    <div class="item" v-show="!show">
                       <label>转正日期：</label>
                       <span>{{scope.row.job_grade}}</span>
                     </div>
@@ -223,15 +227,22 @@ export default {
           employee_status: "正式",
           probation_period: "2个月",
           formal_date: "2015-11-25",
-          job_grade: "初级",
-          show: false
+          job_grade: "初级"
         }
-      ]
+      ],
+      base_info_show: false,
+      show: false
     };
   },
   methods: {}
 };
 </script>
+
+<style>
+.el-table td, .el-table th.is-leaf {
+  border-bottom: none;
+}
+</style>
 
 <style lang="scss" scoped>
 .el-table__row {

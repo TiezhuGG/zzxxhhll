@@ -24,24 +24,11 @@ export default {
   data() {
     return {
       applyList: [{
-        icon: 'client',
-        name: '产品系统'
-      },{
-        icon: 'client',
-        name: '产品系统'
-      },{
-        icon: 'client',
-        name: '产品系统'
-      },{
-        icon: 'client',
-        name: '产品系统'
-      },{
-        icon: 'client',
-        name: '产品系统'
-      },{
-        icon: 'client',
-        name: '产品系统'
-      },{
+        url: '/apps/payroll',
+        icon: 'payroll',
+        name: '公司工资薪资表'
+      }, {
+        url: '/apps/payroll',
         icon: 'client',
         name: '产品系统'
       }]

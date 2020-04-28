@@ -1,6 +1,5 @@
 <template>
-  <div class="login-container">
-    <img class="login-img" src="../../assets/imgs/code.png" />
+  <div class="code-container">
     <el-form
       ref="loginForm"
       :model="loginForm"
@@ -9,10 +8,7 @@
       auto-complete="on"
       label-position="left"
     >
-      <div class="back" @click="back">
-        <img src="../../assets/imgs/back.png" />
-        <span>返回</span>
-      </div>
+      <Back />
       <div class="title-container">
         <h3 class="title">验证手机号</h3>
         <p class="warning">
@@ -35,23 +31,26 @@
         ></el-input>
       </el-form-item>
 
-      <span class="prompt">46秒后可重新获取验证码</span>
+      <div class="bottom-section">
+        <span class="prompt">46秒后可重新获取验证码</span>
 
-      <el-button
-        :loading="loading"
-        type="primary"
-        @click.native.prevent="toNext"
-        class="login-button"
-      >下一步</el-button>
+        <el-button
+          :loading="loading"
+          type="primary"
+          @click.native.prevent="$router.push('set-password')"
+          class="login-button"
+        >下一步</el-button>
+      </div>
     </el-form>
   </div>
 </template>
 
 <script>
 import { validRegisterUsername } from "@/utils/validate";
+import Back from "../components/Back";
 
 export default {
-  name: "Register",
+  name: "VerifyCode",
   data() {
     const validateUsername = (rule, value, callback) => {
       if (!validRegisterUsername(value)) {
@@ -81,12 +80,6 @@ export default {
     };
   },
   methods: {
-    back() {
-      this.$router.go(-1);
-    },
-    toNext() {
-      this.$router.push("/set-password");
-    },
     register() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
@@ -107,23 +100,28 @@ export default {
         }
       });
     }
+  },
+  components: {
+    Back
   }
 };
 </script>
 
 <style lang="scss">
-.el-input__inner {
-  height: 59px;
-}
+.code-container {
+  .el-input__inner {
+    height: 59px;
+  }
 
-.input-with-select .el-input-group__prepend {
-  background-color: #fff;
-}
+  .input-with-select .el-input-group__prepend {
+    background-color: #fff;
+  }
 
-.el-form-item__content {
-  width: 100%;
-  display: flex;
-  justify-content: space-around;
+  .el-form-item__content {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+  }
 }
 </style>
 
@@ -134,55 +132,13 @@ $h-fs: 27px;
 $s-fs: 17px;
 $i-fs: 19px;
 
-.login-container {
-  min-height: 100%;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-evenly;
-  font-family: PingFangSC-Regular, PingFang SC;
-
-  .login-img {
-    width: 510px;
-    height: 340px;
-    margin-left: 100px;
-  }
-
+.code-container {
   .login-form {
-    width: 488px;
-    max-width: 100%;
-    height: 675px;
-    text-align: center;
-    margin-right: 100px;
-    border: 1px solid #e4e5e7;
-    border-radius: 7px;
-
-    .back {
-      display: flex;
-      margin: 31px 0 0 28px;
-      img {
-        width: 21px;
-        height: 21px;
-        margin-right: 12px;
-      }
-      span {
-        color: $s-color;
-        font-size: $i-fs;
-      }
-    }
-
     .code {
       .code-input {
         width: 59px;
         height: 59px;
       }
-    }
-
-    .prompt {
-      display: inline-block;
-      color: $s-color;
-      font-size: $s-fs;
-      margin-bottom: 233px;
     }
 
     .title-container {
@@ -206,21 +162,26 @@ $i-fs: 19px;
       }
     }
 
-    .login-button {
-      width: 430px !important;
-      height: 60px;
-      font-size: $i-fs;
+    .bottom-section {
+      height: 310px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      .prompt {
+        color: $s-color;
+        font-size: $s-fs;
+      }
+      .login-button {
+        width: 430px !important;
+        height: 60px;
+        font-size: $i-fs;
+      }
     }
   }
 }
-
-@media screen and (max-width: 1440px) {
-  .login-img {
-    display: none;
-  }
-}
-@media screen and (max-height: 720px) {
-  .login-img {
+@media screen and(max-width: 1150px) {
+  .title {
     display: none;
   }
 }

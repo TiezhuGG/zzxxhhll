@@ -1,6 +1,5 @@
 <template>
-  <div class="login-container">
-    <img class="login-img" src="../../assets/imgs/login.png" />
+  <div class="enterprise-container">
     <el-form
       ref="loginForm"
       :model="loginForm"
@@ -9,10 +8,7 @@
       auto-complete="on"
       label-position="left"
     >
-      <div class="back" @click="back">
-        <img src="../../assets/imgs/back.png" />
-        <span>返回</span>
-      </div>
+      <Back />
       <div class="title-container">
         <h3 class="title">创建新企业</h3>
         <span class="warning">填写基本信息，完成创建。</span>
@@ -87,6 +83,7 @@
 
 <script>
 import { validUsername } from "@/utils/validate";
+import Back from "../components/Back";
 
 export default {
   name: "Login",
@@ -115,14 +112,14 @@ export default {
     return {
       loginForm: {
         username: "admin",
-        password: "111111",
+        password: "111111"
         // enterpriseName: "触享网络科技"
       },
       loginRules: {
         username: [{ required: true, trigger: "blur", validator: validname }],
         password: [
           { required: true, trigger: "blur", validator: validatePassword }
-        ],
+        ]
         // enterpriseName: [
         //   { required: true, trigger: "blur", validator: validEnterprise }
         // ]
@@ -134,9 +131,6 @@ export default {
   },
 
   methods: {
-    back() {
-      this.$router.go(-1);
-    },
     handleLogin() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
@@ -156,29 +150,34 @@ export default {
         }
       });
     }
+  },
+  components: {
+    Back
   }
 };
 </script>
 
 <style lang="scss">
-.el-input__inner {
-  height: 60px;
-}
+.enterprise-container {
+  .el-input__inner {
+    height: 60px;
+  }
 
-.input-with-select .el-input-group__prepend {
-  background-color: #fff;
-}
+  .input-with-select .el-input-group__prepend {
+    background-color: #fff;
+  }
 
-.el-form-item__content {
-  width: 430px;
-  margin: auto;
-}
+  .el-form-item__content {
+    width: 430px;
+    margin: auto;
+  }
 
-.el-checkbox {
-  margin-top: 10px;
-  margin-bottom: 21px;
-  color: #999;
-  font-size: 19px;
+  .el-checkbox {
+    margin-top: 10px;
+    margin-bottom: 21px;
+    color: #999;
+    font-size: 19px;
+  }
 }
 </style>
 
@@ -189,42 +188,9 @@ $h-fs: 27px;
 $s-fs: 17px;
 $i-fs: 19px;
 
-.login-container {
-  min-height: 100%;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-evenly;
-
-  .login-img {
-    width: 510px;
-    height: 340px;
-    margin-left: 100px;
-  }
-
+.enterprise-container {
   .login-form {
-    width: 488px;
-    max-width: 100%;
-    height: 675px;
     text-align: center;
-    margin-right: 100px;
-    border: 1px solid #e4e5e7;
-    border-radius: 7px;
-    font-family: PingFangSC-Regular, PingFang SC;
-
-    .back {
-      display: flex;
-      margin: 31px 0 0 28px;
-      img {
-        width: 21px;
-        height: 21px;
-        margin-right: 12px;
-      }
-      span {
-        color: $s-color;
-        font-size: $i-fs;
-      }
-    }
 
     .title-container {
       width: 300px;
@@ -242,24 +208,6 @@ $i-fs: 19px;
         font-size: $s-fs;
       }
     }
-
-    .login-button {
-      width: 430px !important;
-      height: 60px;
-      font-size: $i-fs;
-    }
-  }
-}
-@media screen and (max-width: 1440px) {
-  .login-img {
-    display: none;
-  }
-}
-@media screen and (max-width: 1000px) {
-}
-@media screen and (max-height: 720px) {
-  .login-img {
-    display: none;
   }
 }
 </style>

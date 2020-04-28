@@ -1,6 +1,5 @@
 <template>
   <div class="login-container">
-    
     <img class="login-img" src="../../assets/imgs/login.png" />
     <el-form
       ref="loginForm"
@@ -15,11 +14,12 @@
         <span class="warning">未经许可，不得擅自复制和传播本程序。</span>
       </div>
 
-      <el-form-item prop="username">
-        <!-- <span class="svg-container">
+      <div class="input-container">
+        <el-form-item prop="username">
+          <!-- <span class="svg-container">
           <svg-icon icon-class="user" />
-        </span>-->
-        <div>
+          </span>-->
+
           <el-input
             placeholder="请输入你的手机号"
             ref="username"
@@ -30,37 +30,40 @@
             auto-complete="on"
             class="input-with-select"
           >
-            <el-select v-model="select" slot="prepend" placeholder="+86">
+            <el-select v-model="select" slot="prepend" placeholder="+86" class="select">
               <el-option label="+86" value="1"></el-option>
               <!-- <el-option label="2222" value="2"></el-option>
               <el-option label="3333" value="3"></el-option>
               <el-option label="4444" value="4"></el-option>-->
             </el-select>
           </el-input>
-        </div>
-      </el-form-item>
+        </el-form-item>
 
-      <el-form-item prop="password">
-        <!-- <span class="svg-container">
+        <el-form-item prop="password">
+          <!-- <span class="svg-container">
           <svg-icon icon-class="password" />
-        </span>-->
-        <el-input
-          :key="passwordType"
-          ref="password"
-          v-model="loginForm.password"
-          :type="passwordType"
-          placeholder="请输入你的密码"
-          name="password"
-          tabindex="2"
-          auto-complete="on"
-          @keyup.enter.native="handleLogin"
-        />
-        <!-- <span class="show-pwd" @click="showPwd">
+          </span>-->
+          <el-input
+            :key="passwordType"
+            ref="password"
+            v-model="loginForm.password"
+            :type="passwordType"
+            placeholder="请输入你的密码"
+            name="password"
+            tabindex="2"
+            auto-complete="on"
+            class="input-password"
+            @keyup.enter.native="handleLogin"
+          />
+          <!-- <span class="show-pwd" @click="showPwd">
           <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
-        </span>-->
-      </el-form-item>
+          </span>-->
+        </el-form-item>
+      </div>
 
-      <el-checkbox v-model="checked">15天内自动登录</el-checkbox>
+      <div class="checkbox">
+        <el-checkbox v-model="checked">15天内自动登录</el-checkbox>
+      </div>
 
       <el-button
         :loading="loading"
@@ -164,26 +167,28 @@ export default {
 
 <style lang="scss">
 /* Detail see https://github.com/PanJiaChen/vue-element-admin/pull/927 */
-.el-select .el-input {
-  width: 100px;
-  color: #333;
+.el-form-item__content{
+  margin: 0;
+  padding: 0;
 }
 .el-select {
   height: 60px;
   line-height: 60px;
 }
 
-.el-input__inner {
+.input-container .input-with-select .el-input__inner {
+  height: 60px;
+}
+.input-password .el-input__inner {
+  width: 430px;
   height: 60px;
 }
 
-.input-with-select .el-input-group__prepend {
-  background-color: #fff;
-}
 
-.el-form-item__content {
-  width: 430px;
-  margin: auto;
+.input-with-select .el-input-group__prepend {
+  width: 89px;
+  color: #333;
+  background-color: #fff;
 }
 
 .el-checkbox {
@@ -218,17 +223,14 @@ $i-fs: 19px;
     width: 488px;
     max-width: 100%;
     height: 675px;
-    text-align: center;
+    padding: 88px 0 0 30px;
     margin-right: 100px;
     border: 1px solid #e4e5e7;
     border-radius: 7px;
     font-family: PingFangSC-Regular, PingFang SC;
 
     .title-container {
-      display: flex;
-      flex-wrap: wrap;
-      margin: 88px 0 64px 29px;
-
+      margin-bottom: 64px;
       .title {
         color: $h-color;
         font-size: $h-fs;
@@ -240,6 +242,14 @@ $i-fs: 19px;
       }
     }
 
+    .input-container {
+
+      .input-with-select {
+        width: 430px;
+      }
+
+    }
+
     .login-button {
       width: 430px !important;
       height: 60px;
@@ -248,7 +258,7 @@ $i-fs: 19px;
 
     .tips {
       width: 430px;
-      margin: 19px 0 30px 29px;
+      margin: 19px 0 30px 0;
       display: flex;
       justify-content: space-between;
       font-size: $i-fs;
@@ -262,15 +272,20 @@ $i-fs: 19px;
         color: #409eff;
       }
     }
+
+    .checkbox {
+      width: 100%;
+      text-align: center;
+    }
   }
 }
+
 @media screen and (max-width: 1440px) {
   .login-img {
     display: none;
   }
 }
 @media screen and (max-width: 1000px) {
-  
 }
 @media screen and (max-height: 720px) {
   .login-img {

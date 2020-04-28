@@ -2,7 +2,22 @@
   <div class="payroll-container">
     <el-tabs type="border-card" v-model="activeName" label-width="144px">
       <el-tab-pane label="个人信息" name="info">
-        <archives/>
+        <archives>
+          <template #steps>
+            <steps @change="handleStep" :step-active="stepActive" :steps-list="stepsList"/>
+          </template>
+          <template #sblock>
+            <sblock title="系统信息" :can-edit="true">
+              <template #default="slotProps">
+                <data-space :isEdit="slotProps.isEdit" :formData="slotProps.formData" name="name" title="实人认证" value="未授权">
+                  <template #button>
+                    <div class="button">详情</div>
+                  </template>
+                </data-space>
+              </template>
+            </sblock>
+          </template>
+        </archives>
       </el-tab-pane>
 
       <el-tab-pane label="薪资情况" name="condition">
@@ -158,7 +173,7 @@
 </template>
 
 <script>
-import Archives from '@/components/Archives'
+import { Archives, Steps, Sblock, DataSpace } from '@/components/Archives/index'
 export default {
   name: 'Detail',
   data() {
@@ -185,13 +200,48 @@ export default {
         date: '2016-05-02',
         name: '王小虎',
         address: '上海市普陀区金沙江路 1518 弄'
+      }],
+      stepActive: 0,
+      stepsList: [{
+        name: '系统信息',
+        isEdit: true,
+        children: [{
+          name: '实人认证',
+          value: '未授权',
+          trueValue: '0',
+          url: 'http://www.baidu.com',
+          is_show: true,
+          button: '详情'
+        }, {
+          name: '证件号码',
+          value: '35050***********3X',
+          trueValue: '0',
+          url: 'http://www.baidu.com',
+          is_show: true,
+          button: '显示'
+        }]
+      }, {
+        name: '系统信息2',
+        isEdit: false,
+        children: [{
+          name: '实人认证',
+          value: '未授权',
+          trueValue: '0',
+          url: 'http://www.baidu.com'
+        }]
       }]
     }
   },
   components: {
-    Archives
+    Archives,
+    Steps,
+    Sblock,
+    DataSpace
   },
   methods: {
+    handleStep({ index, name }) {
+      this.stepActive = index
+    }
   }
 }
 </script>

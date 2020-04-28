@@ -530,7 +530,7 @@
             <!-- 银行卡信息 -->
             <div class="education_info">
               <span class="txt">银行卡信息</span>
-              <span class="line" style="width:824px;"></span>
+              <span class="line"></span>
               <span class="edit" @click="bank_info_show = true">编辑</span>
               <span class="save" @click="bank_info_show = false" v-show="bank_info_show">保存</span>
             </div>
@@ -984,65 +984,64 @@ export default {
           personal_income_tax: 230,
           salary: 4000,
           first_salary: 4000,
-          performance_salary: 0,
+          performance_salary: 0
         },
         {
           date: "2017-02-15",
           personal_income_tax: 230,
           salary: 6000,
           first_salary: 6000,
-          performance_salary: 0,
+          performance_salary: 0
         },
         {
           date: "2017-03-15",
           personal_income_tax: 230,
           salary: 6000,
           first_salary: 6000,
-          performance_salary: 0,
+          performance_salary: 0
         },
         {
           date: "2017-04-15",
           personal_income_tax: 230,
           salary: 6000,
           first_salary: 6000,
-          performance_salary: 0,
+          performance_salary: 0
         },
         {
           date: "2017-05-15",
           personal_income_tax: 230,
           salary: 6000,
           first_salary: 6000,
-          performance_salary: 0,
+          performance_salary: 0
         },
         {
           date: "2017-06-15",
           personal_income_tax: 230,
           salary: 6000,
           first_salary: 6000,
-          performance_salary: 0,
+          performance_salary: 0
         },
         {
           date: "2017-07-15",
           personal_income_tax: 230,
           salary: 6000,
           first_salary: 6000,
-          performance_salary: 0,
+          performance_salary: 0
         },
         {
           date: "2017-08-15",
           personal_income_tax: 230,
           salary: 6000,
           first_salary: 6000,
-          performance_salary: 0,
+          performance_salary: 0
         },
         {
           date: "2017-09-15",
           personal_income_tax: 230,
           salary: 6000,
           first_salary: 6000,
-          performance_salary: 0,
-        },
-
+          performance_salary: 0
+        }
       ]
     };
   },

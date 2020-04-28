@@ -1,6 +1,5 @@
 <template>
   <div class="login-container">
-    <img class="login-img" src="../../assets/imgs/login.png" />
     <el-form
       ref="loginForm"
       :model="loginForm"
@@ -16,10 +15,6 @@
 
       <div class="input-container">
         <el-form-item prop="username">
-          <!-- <span class="svg-container">
-          <svg-icon icon-class="user" />
-          </span>-->
-
           <el-input
             placeholder="请输入你的手机号"
             ref="username"
@@ -40,9 +35,6 @@
         </el-form-item>
 
         <el-form-item prop="password">
-          <!-- <span class="svg-container">
-          <svg-icon icon-class="password" />
-          </span>-->
           <el-input
             :key="passwordType"
             ref="password"
@@ -55,9 +47,6 @@
             class="input-password"
             @keyup.enter.native="handleLogin"
           />
-          <!-- <span class="show-pwd" @click="showPwd">
-          <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
-          </span>-->
         </el-form-item>
       </div>
 
@@ -75,7 +64,8 @@
       <div class="tips">
         <p>
           <span class="txt">或</span>
-          <span class="business">创建企业</span>
+          <!-- <span class="business" @click="$router.push('register')">创建企业</span> -->
+          <router-link to="register" class="business">创建企业</router-link>
         </p>
         <p class="forget">忘记密码？</p>
       </div>
@@ -167,35 +157,36 @@ export default {
 
 <style lang="scss">
 /* Detail see https://github.com/PanJiaChen/vue-element-admin/pull/927 */
-.el-form-item__content{
-  margin: 0;
-  padding: 0;
-}
-.el-select {
-  height: 60px;
-  line-height: 60px;
-}
+.login-container {
+  .el-form-item__content {
+    margin: 0;
+    padding: 0;
+  }
+  .el-select {
+    height: 60px;
+    line-height: 60px;
+  }
 
-.input-container .input-with-select .el-input__inner {
-  height: 60px;
-}
-.input-password .el-input__inner {
-  width: 430px;
-  height: 60px;
-}
+  .input-container .input-with-select .el-input__inner {
+    height: 60px;
+  }
+  .input-password .el-input__inner {
+    width: 430px;
+    height: 60px;
+  }
 
+  .input-with-select .el-input-group__prepend {
+    width: 89px;
+    color: #333;
+    background-color: #fff;
+  }
 
-.input-with-select .el-input-group__prepend {
-  width: 89px;
-  color: #333;
-  background-color: #fff;
-}
-
-.el-checkbox {
-  margin-top: 118px;
-  margin-bottom: 21px;
-  color: #999;
-  font-size: 19px;
+  .el-checkbox {
+    margin-top: 118px;
+    margin-bottom: 21px;
+    color: #999;
+    font-size: 19px;
+  }
 }
 </style>
 
@@ -206,86 +197,75 @@ $h-fs: 27px;
 $s-fs: 17px;
 $i-fs: 19px;
 
-.login-container {
-  min-height: 100%;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-evenly;
+// .login-container {
+//   min-height: 100%;
+//   width: 100%;
+//   display: flex;
+//   align-items: center;
 
-  .login-img {
-    width: 510px;
-    height: 340px;
-    margin-left: 100px;
-  }
+//   .login-form {
+//     width: 488px;
+//     max-width: 100%;
+//     height: 675px;
+//     padding: 88px 0 0 30px;
+//     margin-right: 100px;
+//     border: 1px solid #e4e5e7;
+//     border-radius: 7px;
+//     font-family: PingFangSC-Regular, PingFang SC;
 
-  .login-form {
-    width: 488px;
-    max-width: 100%;
-    height: 675px;
-    padding: 88px 0 0 30px;
-    margin-right: 100px;
-    border: 1px solid #e4e5e7;
-    border-radius: 7px;
-    font-family: PingFangSC-Regular, PingFang SC;
+//     .title-container {
+//       margin-bottom: 64px;
+//       .title {
+//         color: $h-color;
+//         font-size: $h-fs;
+//         margin-bottom: 20px;
+//       }
+//       .warning {
+//         color: $s-color;
+//         font-size: $s-fs;
+//       }
+//     }
 
-    .title-container {
-      margin-bottom: 64px;
-      .title {
-        color: $h-color;
-        font-size: $h-fs;
-        margin-bottom: 20px;
-      }
-      .warning {
-        color: $s-color;
-        font-size: $s-fs;
-      }
-    }
+//     .input-container {
+//       .input-with-select {
+//         width: 430px;
+//       }
+//     }
 
-    .input-container {
+//     .login-button {
+//       width: 430px !important;
+//       height: 60px;
+//       font-size: $i-fs;
+//     }
 
-      .input-with-select {
-        width: 430px;
-      }
+//     .tips {
+//       width: 430px;
+//       margin: 19px 0 30px 0;
+//       display: flex;
+//       justify-content: space-between;
+//       font-size: $i-fs;
 
-    }
+//       .txt {
+//         color: $s-color;
+//       }
 
-    .login-button {
-      width: 430px !important;
-      height: 60px;
-      font-size: $i-fs;
-    }
+//       .business,
+//       .forget {
+//         color: #409eff;
+//       }
+//     }
 
-    .tips {
-      width: 430px;
-      margin: 19px 0 30px 0;
-      display: flex;
-      justify-content: space-between;
-      font-size: $i-fs;
+//     .checkbox {
+//       width: 100%;
+//       text-align: center;
+//     }
+//   }
+// }
 
-      .txt {
-        color: $s-color;
-      }
-
-      .business,
-      .forget {
-        color: #409eff;
-      }
-    }
-
-    .checkbox {
-      width: 100%;
-      text-align: center;
-    }
-  }
-}
-
-@media screen and (max-width: 1440px) {
+@media screen and (max-width: 1480px) {
   .login-img {
     display: none;
   }
-}
-@media screen and (max-width: 1000px) {
 }
 @media screen and (max-height: 720px) {
   .login-img {

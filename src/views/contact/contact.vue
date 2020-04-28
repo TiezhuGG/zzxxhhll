@@ -26,12 +26,12 @@
 </template>
 
 <script>
-import LeftSideOrganize from "./component/LeftSideOrganize";
-import LeftSideMember from "./component/LeftSideMember";
-import RightOrganize from "./component/RightOrganize";
-import RightDepartment from "./component/RightDepartment";
-import RightNewMember from "./component/RightNewMember";
-import RightMemberDetail from "./component/RightMemberDetail";
+import LeftSideOrganize from "./components/LeftSideOrganize";
+import LeftSideMember from "./components/LeftSideMember";
+import RightOrganize from "./components/RightOrganize";
+import RightDepartment from "./components/RightDepartment";
+import RightNewMember from "./components/RightNewMember";
+import RightMemberDetail from "./components/RightMemberDetail";
 
 export default {
   data() {

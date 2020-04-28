@@ -1,6 +1,5 @@
 <template>
-  <div class="login-container">
-    <img class="login-img" src="../../assets/imgs/register.png" />
+  <div class="register-container">
     <el-form
       ref="loginForm"
       :model="loginForm"
@@ -9,10 +8,8 @@
       auto-complete="on"
       label-position="left"
     >
-      <div class="back" @click="back">
-        <img src="../../assets/imgs/back.png" />
-        <span>返回</span>
-      </div>
+      <!-- 返回按钮 -->
+      <Back />
       <div class="title-container">
         <h3 class="title">欢迎使用管理系统</h3>
         <span class="warning">与你的团队成员和朋友进行交流与协作。</span>
@@ -50,7 +47,7 @@
       <el-button
         :loading="loading"
         type="primary"
-        @click.native.prevent="toNext"
+        @click.native.prevent="$router.push('verify-code')"
         class="login-button"
       >下一步</el-button>
     </el-form>
@@ -59,6 +56,7 @@
 
 <script>
 import { validRegisterUsername } from "@/utils/validate";
+import Back from "../components/Back";
 
 export default {
   name: "Register",
@@ -85,16 +83,13 @@ export default {
     };
   },
   methods: {
-    toNext() {
-      this.$router.push('/verify-code')
-    },
     back() {
       this.$router.go(-1);
     },
     register() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
-          console.log('valid',this.loginForm)
+          console.log("valid", this.loginForm);
           this.loading = true;
           this.$store
             .dispatch("user/register", this.loginForm)
@@ -111,6 +106,9 @@ export default {
         }
       });
     }
+  },
+  components: {
+    Back
   }
 };
 </script>
@@ -118,34 +116,35 @@ export default {
 <style lang="scss">
 /* 修复input 背景不协调 和光标变色 */
 /* Detail see https://github.com/PanJiaChen/vue-element-admin/pull/927 */
+.register-container {
+  .el-select .el-input {
+    width: 100px;
+    color: #333;
+  }
+  .el-select {
+    height: 60px;
+    line-height: 60px;
+  }
 
-.el-select .el-input {
-  width: 100px;
-  color: #333;
-}
-.el-select {
-  height: 60px;
-  line-height: 60px;
-}
+  .el-input__inner {
+    height: 60px;
+  }
 
-.el-input__inner {
-  height: 60px;
-}
+  .input-with-select .el-input-group__prepend {
+    background-color: #fff;
+  }
 
-.input-with-select .el-input-group__prepend {
-  background-color: #fff;
-}
+  .el-form-item__content {
+    width: 430px;
+    margin: auto;
+  }
 
-.el-form-item__content {
-  width: 430px;
-  margin: auto;
-}
-
-.el-checkbox {
-  margin-top: 231px;
-  margin-bottom: 21px;
-  color: #999;
-  font-size: 19px;
+  .el-checkbox {
+    margin-top: 231px;
+    margin-bottom: 21px;
+    color: #999;
+    font-size: 19px;
+  }
 }
 </style>
 
@@ -156,43 +155,9 @@ $h-fs: 27px;
 $s-fs: 17px;
 $i-fs: 19px;
 
-.login-container {
-  min-height: 100%;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-evenly;
-  font-family: PingFangSC-Regular, PingFang SC;
-
-  .login-img {
-    width: 510px;
-    height: 340px;
-    margin-left: 100px;
-  }
-
+.register-container {
   .login-form {
-    width: 488px;
-    max-width: 100%;
-    height: 675px;
     text-align: center;
-    margin-right: 100px;
-    border: 1px solid #e4e5e7;
-    border-radius: 7px;
-
-    .back {
-      display: flex;
-      margin: 31px 0 0 28px;
-      img {
-        width: 21px;
-        height: 21px;
-        margin-right: 12px;
-      }
-      span {
-        color: $s-color;
-        font-size: $i-fs;
-      }
-    }
-
     .title-container {
       display: flex;
       flex-wrap: wrap;
@@ -208,23 +173,7 @@ $i-fs: 19px;
         font-size: $s-fs;
       }
     }
-
-    .login-button {
-      width: 430px !important;
-      height: 60px;
-      font-size: $i-fs;
-    }
   }
 }
 
-@media screen and (max-width: 1440px) {
-  .login-img {
-    display: none;
-  }
-}
-@media screen and (max-height: 720px) {
-  .login-img {
-    display: none;
-  }
-}
 </style>

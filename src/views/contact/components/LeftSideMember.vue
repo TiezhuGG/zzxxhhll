@@ -115,7 +115,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .left-side-member {
   width: 389px;
   display: flex;

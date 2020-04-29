@@ -23,6 +23,7 @@ export default {
   name: "Index",
   data() {
     return {
+      comboBoxShow: false,
       applyList: [
         {
           url: "/apps/payroll",

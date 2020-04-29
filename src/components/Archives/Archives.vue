@@ -20,7 +20,6 @@ export default {
   padding: 56px 0;
   .sblock-container {
     width: 1070px;
-    display: inline-block;
     padding-left: 110px;
   }
 }

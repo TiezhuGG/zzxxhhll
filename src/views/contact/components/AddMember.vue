@@ -6,7 +6,7 @@
         <span class="add-txt-top">添加团队成员</span>
         <span class="add-txt-bottom">即刻开启团队高效协作体验</span>
       </div>
-      <el-button class="btn" type="primary">添加</el-button>
+      <el-button class="btn" type="primary" @click.native.prevent="$router.push('add')">添加</el-button>
     </div>
   </div>
 </template>

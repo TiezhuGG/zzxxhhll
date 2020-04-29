@@ -167,15 +167,27 @@ export const constantRoutes = [
   {
     path: '/contact',
     component: Layout,
-    children: [{
-      path: 'contact',
-      name: 'Contact',
-      component: resolve => require(['@/views/contact/contact'], resolve),
-      meta: {
-        title: '联系人',
-        icon: 'record'
-      }
-    }]
+    children: [
+      {
+        path: 'contact',
+        name: 'Contact',
+        component: resolve => require(['@/views/contact/index'], resolve),
+        meta: {
+          title: '联系人',
+          icon: 'record'
+        }
+      },
+      {
+        path: 'add',
+        name: 'Add',
+        hidden: true,
+        component: resolve => require(['@/views/contact/add/add'], resolve),
+        meta: {
+          title: '添加团队成员',
+          icon: 'record'
+        }
+      },
+    ]
   },
 
   /**

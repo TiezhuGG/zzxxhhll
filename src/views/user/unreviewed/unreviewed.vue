@@ -13,12 +13,22 @@
         </div>
 
         <!-- 已有企业 选择企业组件 -->
-        <YourEnterprise :your_phone="your_phone" :enterpriseList="enterpriseList" />
-
-        <div class="txt">
-          没有你的企业?
-          <span>登录其他账号</span>
-        </div>
+        <el-tooltip class="item" effect="dark" placement="top">
+          <div slot="content" style="text-align:center;">
+            该帐号加入企业的申请尚未通过管理员审批，
+            <br />请耐心等待。
+          </div>
+          <YourEnterprise :your_phone="your_phone" :enterpriseList="enterpriseList" />
+        </el-tooltip>
+      </div>
+      <div class="txt">
+        <span>
+          <svg-icon icon-class="add-enterprise" />加入其他企业
+        </span>
+        <span>|</span>
+        <span>
+          <svg-icon icon-class="create-enterprise" />创建新企业
+        </span>
       </div>
     </el-form>
   </div>
@@ -74,6 +84,7 @@ $i-fs: 19px;
   justify-content: center;
   .login-form {
     .wrap {
+      height: 520px;
       padding-left: 30px;
       margin-top: 40px;
       .title-container {
@@ -94,18 +105,28 @@ $i-fs: 19px;
           }
         }
       }
+    }
 
-      .txt {
-        text-align: center;
-        // margin-top: 143px;
-        margin-right: 30px;
-        color: $s-color;
+    .txt {
+      width: 351px;
+      display: flex;
+      justify-content: space-between;
+      margin-left: 69px;
+
+      span {
+        display: flex;
+        align-items: center;
+        color: #409eff;
         font-size: 19px;
+      }
 
-        span {
-          margin-left: 5px;
-          color: #409eff;
-        }
+      span:nth-child(2) {
+        color: #ebeef5;
+      }
+
+      svg {
+        font-size: 27px;
+        margin-right: 9px;
       }
     }
   }

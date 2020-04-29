@@ -11,7 +11,9 @@ $i-fs: 19px;
 .password-container,
 .enterprise-container,
 .has-enterprise-container,
-.unreviewed-container {
+.unreviewed-container,
+.member-container,
+.write-name-container {
   min-height: 100%;
   width: 100%;
   display: flex;
@@ -44,7 +46,9 @@ $i-fs: 19px;
 }
 
 .login-container,
-.has-enterprise-container {
+.has-enterprise-container,
+.member-container,
+.write-name-container {
   .login-form {
     padding: 88px 0 0 30px;
   }
@@ -56,7 +60,9 @@ $i-fs: 19px;
 .password-container,
 .enterprise-container,
 .has-enterprise-container,
-.unreviewed-container {
+.unreviewed-container,
+.member-container,
+.write-name-container {
   .input-container {
     .input-with-select {
       width: 430px;

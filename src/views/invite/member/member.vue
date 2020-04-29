@@ -1,5 +1,5 @@
 <template>
-  <div class="register-container">
+  <div class="member-container">
     <el-form
       ref="loginForm"
       :model="loginForm"
@@ -8,11 +8,12 @@
       auto-complete="on"
       label-position="left"
     >
-      <!-- 返回按钮 -->
-      <Back />
       <div class="title-container">
-        <h3 class="title">欢迎使用管理系统</h3>
-        <span class="warning">与你的团队成员和朋友进行交流与协作。</span>
+        <h3 class="title">
+          {{ name }}
+          <span>邀请您加入</span>
+        </h3>
+        <span class="warning">{{ compony }}</span>
       </div>
 
       <el-form-item prop="username">
@@ -37,26 +38,24 @@
         </div>
       </el-form-item>
 
-      <el-checkbox v-model="checked">
-        <span>我已阅读并同意</span>
-        <span style="color:#409EFF">服务协议</span>
-        <span>与</span>
-        <span style="color:#409EFF">隐私政策</span>
-      </el-checkbox>
-
       <el-button
         :loading="loading"
         type="primary"
         @click.native.prevent="$router.push('verify-code')"
         class="login-button"
-      >下一步</el-button>
+      >获取验证码</el-button>
+      <div class="txt">
+        <span>点击验证码代表您已经阅读并同意</span>
+        <span style="color:#409EFF">服务协议</span>
+        <span>与</span>
+        <span style="color:#409EFF">隐私政策</span>
+      </div>
     </el-form>
   </div>
 </template>
 
 <script>
 import { validRegisterUsername } from "@/utils/validate";
-import Back from "../components/Back";
 
 export default {
   name: "Register",
@@ -69,6 +68,8 @@ export default {
       }
     };
     return {
+      name: "王力宏",
+      compony: "厦门触享网络科技有限公司",
       loginForm: {
         username: ""
       },
@@ -103,9 +104,6 @@ export default {
         }
       });
     }
-  },
-  components: {
-    Back
   }
 };
 </script>
@@ -113,7 +111,7 @@ export default {
 <style lang="scss">
 /* 修复input 背景不协调 和光标变色 */
 /* Detail see https://github.com/PanJiaChen/vue-element-admin/pull/927 */
-.register-container {
+.member-container {
   .el-select .el-input {
     width: 100px;
     color: #333;
@@ -135,13 +133,6 @@ export default {
     width: 430px;
     margin: auto;
   }
-
-  .el-checkbox {
-    margin-top: 231px;
-    margin-bottom: 21px;
-    color: #999;
-    font-size: 19px;
-  }
 }
 </style>
 
@@ -152,25 +143,46 @@ $h-fs: 27px;
 $s-fs: 17px;
 $i-fs: 19px;
 
-.register-container {
+.member-container {
+  width: calc(100% - 827px);
+  display: flex;
+  justify-content: center;
+
   .login-form {
     text-align: center;
+    padding-left: 0;
+
     .title-container {
+      width: 430px;
       display: flex;
       flex-wrap: wrap;
-      margin: 37px 0 65px 29px;
+      margin-left: 30px;
 
       .title {
         color: $h-color;
-        font-size: $h-fs;
+        font-size: $s-fs;
         margin-bottom: 20px;
+
+        span {
+          color: #666;
+          font-weight: 500;
+        }
       }
       .warning {
-        color: $s-color;
-        font-size: $s-fs;
+        color: $h-color;
+        font-size: $h-fs;
       }
+    }
+
+    .login-button {
+      margin-top: 244px;
+      margin-bottom: 21px;
+    }
+
+    .txt {
+      font-size: 16px;
+      color: $s-color;
     }
   }
 }
-
 </style>

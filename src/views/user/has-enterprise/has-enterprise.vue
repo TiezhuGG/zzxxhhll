@@ -15,7 +15,7 @@
 
       <div class="txt">
         没有你的企业?
-        <span>登录其他账号</span>
+        <router-link to="login" class="other">登录其他账号</router-link >
       </div>
     </el-form>
   </div>
@@ -46,9 +46,6 @@ export default {
     }
   },
   methods: {
-    back() {
-      this.$router.go(-1);
-    }
   },
   components: {
     ChoiceEnterprise
@@ -91,7 +88,7 @@ $i-fs: 19px;
       color: #999;
       font-size: 19px;
 
-      span {
+      .other {
         margin-left: 5px;
         color: #409eff;
       }

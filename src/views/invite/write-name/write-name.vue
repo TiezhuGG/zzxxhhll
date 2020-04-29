@@ -1,5 +1,5 @@
 <template>
-  <div class="register-container">
+  <div class="write-name-container">
     <el-form
       ref="loginForm"
       :model="loginForm"
@@ -8,17 +8,15 @@
       auto-complete="on"
       label-position="left"
     >
-      <!-- 返回按钮 -->
-      <Back />
       <div class="title-container">
-        <h3 class="title">欢迎使用管理系统</h3>
-        <span class="warning">与你的团队成员和朋友进行交流与协作。</span>
+        <h3 class="title">请填写您的姓名</h3>
+        <span class="warning">参与聊天及协作的各方都能看到彼此的姓名</span>
       </div>
 
       <el-form-item prop="username">
         <div>
           <el-input
-            placeholder="请输入你的手机号"
+            placeholder="请输入你的姓名"
             ref="username"
             v-model="loginForm.username"
             name="username"
@@ -26,37 +24,22 @@
             tabindex="1"
             auto-complete="on"
             class="input-with-select"
-          >
-            <el-select v-model="select" slot="prepend" placeholder="+86">
-              <el-option label="+86" value="1"></el-option>
-              <!-- <el-option label="2222" value="2"></el-option>
-              <el-option label="3333" value="3"></el-option>
-              <el-option label="4444" value="4"></el-option>-->
-            </el-select>
-          </el-input>
+          ></el-input>
         </div>
       </el-form-item>
-
-      <el-checkbox v-model="checked">
-        <span>我已阅读并同意</span>
-        <span style="color:#409EFF">服务协议</span>
-        <span>与</span>
-        <span style="color:#409EFF">隐私政策</span>
-      </el-checkbox>
 
       <el-button
         :loading="loading"
         type="primary"
-        @click.native.prevent="$router.push('verify-code')"
+        @click.native.prevent="$router.push('/application')"
         class="login-button"
-      >下一步</el-button>
+      >加入团队</el-button>
     </el-form>
   </div>
 </template>
 
 <script>
 import { validRegisterUsername } from "@/utils/validate";
-import Back from "../components/Back";
 
 export default {
   name: "Register",
@@ -69,6 +52,8 @@ export default {
       }
     };
     return {
+      name: "王力宏",
+      compony: "厦门触享网络科技有限公司",
       loginForm: {
         username: ""
       },
@@ -103,9 +88,6 @@ export default {
         }
       });
     }
-  },
-  components: {
-    Back
   }
 };
 </script>
@@ -113,64 +95,27 @@ export default {
 <style lang="scss">
 /* 修复input 背景不协调 和光标变色 */
 /* Detail see https://github.com/PanJiaChen/vue-element-admin/pull/927 */
-.register-container {
-  .el-select .el-input {
-    width: 100px;
-    color: #333;
-  }
-  .el-select {
-    height: 60px;
-    line-height: 60px;
-  }
-
+.write-name-container {
   .el-input__inner {
     height: 60px;
   }
 
-  .input-with-select .el-input-group__prepend {
-    background-color: #fff;
-  }
-
   .el-form-item__content {
     width: 430px;
-    margin: auto;
-  }
-
-  .el-checkbox {
-    margin-top: 231px;
-    margin-bottom: 21px;
-    color: #999;
-    font-size: 19px;
   }
 }
 </style>
 
 <style lang="scss" scoped>
-$h-color: #333;
-$s-color: #999;
-$h-fs: 27px;
-$s-fs: 17px;
-$i-fs: 19px;
+.write-name-container {
+  width: calc(100% - 827px);
+  display: flex;
+  justify-content: center;
 
-.register-container {
   .login-form {
-    text-align: center;
-    .title-container {
-      display: flex;
-      flex-wrap: wrap;
-      margin: 37px 0 65px 29px;
-
-      .title {
-        color: $h-color;
-        font-size: $h-fs;
-        margin-bottom: 20px;
-      }
-      .warning {
-        color: $s-color;
-        font-size: $s-fs;
-      }
+    .login-button {
+      margin-top: 271px;
     }
   }
 }
-
 </style>

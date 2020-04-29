@@ -4,7 +4,10 @@
       <img src="../../../../assets/imgs/test.jpg" alt />
       <div class="txt">
         <span>{{ item.name }}</span>
-        <span>{{ item.approval }}</span>
+        <div>
+          <span>{{ item.approval }}</span>
+          <span>待审批</span>
+        </div>
       </div>
       <span class="enter">进入</span>
     </div>
@@ -58,14 +61,30 @@ export default {
       flex-direction: column;
       justify-content: space-between;
 
-      span:first-child {
+      span {
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
       }
-      span:last-child {
-        color: #999;
-        font-size: 16px;
+      div {
+        display: flex;
+        align-items: center;
+        span:first-child {
+          color: #999;
+          font-size: 16px;
+        }
+        span:last-child {
+          display: inline-block;
+          width: 53px;
+          height: 24px;
+          line-height: 24px;
+          text-align: center;
+          margin-left: 8px;
+          background: rgba(255, 195, 17, 1);
+          border-radius: 3px;
+          font-size: 13px;
+          color: #fff;
+        }
       }
     }
 

@@ -31,7 +31,11 @@ import Layout from '@/layout'
  * all roles can be accessed
  */
 
-export const constantRoutes = [{
+export const constantRoutes = [
+  /**
+   * 登录注册
+   */
+  {
     path: '/user',
     redirect: '/user/login',
     component: resolve => require(['@/views/user/index'], resolve),
@@ -102,6 +106,49 @@ export const constantRoutes = [{
     ]
   },
 
+  /**
+   *  邀请加入团队
+   */
+
+  {
+    path: '/invite',
+    redirect: '/invite/member',
+    component: resolve => require(['@/views/invite/index'], resolve),
+    hidden: true,
+    children: [{
+        path: 'member',
+        name: 'Member',
+        component: resolve => require(['@/views/invite/member/member'], resolve),
+        hidden: true,
+        meta: {
+          title: '邀请加入团队'
+        }
+      },
+      {
+        path: 'write-name',
+        name: 'WriteName',
+        component: resolve => require(['@/views/invite/write-name/write-name'], resolve),
+        hidden: true,
+        meta: {
+          title: '填写姓名'
+        }
+      },
+    ]
+  },
+  {
+    path: '/application',
+    name: 'Application',
+    component: resolve => require(['@/views/invite/application/application'], resolve),
+    hidden: true,
+    meta: {
+      title: '申请成功'
+    }
+  },
+
+  /**
+   * 用户端首页
+   */
+
   {
     path: '/',
     component: Layout,
@@ -131,6 +178,9 @@ export const constantRoutes = [{
     }]
   },
 
+  /**
+   * 工作台应用程序
+   */
   {
     path: '/apps',
     component: Layout,
@@ -158,7 +208,7 @@ export const constantRoutes = [{
       {
         path: '/order',
         name: 'Order',
-        component: resolve => require(['@/views/order/order'], resolve),
+        component: resolve => require(['@/views/apps/order/order'], resolve),
         meta: {
           title: '客户订单汇总管理',
           icon: "collect",
@@ -168,7 +218,7 @@ export const constantRoutes = [{
       {
         path: '/order/order-detail',
         name: 'Order-detail',
-        component: resolve => require(['@/views/order/order-detail'], resolve),
+        component: resolve => require(['@/views/apps/order/order-detail'], resolve),
         meta: {
           title: '客户订单汇总管理',
           icon: "collect",

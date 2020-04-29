@@ -63,9 +63,9 @@
 
       <div class="tips">
         <p>
+          <router-link to="register" class="business">注册</router-link>
           <span class="txt">或</span>
-          <!-- <span class="business" @click="$router.push('register')">创建企业</span> -->
-          <router-link to="register" class="business">创建企业</router-link>
+          <router-link to="enterprise" class="business">创建企业</router-link>
         </p>
         <p class="forget">忘记密码？</p>
       </div>
@@ -262,14 +262,4 @@ $i-fs: 19px;
 //   }
 // }
 
-@media screen and (max-width: 1480px) {
-  .login-img {
-    display: none;
-  }
-}
-@media screen and (max-height: 720px) {
-  .login-img {
-    display: none;
-  }
-}
 </style>

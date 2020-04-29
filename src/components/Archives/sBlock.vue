@@ -8,7 +8,7 @@
         <div v-else @click="isEdit = false">保存</div>
       </div>
     </div>
-    <el-form label-position="left" :model="formData">
+    <el-form label-position="left">
       <slot :isEdit="isEdit"></slot>
     </el-form>
   </div>
@@ -60,9 +60,11 @@ export default {
       flex-shrink: 0;
       color: #409EFF;
       padding-left: 13px;
+      user-select: none;
     }
   }
   .el-form {
+    font-size: 0;
     padding: 32px 0;
   }
 }

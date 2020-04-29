@@ -41,8 +41,8 @@ export default {
 
 <style lang="scss" scoped>
 .steps-container {
-  display: inline-block;
   color: #909399;
+  height: fit-content;
   border-right: 3px solid #F3F3F3;
   position: relative;
   &:before,&:after {

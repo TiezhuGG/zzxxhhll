@@ -7,15 +7,25 @@
             <steps @change="handleStep" :step-active="stepActive" :steps-list="stepsList"/>
           </template>
           <template #sblock>
-            <sblock title="系统信息" :can-edit="true">
+            <sblock v-for="(item, index) of stepsList" :key="index" :title="item.name" :can-edit="item.isEdit">
               <template #default="slotProps">
-                <data-space :isEdit="slotProps.isEdit" :formData="slotProps.formData" name="name" title="实人认证" value="未授权">
-                  <template #button>
-                    <div class="button">详情</div>
-                  </template>
+                <data-space
+                  v-for="(spItem, spIndex) of item.children"
+                  :key="spIndex"
+                  :isEdit="slotProps.isEdit"
+                  :formData="slotProps.formData"
+                  :title="spItem.title"
+                  v-model="spItem.value"
+                  :button="spItem.button">
                 </data-space>
               </template>
             </sblock>
+<!--            <sblock title="基本信息" :can-edit="true">-->
+<!--              <template #default="spaceProps">-->
+<!--                <data-space :isEdit="spaceProps.isEdit" name="name" title="姓名" value="林青霞"/>-->
+<!--                <data-space :isEdit="spaceProps.isEdit" name="edit" title="邮箱" value="3006425234@qq.com"/>-->
+<!--              </template>-->
+<!--            </sblock>-->
           </template>
         </archives>
       </el-tab-pane>
@@ -204,30 +214,46 @@ export default {
       stepActive: 0,
       stepsList: [{
         name: '系统信息',
-        isEdit: true,
+        isEdit: false,
         children: [{
-          name: '实人认证',
+          title: '实人认证',
+          name: 'name',
           value: '未授权',
-          trueValue: '0',
           url: 'http://www.baidu.com',
-          is_show: true,
           button: '详情'
         }, {
-          name: '证件号码',
+          title: '证件号码',
+          name: 'code',
           value: '35050***********3X',
-          trueValue: '0',
           url: 'http://www.baidu.com',
-          is_show: true,
           button: '显示'
         }]
       }, {
         name: '系统信息2',
-        isEdit: false,
+        isEdit: true,
         children: [{
-          name: '实人认证',
+          title: '实人认证',
+          name: 'name',
           value: '未授权',
-          trueValue: '0',
           url: 'http://www.baidu.com'
+        }, {
+          title: '证件号码',
+          name: 'code',
+          value: '35050***********3X',
+          url: 'http://www.baidu.com',
+          button: '显示'
+        }]
+      }, {
+        name: '基本信息',
+        isEdit: true,
+        children: [{
+          title: '姓名',
+          name: 'name',
+          value: '林青霞'
+        }, {
+          title: '邮箱',
+          name: 'code',
+          value: '3006425234@qq.com'
         }]
       }]
     }
@@ -241,6 +267,9 @@ export default {
   methods: {
     handleStep({ index, name }) {
       this.stepActive = index
+    },
+    handleSpace(e) {
+      console.log(e)
     }
   }
 }

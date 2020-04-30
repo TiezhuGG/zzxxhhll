@@ -1,5 +1,5 @@
 <template>
-  <div id="tags-view-container" class="tags-view-container">
+  <div v-if="!isShow" id="tags-view-container" class="tags-view-container">
     <scroll-pane ref="scrollPane" class="tags-view-wrapper">
       <router-link
         v-for="tag in visitedViews"
@@ -50,6 +50,9 @@ export default {
     },
     isApp() {
       return this.$route.path.includes('apps')
+    },
+    isShow() {
+      return this.$route.meta.hiddenTag || false
     }
     // routes() {
     //   return this.$store.state.permission.routes

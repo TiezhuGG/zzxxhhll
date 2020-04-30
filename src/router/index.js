@@ -7,6 +7,8 @@ Vue.use(Router)
 import Layout from '@/layout'
 
 import apps from './modules/apps'
+import user from './modules/user'
+import changeuser from './modules/changeuser'
 /**
  * Note: sub-menu only appear when route children.length >= 1
  * Detail see: https://panjiachen.github.io/vue-element-admin-site/guide/essentials/router-and-nav.html
@@ -34,83 +36,32 @@ import apps from './modules/apps'
 
 export const constantRoutes = [
   /**
-   * 登录注册
+   * 用户端首页
    */
   {
-    path: '/user',
-    redirect: '/user/login',
-    component: resolve => require(['@/views/user/index'], resolve),
-    hidden: true,
+    path: '/',
+    component: Layout,
+    redirect: '/index',
     children: [{
-      path: 'login',
-      name: 'Login',
-      component: resolve => require(['@/views/user/login/login'], resolve),
-      hidden: true,
+      path: 'index',
+      name: 'Index',
+      component: resolve => require(['@/views/index/index'], resolve),
       meta: {
-        title: '登录'
+        title: '工作台',
+        icon: 'use'
       }
-    },
-    {
-      path: 'register',
-      name: 'Register',
-      component: resolve => require(['@/views/user/register/register'], resolve),
-      hidden: true,
-      meta: {
-        title: '注册'
-      }
-    },
-    {
-      path: 'verify-code',
-      name: 'VerifyCode',
-      component: resolve => require(['@/views/user/verify-code/verify-code'], resolve),
-      hidden: true,
-      meta: {
-        title: '验证码'
-      }
-    },
-    {
-      path: 'set-password',
-      name: 'SetPassword',
-      component: resolve => require(['@/views/user/set-password/set-password'], resolve),
-      hidden: true,
-      meta: {
-        title: '设置密码'
-      }
-    },
-    {
-      path: 'enterprise',
-      name: 'Enterprise',
-      component: resolve => require(['@/views/user/enterprise/enterprise'], resolve),
-      hidden: true,
-      meta: {
-        title: '注册企业'
-      }
-    },
-    {
-      path: 'has-enterprise',
-      name: 'HasEnterprise',
-      component: resolve => require(['@/views/user/has-enterprise/has-enterprise'], resolve),
-      hidden: true,
-      meta: {
-        title: '已有企业'
-      }
-    },
-    {
-      path: 'unreviewed',
-      name: 'Unreviewed',
-      component: resolve => require(['@/views/user/unreviewed/unreviewed'], resolve),
-      hidden: true,
-      meta: {
-        title: '申请企业未审批'
-      }
-    }
-    ]
+    }]
   },
+  /**
+   * 登录注册
+   */
+  user,
+  // 修改密码
+  changeuser,
 
   /**
    *  邀请加入团队
    */
-
   {
     path: '/invite',
     redirect: '/invite/member',
@@ -144,26 +95,7 @@ export const constantRoutes = [
       title: '申请成功'
     }
   },
-
-  /**
-   * 用户端首页
-   */
-
-  {
-    path: '/',
-    component: Layout,
-    redirect: '/index',
-    children: [{
-      path: 'index',
-      name: 'Index',
-      component: resolve => require(['@/views/index/index'], resolve),
-      meta: {
-        title: '工作台',
-        icon: 'use'
-      }
-    }]
-  },
-
+  // 联系人
   {
     path: '/contact',
     component: Layout,
@@ -186,7 +118,7 @@ export const constantRoutes = [
           title: '添加团队成员',
           icon: 'record'
         }
-      },
+      }
     ]
   },
 
@@ -221,7 +153,6 @@ const createRouter = () => new Router({
 
 const router = createRouter()
 
-// Detail see: https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465
 export function resetRouter() {
   const newRouter = createRouter()
   router.matcher = newRouter.matcher // reset router

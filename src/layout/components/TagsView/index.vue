@@ -52,7 +52,8 @@ export default {
       return this.$route.path.includes('apps')
     },
     isShow() {
-      return this.$route.meta.hiddenTag || false
+      const e = this.$route.meta.hiddenTag
+      return typeof e !== 'undefined' ? e : false
     }
     // routes() {
     //   return this.$store.state.permission.routes
@@ -278,6 +279,7 @@ export default {
     font-weight:500;
     text-align: center;
     background:rgba(255,255,255,1);
+    user-select: none;
   }
 }
 </style>

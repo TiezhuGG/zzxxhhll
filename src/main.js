@@ -42,6 +42,8 @@ Vue.component('zx-search', ZxSearch)
 
 Vue.config.productionTip = false
 
+Vue.prototype.$api = require('@/utils/utils.js')
+
 new Vue({
   el: '#app',
   router,

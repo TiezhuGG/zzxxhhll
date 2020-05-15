@@ -36,7 +36,7 @@ export default {
           name: "产品系统"
         },
         {
-          url: "/order",
+          url: "/apps/order",
           icon: "collect",
           name: "订单汇总"
         }

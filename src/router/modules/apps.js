@@ -25,7 +25,7 @@ const apps = {
     }
   },
   {
-    path: '/order',
+    path: 'order',
     name: 'Order',
     component: resolve => require(['@/views/apps/order/order'], resolve),
     meta: {
@@ -34,9 +34,9 @@ const apps = {
       activeMenu: '/index'
     }
   }, {
-    path: '/order/order-detail',
-    name: 'Order-detail',
-    component: resolve => require(['@/views/apps/order/order-detail'], resolve),
+    path: 'order-detail',
+    name: 'OrderDetail',
+    component: resolve => require(['@/views/apps/order/detail'], resolve),
     meta: {
       title: '客户订单汇总管理',
       icon: 'collect',

@@ -38,7 +38,7 @@
                 effect="dark"
                 content="查看"
                 placement="top"
-                @click.native="$router.push('/order/order-detail')"
+                @click.native="$router.push({ name: 'OrderDetail' })"
               >
                 <i class="el-icon-search"/>
               </el-tooltip>

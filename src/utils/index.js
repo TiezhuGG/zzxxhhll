@@ -8,7 +8,7 @@
  * @param {string} cFormat
  * @returns {string | null}
  */
-import Router from '@/router'
+// import Router from 'router'
 export function parseTime(time, cFormat) {
   if (arguments.length === 0) {
     return null

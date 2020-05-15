@@ -39,6 +39,11 @@ export default {
           url: "/order",
           icon: "collect",
           name: "订单汇总"
+        },
+        {
+          url: "/material",
+          icon: "namematerial",
+          name: "材料名称表"
         }
       ]
     };

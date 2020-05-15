@@ -70,6 +70,9 @@ div:focus {
   padding: 20px;
 }
 
+.wrap {
+  padding: 27px;
+}
 [style*=background-image] {
   background-repeat: no-repeat;
   background-size: cover;
@@ -98,5 +101,38 @@ div:focus {
     font-size: 16px;
     border-radius:3px;
     border:1px solid rgba(220,223,230,1);
+  }
+}
+
+.flex-sb {
+  display: flex;
+  justify-content: space-between;
+}
+
+.choose {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height:227px;
+  padding: 40px 27px;
+  .el-form {
+    display: flex;
+    padding-right: 200px;
+    .el-form-item {
+      flex-grow: 1;
+      /*display: flex;*/
+      .el-input {
+        max-width: 293px;
+      }
+    }
+  }
+  .buttons {
+    text-align: right;
+    .svg-icon {
+      margin-right: 10px;
+    }
+    button:nth-child(n+2) {
+      color: #409EFF;
+    }
   }
 }

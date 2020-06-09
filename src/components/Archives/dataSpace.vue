@@ -11,7 +11,7 @@
       </div>
     </div>
     <div v-else class="form">
-      <el-form-item :prop="name" :label="title + '：'">
+      <el-form-item :label="title + '：'">
         <el-input v-model="dsValue"></el-input>
       </el-form-item>
     </div>

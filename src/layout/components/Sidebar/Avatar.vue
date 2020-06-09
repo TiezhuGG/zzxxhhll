@@ -23,7 +23,7 @@
             <p>修改密码</p>
             <i class="el-icon-arrow-right"/>
           </div>
-          <div @click="topage('/')" class="option">
+          <div @click="topage('/changeuser/TelOne')" class="option">
             <p>修改手机号码</p>
             <i class="el-icon-arrow-right"/>
           </div>
@@ -31,7 +31,7 @@
             <p>切换企业</p>
             <i class="el-icon-arrow-right"/>
           </div>
-          <div @click="topage('/')" class="option">
+          <div @click="topage('/changeuser/OutFirm')" class="option">
             <p>退出该企业</p>
             <i class="el-icon-arrow-right"/>
           </div>
@@ -52,6 +52,13 @@ export default {
     return {
       userSettingShow: false
     }
+  },
+  mounted() {
+    document.addEventListener('click', e => {
+      if (!this.$el.contains(e.target)) {
+        this.userSettingShow = false // 这句话的意思是点击其他区域关闭（也可以根据自己需求写触发事件）
+      }
+    })
   },
   methods: {
     topage(url) {

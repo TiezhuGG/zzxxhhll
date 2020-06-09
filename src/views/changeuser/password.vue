@@ -1,6 +1,6 @@
 <template>
   <layout>
-    <el-form label-position="right" model="formData">
+    <el-form label-position="right" :model="formData">
       <el-form-item label="旧密码" prop="oldpassword">
         <el-input v-model="formData.oldpassword"/>
       </el-form-item>
@@ -14,15 +14,17 @@
         <el-button type="primary">提交</el-button>
       </div>
     </el-form>
+    <contact/>
   </layout>
 </template>
 
 <script>
-import Layout from './layout'
+import { Contact, Layout } from './index'
 export default {
   name: 'Index',
   components: {
-    Layout
+    Layout,
+    Contact
   },
   data() {
     return {
@@ -34,6 +36,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-</style>

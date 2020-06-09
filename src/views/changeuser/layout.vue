@@ -3,10 +3,6 @@
     <header>{{ title }}</header>
     <main>
       <slot></slot>
-      <div class="contact">
-        <p>如有任何疑问，请及时联系我们</p>
-        <p><span>E-mail：cx@le-cx.com</span><span>电话：15359991502</span>     </p>
-      </div>
     </main>
   </div>
 </template>
@@ -40,6 +36,7 @@ export default {
     margin-top: 27px;
   }
   label {
+    width: 150px;
     line-height: 59px;
   }
   .el-input {
@@ -76,15 +73,6 @@ export default {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    .contact{
-      line-height: 50px;
-      color: #999999;
-      margin-top: 160px;
-      text-align: center;
-      span:nth-child(2) {
-        margin-left: 50px;
-      }
-    }
   }
 }
 </style>

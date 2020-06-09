@@ -177,30 +177,6 @@ export default {
       border-radius:11px;
       overflow: hidden;
     }
-    .choose {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      height:227px;
-      padding: 40px 27px;
-      .el-form {
-        display: flex;
-        padding-right: 200px;
-        .el-form-item {
-          flex-grow: 1;
-          /*display: flex;*/
-        }
-      }
-      .buttons {
-        text-align: right;
-        .svg-icon {
-          margin-right: 10px;
-        }
-        button:nth-child(n+2) {
-          color: #409EFF;
-        }
-      }
-    }
     .payroll-content {
       margin-top: 20px;
       border-top-left-radius: 0;

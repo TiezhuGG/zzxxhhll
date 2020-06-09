@@ -11,34 +11,34 @@
           </div>
         </div>
         <div class="options">
-          <router-link to="/" class="option">
+          <div @click="topage('/')" class="option">
             <p>管理后台</p>
             <i class="el-icon-arrow-right"/>
-          </router-link>
-          <router-link to="/" class="option">
+          </div>
+          <div @click="topage('/')" class="option">
             <p>邀请</p>
             <i class="el-icon-arrow-right"/>
-          </router-link>
-          <router-link to="/" class="option">
+          </div>
+          <div @click="topage('/changeuser')" class="option">
             <p>修改密码</p>
             <i class="el-icon-arrow-right"/>
-          </router-link>
-          <router-link to="/" class="option">
+          </div>
+          <div @click="topage('/')" class="option">
             <p>修改手机号码</p>
             <i class="el-icon-arrow-right"/>
-          </router-link>
-          <router-link to="/" class="option">
+          </div>
+          <div @click="topage('/')" class="option">
             <p>切换企业</p>
             <i class="el-icon-arrow-right"/>
-          </router-link>
-          <router-link to="/" class="option">
+          </div>
+          <div @click="topage('/')" class="option">
             <p>退出该企业</p>
             <i class="el-icon-arrow-right"/>
-          </router-link>
-          <router-link to="/" class="option">
+          </div>
+          <div @click="topage('/')" class="option">
             <p>退出登录</p>
             <i class="el-icon-arrow-right"/>
-          </router-link>
+          </div>
         </div>
       </div>
     </transition>
@@ -51,6 +51,12 @@ export default {
   data() {
     return {
       userSettingShow: false
+    }
+  },
+  methods: {
+    topage(url) {
+      this.$router.push({ path: url })
+      this.userSettingShow = false
     }
   }
 }

@@ -1,5 +1,4 @@
-import layout from '@/layout'
-import Layout from "@/layout/index";
+import Layout from '@/layout'
 
 const apps = {
   path: '/apps',

@@ -131,7 +131,6 @@ $s-fs: 17px;
 $i-fs: 19px;
 
 .password-container {
-
   .login-form {
     text-align: center;
 
@@ -157,5 +156,4 @@ $i-fs: 19px;
     }
   }
 }
-
 </style>

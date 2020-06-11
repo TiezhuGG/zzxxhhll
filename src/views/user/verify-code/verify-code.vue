@@ -2,8 +2,7 @@
   <div class="code-container">
     <el-form
       ref="loginForm"
-      :model="loginForm"
-      :rules="loginRules"
+      :model="codeForm"
       class="login-form"
       auto-complete="on"
       label-position="left"
@@ -12,32 +11,34 @@
       <div class="title-container">
         <h3 class="title">验证手机号</h3>
         <p class="warning">
-          <span>请输入发送至 +86 13559422200 的 6 位验证码，有效</span>
+          <span>请输入发送至 +86 {{ user.info.mobile }} 的 6 位验证码，有效</span>
           <span>期十分钟。如未收到，请尝试重新获取验证码。</span>
         </p>
       </div>
 
-      <!-- <el-form-item prop="username" class="code"> -->
-      <el-form-item class="code">
-        <el-input
-          v-for="(code, index) in codes"
-          v-model="code.value"
-          :key="index"
-          name="code"
-          maxlength="1"
-          type="text"
-          autofocus="true"
-          class="code-input"
-        ></el-input>
-      </el-form-item>
+      <div class="code">
+        <el-form-item>
+          <el-input
+            v-for="(code, index) in codeForm.codes"
+            :key="index"
+            v-model="code.value"
+            name="code"
+            maxlength="1"
+            type="number"
+            autofocus="true"
+            class="code-input"
+          ></el-input>
+        </el-form-item>
+        <span v-if="showWarn">{{ message }}</span>
+      </div>
 
       <div class="bottom-section">
-        <span class="prompt">46秒后可重新获取验证码</span>
+        <span class="prompt" v-if="!showTimer">{{ countDownTimer }} {{ promptMessage }}</span>
 
         <el-button
           :loading="loading"
           type="primary"
-          @click.native.prevent="$router.push('set-password')"
+          @click.native.prevent="next"
           class="login-button"
         >下一步</el-button>
       </div>
@@ -46,59 +47,73 @@
 </template>
 
 <script>
-import { validRegisterUsername } from "@/utils/validate";
+import { mapState } from "vuex";
+import { validNumber } from "@/utils/validate";
+import { getVerifyCode } from '@/api/user'
 import Back from "../components/Back";
 
 export default {
   name: "VerifyCode",
   data() {
-    const validateUsername = (rule, value, callback) => {
-      if (!validRegisterUsername(value)) {
-        callback(new Error("请输入正确的用户名"));
+    const validateNumber = (rule, value, callback) => {
+      if (!validNumber(value)) {
+        callback(new Error("请输入正确的验证码"));
       } else {
         callback();
       }
     };
     return {
-      loginForm: {
-        username: ""
-      },
-      loginRules: {
-        username: [
-          { required: true, trigger: "blur", validator: validateUsername }
+      codeForm: {
+        codes: [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
         ]
       },
+      message: "请输入正确的验证码",
+      showWarn: false,
+      showTimer: false,
       loading: false,
-      codes: [
-        { value: "" },
-        { value: "" },
-        { value: "" },
-        { value: "" },
-        { value: "" },
-        { value: "" }
-      ]
+      countDownTimer: null,
+      promptMessage: "秒后可重新获取验证码"
     };
   },
+  computed: {
+    ...mapState(["user"])
+  },
+  created() {
+    this.countDown();
+  },
   methods: {
-    register() {
-      this.$refs.loginForm.validate(valid => {
-        if (valid) {
-          console.log("valid", this.loginForm);
-          this.loading = true;
-          this.$store
-            .dispatch("user/register", this.loginForm)
-            .then(() => {
-              this.$router.push({ path: "/" });
-              this.loading = false;
-            })
-            .catch(() => {
-              this.loading = false;
-            });
+    // 获取验证码
+    getCode(){
+      getVerifyCode()
+    }, 
+    next() {
+      for (let item of this.codeForm.codes) {
+        if (!item.value) {
+          this.showWarn = true;
         } else {
-          console.log("注册失败");
-          return false;
+          this.showWarn = false;
         }
-      });
+      }
+      console.log(this.codeForm.codes);
+    },
+    countDown() {
+      this.countDownTimer = 60;
+      setInterval(() => {
+        if (this.countDownTimer > 0) {
+          this.countDownTimer = this.countDownTimer - 1;
+          console.log(this.countDownTimer);
+          if (this.countDownTimer == 0) {
+            this.countDownTimer = "";
+            this.promptMessage = "请重新获取验证码";
+          }
+        }
+      }, 1000);
     }
   },
   components: {
@@ -123,7 +138,16 @@ export default {
     justify-content: space-around;
   }
 }
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+}
 </style>
+
 
 <style lang="scss" scoped>
 $h-color: #333;
@@ -135,9 +159,15 @@ $i-fs: 19px;
 .code-container {
   .login-form {
     .code {
+      text-align: center;
       .code-input {
         width: 59px;
         height: 59px;
+      }
+      span {
+        display: inline-block;
+        color: red;
+        margin-bottom: 30px;
       }
     }
 

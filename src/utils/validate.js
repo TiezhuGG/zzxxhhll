@@ -31,7 +31,7 @@ export function validName(str) {
   } else {
     return true
   }
-} 
+}
 
 /**
  * @param {string} str
@@ -44,12 +44,12 @@ export function validEnterpriseName(str) {
   } else {
     return true
   }
-} 
+}
 
 /**
  * @param {string} str
  */
-export function validRegisterUsername(str) {
+export function validMobile(str) {
   // 验证注册手机号
   const phoneReg = /^(13[0-9]{9})|(15[0-9][0-9]{8})|(18[0-9][0-9]{8})$/
   if (!phoneReg.test(str)) {
@@ -57,4 +57,34 @@ export function validRegisterUsername(str) {
   } else {
     return true
   }
+}
+
+/**
+ * @param {string} str
+ */
+export function validNumber(str) {
+  console.log(str)
+  for (let aa of str) {
+    console.log(aa.value)
+    if (parseFloat(aa.value).toString() == "NaN") {
+      console.log('不是数字')
+      return false;
+    } else {
+      console.log('是数字')
+      return true;
+    }
+  }
+  // 验证数字(验证码)
+  // const numberReg = /^\d{6}$/
+  // if (!numberReg.test(str)) {
+  //   console.log('验证失败')
+  //   console.log(numberReg.test(str))
+  //   console.log(str)
+  //   return false
+  // } else {
+  //   console.log('验证成功')
+  //   console.log(numberReg.test(str))
+  //   console.log(str)
+  //   return true
+  // }
 }

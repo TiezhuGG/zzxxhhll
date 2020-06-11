@@ -63,9 +63,9 @@
 
       <div class="tips">
         <p>
-          <router-link to="register" class="business">注册</router-link>
+          <!-- <router-link to="register" class="business">注册</router-link> -->
           <span class="txt">或</span>
-          <router-link to="enterprise" class="business">创建企业</router-link>
+          <router-link to="register" class="business">创建企业</router-link>
         </p>
         <p class="forget">忘记密码？</p>
       </div>

@@ -1,9 +1,9 @@
 <template>
   <div class="register-container">
     <el-form
-      ref="loginForm"
-      :model="loginForm"
-      :rules="loginRules"
+      ref="registerForm"
+      :model="registerForm"
+      :rules="registerRules"
       class="login-form"
       auto-complete="on"
       label-position="left"
@@ -15,13 +15,13 @@
         <span class="warning">与你的团队成员和朋友进行交流与协作。</span>
       </div>
 
-      <el-form-item prop="username">
+      <el-form-item prop="mobile">
         <div>
           <el-input
             placeholder="请输入你的手机号"
-            ref="username"
-            v-model="loginForm.username"
-            name="username"
+            ref="mobile"
+            v-model="registerForm.mobile"
+            name="mobile"
             type="text"
             tabindex="1"
             auto-complete="on"
@@ -47,7 +47,7 @@
       <el-button
         :loading="loading"
         type="primary"
-        @click.native.prevent="$router.push('verify-code')"
+        @click.native.prevent="next()"
         class="login-button"
       >下一步</el-button>
     </el-form>
@@ -55,27 +55,25 @@
 </template>
 
 <script>
-import { validRegisterUsername } from "@/utils/validate";
+import { validMobile } from "@/utils/validate";
 import Back from "../components/Back";
 
 export default {
   name: "Register",
   data() {
-    const validateUsername = (rule, value, callback) => {
-      if (!validRegisterUsername(value)) {
-        callback(new Error("请输入正确的用户名"));
+    const validateMobile = (rule, value, callback) => {
+      if (!validMobile(value)) {
+        callback(new Error("请输入正确的手机号"));
       } else {
         callback();
       }
     };
     return {
-      loginForm: {
-        username: ""
+      registerForm: {
+        mobile: ""
       },
-      loginRules: {
-        username: [
-          { required: true, trigger: "blur", validator: validateUsername }
-        ]
+      registerRules: {
+        mobile: [{ required: true, trigger: "blur", validator: validateMobile }]
       },
       loading: false,
       select: "",
@@ -83,26 +81,42 @@ export default {
     };
   },
   methods: {
-    register() {
-      this.$refs.loginForm.validate(valid => {
+    // 下一步
+    next() {
+      this.$refs.registerForm.validate(valid => {
         if (valid) {
-          console.log("valid", this.loginForm);
+          // console.log("valid", valid, this.registerForm);
           this.loading = true;
-          this.$store
-            .dispatch("user/register", this.loginForm)
-            .then(() => {
-              this.$router.push({ path: "/verify-code" });
-              this.loading = false;
-            })
-            .catch(() => {
-              this.loading = false;
-            });
-        } else {
-          console.log("注册失败");
-          return false;
+          this.$router.push({ path: "/user/verify-code" });
+          // 保存mobile到vuex
+          this.$store.commit("user/SET_INFO", {
+            mobile: this.registerForm.mobile
+          });
+          // console.log(this.$store.state.user);
         }
       });
     }
+
+    // register() {
+    //   this.$refs.registerForm.validate(valid => {
+    //     if (valid) {
+    //       console.log("valid", this.registerForm);
+    //       this.loading = true;
+    //       this.$store
+    //         .dispatch("user/register", this.registerForm)
+    //         .then(() => {
+    //           this.$router.push({ path: "/verify-code" });
+    //           this.loading = false;
+    //         })
+    //         .catch(() => {
+    //           this.loading = false;
+    //         });
+    //     } else {
+    //       console.log("注册失败");
+    //       return false;
+    //     }
+    //   });
+    // }
   },
   components: {
     Back
@@ -172,5 +186,4 @@ $i-fs: 19px;
     }
   }
 }
-
 </style>

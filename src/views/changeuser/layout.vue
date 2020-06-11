@@ -9,30 +9,28 @@
 
 <script>
 export default {
-  name: 'Layout',
+  name: "Layout",
   data() {
-    return {
-
-    }
+    return {};
   },
   computed: {
     title() {
-      return this.$route.meta.title
+      return this.$route.meta.title;
     }
   },
   mounted() {
-    console.log(this.$route)
+    console.log(this.$route);
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
->>>.el-form-item {
+>>> .el-form-item {
   margin: 0;
   font-size: 19px;
   display: flex;
   justify-content: center;
-  &:nth-child(n+2) {
+  &:nth-child(n + 2) {
     margin-top: 27px;
   }
   label {
@@ -40,33 +38,32 @@ export default {
     line-height: 59px;
   }
   .el-input {
-    width:429px;
+    width: 429px;
     input {
       height: 59px;
     }
   }
 }
->>>.button {
+>>> .button {
   display: flex;
   justify-content: center;
   padding-top: 120px;
   .el-button {
-    width:184px;
-    height:53px;
+    width: 184px;
+    height: 53px;
     font-size: 19px;
   }
-;
 }
 .password-container {
   height: 100vh;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   header {
     width: 100%;
     line-height: 80px;
     padding: 0 32px;
-    font-weight:400;
+    font-weight: 400;
     font-size: 24px;
-    border-bottom: 1px solid #DEE0E3;
+    border-bottom: 1px solid #dee0e3;
   }
   main {
     height: 100%;

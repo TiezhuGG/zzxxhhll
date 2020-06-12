@@ -1,9 +1,9 @@
 import request from '@/utils/request'
 
+// 注册
 export function register(data) {
   console.log('发起注册请求')
   return request({
-    // url: '/vue-admin-template/user/register',
     url: 'admin_register',
     method: 'post',
     data
@@ -19,9 +19,10 @@ export function getVerifyCode(data) {
   })
 }
 
+// 登录
 export function login(data) {
   return request({
-    url: '/vue-admin-template/user/login',
+    url: 'admin_login',
     method: 'post',
     data
   })

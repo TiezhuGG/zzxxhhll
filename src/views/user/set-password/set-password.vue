@@ -2,8 +2,8 @@
   <div class="password-container">
     <el-form
       ref="loginForm"
-      :model="loginForm"
-      :rules="loginRules"
+      :model="passwordForm"
+      :rules="passwordRules"
       class="login-form"
       auto-complete="on"
       label-position="left"
@@ -11,14 +11,14 @@
       <Back />
       <div class="title-container">
         <h3 class="title">设置密码</h3>
-        <span class="warning">请输入6-20位密码，且同时包含数字与字母。</span>
+        <span class="warning">请输入8-20位密码，且同时包含数字与字母。</span>
       </div>
 
       <el-form-item prop="password">
         <el-input
-          :key="passwordType"
+          key="password"
           ref="password"
-          v-model="loginForm.password"
+          v-model="passwordForm.password"
           :type="passwordType"
           placeholder="请输入你的密码"
           name="password"
@@ -28,13 +28,13 @@
         />
       </el-form-item>
 
-      <el-form-item prop="password">
+      <el-form-item prop="confirmPassword">
         <el-input
-          :key="passwordType"
-          ref="password"
-          v-model="loginForm.password"
+          key="confirmPassword"
+          ref="confirmPassword"
+          v-model="passwordForm.confirmPassword"
           :type="passwordType"
-          placeholder="请输入你的密码"
+          placeholder="请重新输入你的密码"
           name="password"
           tabindex="2"
           auto-complete="on"
@@ -45,7 +45,7 @@
       <el-button
         :loading="loading"
         type="primary"
-        @click.native.prevent="$router.push('login')"
+        @click.native.prevent="next"
         class="login-button"
       >注册</el-button>
     </el-form>
@@ -53,24 +53,32 @@
 </template>
 
 <script>
-import { validUsername } from "@/utils/validate";
 import Back from "../components/Back";
+import { register } from "@/api/user";
+import { Message } from 'element-ui'
+
 export default {
   name: "SetPassword",
   data() {
     const validatePassword = (rule, value, callback) => {
-      if (value.length < 6) {
-        callback(new Error("密码不能少于6位"));
+      if (value.length < 8) {
+        callback(new Error("密码不能少于8位"));
+      } else if (value.length > 20) {
+        callback(new Error("密码不能大于20位"));
       } else {
         callback();
       }
     };
     return {
-      loginForm: {
-        password: "111111"
+      passwordForm: {
+        password: "",
+        confirmPassword: ""
       },
-      loginRules: {
+      passwordRules: {
         password: [
+          { required: true, trigger: "blur", validator: validatePassword }
+        ],
+        confirmPassword: [
           { required: true, trigger: "blur", validator: validatePassword }
         ]
       },
@@ -78,27 +86,50 @@ export default {
       passwordType: "password"
     };
   },
+  created() {
+    console.log('user', this.$store.state.user)
+  },
 
   methods: {
-    register() {
-      this.$refs.loginForm.validate(valid => {
-        if (valid) {
-          this.loading = true;
-          this.$store
-            .dispatch("user/login", this.loginForm)
-            .then(() => {
-              this.$router.push({ path: this.redirect || "/" });
-              this.loading = false;
-            })
-            .catch(() => {
-              this.loading = false;
-            });
+    next() {
+      const password = this.passwordForm.password
+      const confirmPassword = this.passwordForm.confirmPassword
+      if(password && confirmPassword && password.length > 7 && password.length < 20) {
+        if(password === confirmPassword) {
+          console.log('password', this.passwordForm.password, 'confirmPassword',this.passwordForm.confirmPassword)
+          this.loading = true
+          // 保存密码到vuex
+          // this.$store.commit("user/setPassword", {
+          //   password: this.passwordForm.password,
+          // })
+          this.$router.push('/user/has-enterprise')
+          // let userInfo = this.$store.state.user.info;
+          // register({
+          //   mobile: userInfo.mobile.mobile,
+          //   password: userInfo.password.password,
+          //   password_confirmation: userInfo.password.password,
+          //   code: userInfo.code.code,
+          // }).then(() => {
+          //   this.loading = false;
+          //   this.$router.push('/user/has-enterprise')
+          // });
         } else {
-          console.log("error submit!!");
-          return false;
+          this.loading = false
+          Message({
+            message: '两次输入的密码不一致',
+            type: 'error',
+            duration: 5000
+          })
         }
-      });
-    }
+      } else {
+        this.loading = false
+        Message({
+          message: '请输入正确的密码',
+          type: 'error',
+          duration: 5000
+        })
+      }
+    },
   },
   components: {
     Back

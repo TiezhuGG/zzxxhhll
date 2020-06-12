@@ -25,7 +25,7 @@ export function validUsername(str) {
  */
 export function validName(str) {
   // 验证姓名
-  const nameReg = /^[\u4E00-\u9FA5]{2,4}$/
+  const nameReg = /^[\u4E00-\u9FA5a-zA-Z0-9_]{2,10}$/
   if (!nameReg.test(str)) {
     return false
   } else {
@@ -59,32 +59,3 @@ export function validMobile(str) {
   }
 }
 
-/**
- * @param {string} str
- */
-export function validNumber(str) {
-  console.log(str)
-  for (let aa of str) {
-    console.log(aa.value)
-    if (parseFloat(aa.value).toString() == "NaN") {
-      console.log('不是数字')
-      return false;
-    } else {
-      console.log('是数字')
-      return true;
-    }
-  }
-  // 验证数字(验证码)
-  // const numberReg = /^\d{6}$/
-  // if (!numberReg.test(str)) {
-  //   console.log('验证失败')
-  //   console.log(numberReg.test(str))
-  //   console.log(str)
-  //   return false
-  // } else {
-  //   console.log('验证成功')
-  //   console.log(numberReg.test(str))
-  //   console.log(str)
-  //   return true
-  // }
-}

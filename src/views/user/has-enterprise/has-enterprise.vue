@@ -15,7 +15,7 @@
 
       <div class="txt">
         没有你的企业?
-        <router-link to="login" class="other">登录其他账号</router-link >
+        <router-link to="enterprise" class="other">创建企业</router-link >
       </div>
     </el-form>
   </div>

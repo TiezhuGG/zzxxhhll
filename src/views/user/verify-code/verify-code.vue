@@ -11,7 +11,7 @@
       <div class="title-container">
         <h3 class="title">验证手机号</h3>
         <p class="warning">
-          <span>请输入发送至 +86 {{ user.info.mobile }} 的 6 位验证码，有效</span>
+          <span>请输入发送至 +86 {{ user.info.mobile.mobile }} 的 6 位验证码，有效</span>
           <span>期十分钟。如未收到，请尝试重新获取验证码。</span>
         </p>
       </div>
@@ -25,16 +25,17 @@
             name="code"
             maxlength="1"
             type="number"
+            onkeydown="if(this.value.length==1) return false;"
             autofocus="true"
             class="code-input"
           ></el-input>
         </el-form-item>
-        <span v-if="showWarn">{{ message }}</span>
+        <!-- <span v-if="showWarn">{{ message }}</span> -->
       </div>
 
       <div class="bottom-section">
-        <span class="prompt" v-if="!showTimer">{{ countDownTimer }} {{ promptMessage }}</span>
-
+        <span class="prompt" v-if="showTimer">{{ countDownTimer }} {{ promptMessage }}</span>
+        <span class="re-prompt" v-else @click="getCode">重新获取验证码</span>
         <el-button
           :loading="loading"
           type="primary"
@@ -49,19 +50,13 @@
 <script>
 import { mapState } from "vuex";
 import { validNumber } from "@/utils/validate";
-import { getVerifyCode } from '@/api/user'
+import { getVerifyCode } from "@/api/user";
+import { Message } from 'element-ui'
 import Back from "../components/Back";
 
 export default {
   name: "VerifyCode",
   data() {
-    const validateNumber = (rule, value, callback) => {
-      if (!validNumber(value)) {
-        callback(new Error("请输入正确的验证码"));
-      } else {
-        callback();
-      }
-    };
     return {
       codeForm: {
         codes: [
@@ -74,44 +69,74 @@ export default {
         ]
       },
       message: "请输入正确的验证码",
-      showWarn: false,
+      promptMessage: "秒后可重新获取验证码",
       showTimer: false,
       loading: false,
+      interval: null, // 定时任务对象
       countDownTimer: null,
-      promptMessage: "秒后可重新获取验证码"
+      verify_code: ""
     };
   },
   computed: {
     ...mapState(["user"])
   },
+  watch: {
+    "codeForm.codes": {
+      handler(newVal) {
+        // 构造6位数验证码
+        let list = [];
+        newVal.forEach(item => list.push(item.value));
+        this.verify_code = list.join("");
+      },
+      deep: true
+    }
+  },
+  beforeRouteEnter(to, from, next) {
+    next(vm => {
+      if(from.path === '/user/register') {
+        vm.countDown()
+      }
+    })
+  },
   created() {
-    this.countDown();
+    console.log('user', this.user)
+  },
+  destroyed() {
+    clearInterval(this.interval);
   },
   methods: {
-    // 获取验证码
-    getCode(){
-      getVerifyCode()
-    }, 
+    // 下一步
     next() {
-      for (let item of this.codeForm.codes) {
-        if (!item.value) {
-          this.showWarn = true;
-        } else {
-          this.showWarn = false;
-        }
+      if (this.verify_code.length !== 6) {
+        Message({
+          message: this.message,
+          type: 'error',
+          duration: 5000
+        })
+      } else {
+        this.loading = true;
+        // 验证码长度为6时存入vuex
+        this.$store.commit("user/setCode", {
+          code: this.verify_code
+        });
+        this.$router.push("/user/set-password");
       }
-      console.log(this.codeForm.codes);
     },
+    // 重新获取验证码
+    getCode() {
+      this.countDown();
+      getVerifyCode({ type: "register", mobile: this.user.info.mobile.mobile });
+    },
+    // 创建定时任务
     countDown() {
-      this.countDownTimer = 60;
-      setInterval(() => {
+      this.showTimer = true
+      this.countDownTimer = 5;
+      this.interval = setInterval(() => {
         if (this.countDownTimer > 0) {
           this.countDownTimer = this.countDownTimer - 1;
           console.log(this.countDownTimer);
-          if (this.countDownTimer == 0) {
-            this.countDownTimer = "";
-            this.promptMessage = "请重新获取验证码";
-          }
+        } else if (this.countDownTimer == 0) {
+            this.showTimer = false;
         }
       }, 1000);
     }
@@ -123,6 +148,14 @@ export default {
 </script>
 
 <style lang="scss">
+// 处理input type = number的上下箭头
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+}
 .code-container {
   .el-input__inner {
     height: 59px;
@@ -138,14 +171,6 @@ export default {
     justify-content: space-around;
   }
 }
-
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-}
-input[type="number"] {
-  -moz-appearance: textfield;
-}
 </style>
 
 
@@ -157,6 +182,7 @@ $s-fs: 17px;
 $i-fs: 19px;
 
 .code-container {
+  position: relative;
   .login-form {
     .code {
       text-align: center;
@@ -165,9 +191,10 @@ $i-fs: 19px;
         height: 59px;
       }
       span {
-        display: inline-block;
+        position: absolute;
+        top: 30%;
+        left: 16%;
         color: red;
-        margin-bottom: 30px;
       }
     }
 
@@ -202,6 +229,17 @@ $i-fs: 19px;
         color: $s-color;
         font-size: $s-fs;
       }
+
+      .re-prompt {
+        box-sizing: border-box;
+        margin-right: 285px;
+        padding: 15px;
+        font-size: $s-fs;
+        color: #fff;
+        background-color: #409eff;
+        border-radius: 3px;
+      }
+
       .login-button {
         width: 430px !important;
         height: 60px;

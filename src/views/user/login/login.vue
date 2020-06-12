@@ -27,9 +27,6 @@
           >
             <el-select v-model="select" slot="prepend" placeholder="+86" class="select">
               <el-option label="+86" value="1"></el-option>
-              <!-- <el-option label="2222" value="2"></el-option>
-              <el-option label="3333" value="3"></el-option>
-              <el-option label="4444" value="4"></el-option>-->
             </el-select>
           </el-input>
         </el-form-item>
@@ -65,7 +62,7 @@
         <p>
           <!-- <router-link to="register" class="business">注册</router-link> -->
           <span class="txt">或</span>
-          <router-link to="register" class="business">创建企业</router-link>
+          <router-link to="register" class="business">注册</router-link>
         </p>
         <p class="forget">忘记密码？</p>
       </div>
@@ -74,33 +71,34 @@
 </template>
 
 <script>
-import { validUsername } from "@/utils/validate";
+import { validMobile } from "@/utils/validate";
+import { login } from "@/api/user";
 
 export default {
   name: "Login",
   data() {
-    const validateUsername = (rule, value, callback) => {
-      if (!validUsername(value)) {
+    const validateMobile = (rule, value, callback) => {
+      if (!validMobile(value)) {
         callback(new Error("请输入正确的用户名"));
       } else {
         callback();
       }
     };
     const validatePassword = (rule, value, callback) => {
-      if (value.length < 6) {
-        callback(new Error("密码不能少于6位"));
+      if (value.length < 8) {
+        callback(new Error("请输入正确的密码"));
       } else {
         callback();
       }
     };
     return {
       loginForm: {
-        username: "admin",
-        password: "111111"
+        username: "",
+        password: ""
       },
       loginRules: {
         username: [
-          { required: true, trigger: "blur", validator: validateUsername }
+          { required: true, trigger: "blur", validator: validateMobile }
         ],
         password: [
           { required: true, trigger: "blur", validator: validatePassword }
@@ -122,27 +120,21 @@ export default {
     }
   },
   methods: {
-    showPwd() {
-      if (this.passwordType === "password") {
-        this.passwordType = "";
-      } else {
-        this.passwordType = "password";
-      }
-      this.$nextTick(() => {
-        this.$refs.password.focus();
-      });
-    },
     handleLogin() {
+      const mobile = this.loginForm.username;
+      const password = this.loginForm.password;
+      console.log("mobile", mobile);
+      console.log("password", password);
       this.$refs.loginForm.validate(valid => {
+        console.log("valid", valid);
         if (valid) {
           this.loading = true;
-          this.$store
-            .dispatch("user/login", this.loginForm)
-            .then(() => {
+          login({ mobile: mobile, password: password })
+            .then(res => {
               this.$router.push({ path: this.redirect || "/" });
               this.loading = false;
             })
-            .catch(() => {
+            .catch(err => {
               this.loading = false;
             });
         } else {
@@ -261,5 +253,4 @@ $i-fs: 19px;
 //     }
 //   }
 // }
-
 </style>

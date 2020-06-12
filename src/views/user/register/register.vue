@@ -29,9 +29,6 @@
           >
             <el-select v-model="select" slot="prepend" placeholder="+86">
               <el-option label="+86" value="1"></el-option>
-              <!-- <el-option label="2222" value="2"></el-option>
-              <el-option label="3333" value="3"></el-option>
-              <el-option label="4444" value="4"></el-option>-->
             </el-select>
           </el-input>
         </div>
@@ -56,6 +53,7 @@
 
 <script>
 import { validMobile } from "@/utils/validate";
+import { getVerifyCode } from "@/api/user";
 import Back from "../components/Back";
 
 export default {
@@ -85,14 +83,18 @@ export default {
     next() {
       this.$refs.registerForm.validate(valid => {
         if (valid) {
-          // console.log("valid", valid, this.registerForm);
           this.loading = true;
-          this.$router.push({ path: "/user/verify-code" });
           // 保存mobile到vuex
-          this.$store.commit("user/SET_INFO", {
+          this.$store.commit("user/setMobile", {
             mobile: this.registerForm.mobile
           });
-          // console.log(this.$store.state.user);
+          this.$router.push("/user/verify-code")
+          // 获取验证码
+          getVerifyCode({ type: "register", mobile: this.registerForm.mobile })
+          .then(() => {
+            this.loading = false
+            this.$router.push("/user/verify-code")
+          })
         }
       });
     }
@@ -125,8 +127,6 @@ export default {
 </script>
 
 <style lang="scss">
-/* 修复input 背景不协调 和光标变色 */
-/* Detail see https://github.com/PanJiaChen/vue-element-admin/pull/927 */
 .register-container {
   .el-select .el-input {
     width: 100px;

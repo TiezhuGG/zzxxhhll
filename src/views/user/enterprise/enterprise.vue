@@ -48,7 +48,7 @@
       <el-button
         :loading="loading"
         type="primary"
-        @click.native.prevent="register"
+        @click.native.prevent="enterpriseRegister"
         class="login-button"
       >进入针线互联</el-button>
     </el-form>
@@ -57,6 +57,7 @@
 
 <script>
 import { validName, validEnterpriseName } from "@/utils/validate";
+import { enterpriseRegister } from '@/api/user'
 import { Message } from "element-ui";
 import Back from "../components/Back";
 
@@ -89,7 +90,7 @@ export default {
     agree(e) {
       this.checked = e;
     },
-    register() {
+    enterpriseRegister() {
       const username = this.enterpriseForm.username;
       const enterpriseName = this.enterpriseForm.enterpriseName;
       if (username && enterpriseName) {
@@ -103,7 +104,13 @@ export default {
             enterpriseName: enterpriseName
           });
 
-          console.log(this.$store.state.user);
+          let userInfo = this.$store.state.user.info 
+          // enterpriseRegister({
+          //   real_name: userInfo.username.username,
+          //   password: userInfo.password.password,
+          //   password_confirmation: userInfo.password.password,
+          //   company_name: userInfo.enterpriseName.enterpriseName
+          // })
         } else {
           Message({
             message: "请先阅读并同意服务条款",

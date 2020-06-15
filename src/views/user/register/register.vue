@@ -34,7 +34,7 @@
         </div>
       </el-form-item>
 
-      <el-checkbox v-model="checked">
+      <el-checkbox v-model="checked" @change="agree">
         <span>我已阅读并同意</span>
         <span style="color:#409EFF">服务协议</span>
         <span>与</span>
@@ -54,6 +54,7 @@
 <script>
 import { validMobile } from "@/utils/validate";
 import { getVerifyCode } from "@/api/user";
+import { Message } from "element-ui";
 import Back from "../components/Back";
 
 export default {
@@ -75,50 +76,52 @@ export default {
       },
       loading: false,
       select: "",
-      checked: true
+      checked: false
     };
   },
   methods: {
+    // 同意条款
+    agree(e) {
+      this.checked = e;
+    },
     // 下一步
     next() {
       this.$refs.registerForm.validate(valid => {
         if (valid) {
-          this.loading = true;
-          // 保存mobile到vuex
-          this.$store.commit("user/setMobile", {
-            mobile: this.registerForm.mobile
+          if (this.checked) {
+            this.loading = true;
+            // 保存mobile到vuex
+            this.$store.commit("user/setMobile", {
+              mobile: this.registerForm.mobile
+            });
+            // 获取验证码
+            getVerifyCode({
+              type: "register",
+              mobile: this.registerForm.mobile
+            })
+              .then(() => {
+                this.loading = false;
+                this.$router.push("/user/verify-code");
+              })
+              .catch(() => {
+                this.loading = false;
+              });
+          } else {
+            Message({
+              message: "请先阅读并同意服务条款",
+              type: "error",
+              duration: 5000
+            });
+          }
+        } else {
+          Message({
+            message: "请输入手机号码",
+            type: "error",
+            duration: 5000
           });
-          this.$router.push("/user/verify-code")
-          // 获取验证码
-          getVerifyCode({ type: "register", mobile: this.registerForm.mobile })
-          .then(() => {
-            this.loading = false
-            this.$router.push("/user/verify-code")
-          })
         }
       });
     }
-
-    // register() {
-    //   this.$refs.registerForm.validate(valid => {
-    //     if (valid) {
-    //       console.log("valid", this.registerForm);
-    //       this.loading = true;
-    //       this.$store
-    //         .dispatch("user/register", this.registerForm)
-    //         .then(() => {
-    //           this.$router.push({ path: "/verify-code" });
-    //           this.loading = false;
-    //         })
-    //         .catch(() => {
-    //           this.loading = false;
-    //         });
-    //     } else {
-    //       console.log("注册失败");
-    //       return false;
-    //     }
-    //   });
-    // }
   },
   components: {
     Back

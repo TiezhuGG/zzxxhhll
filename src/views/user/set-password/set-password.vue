@@ -86,10 +86,6 @@ export default {
       passwordType: "password"
     };
   },
-  created() {
-    console.log('user', this.$store.state.user)
-  },
-
   methods: {
     next() {
       const password = this.passwordForm.password
@@ -99,20 +95,19 @@ export default {
           console.log('password', this.passwordForm.password, 'confirmPassword',this.passwordForm.confirmPassword)
           this.loading = true
           // 保存密码到vuex
-          // this.$store.commit("user/setPassword", {
-          //   password: this.passwordForm.password,
-          // })
-          this.$router.push('/user/has-enterprise')
-          // let userInfo = this.$store.state.user.info;
-          // register({
-          //   mobile: userInfo.mobile.mobile,
-          //   password: userInfo.password.password,
-          //   password_confirmation: userInfo.password.password,
-          //   code: userInfo.code.code,
-          // }).then(() => {
-          //   this.loading = false;
-          //   this.$router.push('/user/has-enterprise')
-          // });
+          this.$store.commit("user/setPassword", {
+            password: this.passwordForm.password,
+          })
+          let userInfo = this.$store.state.user.info;
+          register({
+            mobile: userInfo.mobile.mobile,
+            password: userInfo.password.password,
+            password_confirmation: userInfo.password.password,
+            code: userInfo.code.code,
+          }).then(() => {
+            this.loading = false;
+            this.$router.push('/user/has-enterprise')
+          });
         } else {
           this.loading = false
           Message({

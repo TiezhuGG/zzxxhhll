@@ -130,7 +130,7 @@ export default {
     // 创建定时任务
     countDown() {
       this.showTimer = true
-      this.countDownTimer = 5;
+      this.countDownTimer = 60;
       this.interval = setInterval(() => {
         if (this.countDownTimer > 0) {
           this.countDownTimer = this.countDownTimer - 1;

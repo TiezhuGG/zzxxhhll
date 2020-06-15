@@ -2,7 +2,7 @@
   <div class="choice-enterprise">
     <div class="container" v-for="(item, index) in enterpriseList" :key="index">
       <svg-icon :icon-class="item.svg"></svg-icon>
-      <span>{{ item.name }}</span>
+      <span>{{ item.company_name }}</span>
     </div>
   </div>
 </template>

@@ -1,8 +1,7 @@
 import request from '@/utils/request'
 
-// 注册
+// 用户注册
 export function register(data) {
-  console.log('发起注册请求')
   return request({
     url: 'admin_register',
     method: 'post',
@@ -25,6 +24,20 @@ export function login(data) {
     url: 'admin_login',
     method: 'post',
     data
+  })
+}
+
+// 获取企业列表
+export function getEnterpriseList() {
+  return request({
+    url: 'user_company_list',
+  })
+}
+
+// 注册企业
+export function enterpriseRegister() {
+  return request({
+    url: 'company/register',
   })
 }
 

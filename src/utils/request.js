@@ -13,13 +13,14 @@ const service = axios.create({
 // request interceptor
 service.interceptors.request.use(
     config => {
-        console.log('请求拦截')
+        const token = getToken()
+        console.log('request', token)
         // do something before request is sent
-        if (store.getters.token) {
+        if (token) {
             // let each request carry token
             // ['X-Token'] is a custom headers key
             // please modify it according to the actual situation
-            config.headers['Authorization'] = 'Bearer ' + getToken()
+            config.headers['Authorization'] = 'Bearer ' + token
         }
         return config
     },
@@ -53,6 +54,7 @@ service.interceptors.response.use(
                 type: 'success',
                 duration: 5000
             })
+            return res
         }
 
         // if the custom code is not 20000, it is judged as an error.

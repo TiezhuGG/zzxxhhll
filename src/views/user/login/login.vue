@@ -72,6 +72,7 @@
 
 <script>
 import { validMobile } from "@/utils/validate";
+import { setToken } from "@/utils/auth";
 import { login } from "@/api/user";
 
 export default {
@@ -131,7 +132,10 @@ export default {
           this.loading = true;
           login({ mobile: mobile, password: password })
             .then(res => {
-              this.$router.push({ path: this.redirect || "/" });
+              const token = res.data.token
+              setToken(token) // 将token存入本地Cookie
+              // this.$router.push({ path: this.redirect || "/" });
+              this.$router.push("has-enterprise");
               this.loading = false;
             })
             .catch(err => {

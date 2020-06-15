@@ -15,7 +15,7 @@
 
       <div class="txt">
         没有你的企业?
-        <router-link to="enterprise" class="other">创建企业</router-link >
+        <router-link to="enterprise" class="other">创建企业</router-link>
       </div>
     </el-form>
   </div>
@@ -23,6 +23,7 @@
 
 <script>
 import ChoiceEnterprise from "./components/ChoiceEnterprise";
+import { getEnterpriseList } from "@/api/user";
 
 export default {
   name: "HasEnterprise",
@@ -31,21 +32,32 @@ export default {
       enterprise_num: null, // 已有企业数量
       enterpriseList: [
         // 已有企业列表
-        { name: "厦门触享网络科技有限公司", svg: "analyze" },
-        { name: "大连万达集团股份有限公司", svg: "collect" },
-        { name: "杭州阿里巴巴集团股份有限公司", svg: "complement" }
+        // { name: "厦门触享网络科技有限公司", svg: "analyze" },
+        // { name: "大连万达集团股份有限公司", svg: "collect" },
+        // { name: "杭州阿里巴巴集团股份有限公司", svg: "complement" }
       ],
-      loading: false,
-      select: "",
-      checked: true
+      loading: false
     };
   },
   created() {
+    this.fetchEnterpriseList();
+
     if (this.enterpriseList.length) {
       this.enterprise_num = this.enterpriseList.length;
     }
   },
   methods: {
+    async fetchEnterpriseList() {
+      const res = await getEnterpriseList();
+      console.log("res", res);
+      this.enterprise_num = res.data.length;
+      if (res.data.company && res.data.is_allow === 1) {
+        for (let item of res.data) {
+          item.company.svg = "analyze";
+          this.enterpriseList.push(item.company);
+        }
+      }
+    }
   },
   components: {
     ChoiceEnterprise
@@ -62,9 +74,9 @@ $i-fs: 19px;
 
 .has-enterprise-container {
   .login-form {
+    position: relative;
     .title-container {
       margin-bottom: 64px;
-
       .title {
         color: $h-color;
         font-size: $h-fs;
@@ -82,8 +94,9 @@ $i-fs: 19px;
     }
 
     .txt {
+      position: absolute;
+      bottom: 4%;
       text-align: center;
-      margin-top: 143px;
       margin-right: 30px;
       color: #999;
       font-size: 19px;

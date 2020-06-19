@@ -48,7 +48,7 @@ service.interceptors.response.use(
         const res = response.data
         console.log('响应拦截', res)
 
-        if (res.status_code == 200) {
+        if (res.status_code === 200) {
             Message({
                 message: res.message,
                 type: 'success',
@@ -84,9 +84,8 @@ service.interceptors.response.use(
         // }
     },
     error => {
-        console.log('响应错误' + error) // for debug
         Message({
-            message: error.message,
+            message: error.response.data.message,
             type: 'error',
             duration: 5 * 1000
         })

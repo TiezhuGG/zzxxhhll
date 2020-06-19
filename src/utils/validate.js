@@ -59,3 +59,16 @@ export function validMobile(str) {
   }
 }
 
+/**
+ * @param {string} str
+ */
+export function validCode(str) {
+  // 验证验证码
+  const phoneReg = /^\d{6}$/
+  if (!phoneReg.test(str)) {
+    return false
+  } else {
+    return true
+  }
+}
+

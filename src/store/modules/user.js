@@ -3,10 +3,11 @@ import { register, login, logout, getInfo } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 
 import { resetRouter } from '@/router'
+// import user from 'mock/user'
 
 const getDefaultState = () => {
     return {
-        // token: getToken(),
+        token: getToken(),
         info: {
             mobile: '',
             code: '',
@@ -14,7 +15,8 @@ const getDefaultState = () => {
             username: '',
             enterpriseName: '',
             avatar: '',
-        }
+        },
+        userinfo: {}
     }
 }
 
@@ -47,6 +49,9 @@ const mutations = {
     },
     setInfo: (state, info) => {
         state.info = info
+    },
+    setUserinfo: (state, userinfo) => {
+        state.userinfo = userinfo
     }
 }
 

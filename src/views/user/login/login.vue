@@ -64,7 +64,7 @@
           <span class="txt">或</span>
           <router-link to="register" class="business">注册</router-link>
         </p>
-        <p class="forget">忘记密码？</p>
+        <router-link class="forget" to="/user/set-password">忘记密码？</router-link>
       </div>
     </el-form>
   </div>
@@ -72,15 +72,15 @@
 
 <script>
 import { validMobile } from "@/utils/validate";
-import { setToken } from "@/utils/auth";
-import { login } from "@/api/user";
+import { setToken, getToken } from "@/utils/auth";
+import { login, getInfo } from "@/api/user";
 
 export default {
   name: "Login",
   data() {
     const validateMobile = (rule, value, callback) => {
       if (!validMobile(value)) {
-        callback(new Error("请输入正确的用户名"));
+        callback(new Error("请输入正确的手机号"));
       } else {
         callback();
       }
@@ -121,19 +121,18 @@ export default {
     }
   },
   methods: {
+    // 登录
     handleLogin() {
       const mobile = this.loginForm.username;
       const password = this.loginForm.password;
-      console.log("mobile", mobile);
-      console.log("password", password);
+
       this.$refs.loginForm.validate(valid => {
-        console.log("valid", valid);
         if (valid) {
           this.loading = true;
           login({ mobile: mobile, password: password })
             .then(res => {
-              const token = res.data.token
-              setToken(token) // 将token存入本地Cookie
+              const token = res.data.token;
+              setToken(token); // 将token存入本地Cookie
               // this.$router.push({ path: this.redirect || "/" });
               this.$router.push("has-enterprise");
               this.loading = false;
@@ -142,7 +141,6 @@ export default {
               this.loading = false;
             });
         } else {
-          console.log("error submit!!");
           return false;
         }
       });
@@ -152,7 +150,6 @@ export default {
 </script>
 
 <style lang="scss">
-/* Detail see https://github.com/PanJiaChen/vue-element-admin/pull/927 */
 .login-container {
   .el-form-item__content {
     margin: 0;

@@ -4,21 +4,21 @@
     <search />
     <div class="index-wrap">
       <!--常用应用-->
-      <common-apply @add="comboBoxShow = true"/>
+      <common-apply @add="comboBoxShow = true" />
       <!--全部应用-->
-      <apply :apply-list="applyList"/>
-      <perfect/>
-      <combo-box @close="comboBoxShow = false" :apply-list="applyList" :pop-show="comboBoxShow"/>
+      <apply :apply-list="applyList" />
+      <perfect />
+      <combo-box @close="comboBoxShow = false" :apply-list="applyList" :pop-show="comboBoxShow" />
     </div>
   </div>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
 import Search from "./components/search";
 import Apply from "./components/apply";
 import CommonApply from "./components/common-apply";
 import Perfect from "./components/perfect";
+import { getUserinfo } from "@/api/user";
 export default {
   name: "Index",
   data() {
@@ -54,8 +54,18 @@ export default {
     CommonApply,
     Perfect
   },
-  computed: {
-    ...mapGetters(["name"])
+  created() {
+    this.fetchUserInfo();
+  },
+  methods: {
+    // 获取用户信息
+    async fetchUserInfo() {
+      const res = await getUserinfo();
+      this.$store.commit("user/setUserinfo", {
+        userinfo: res.data
+      });
+      console.log("getUserInfo", res);
+    }
   }
 };
 </script>

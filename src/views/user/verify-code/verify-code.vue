@@ -25,9 +25,10 @@
             name="code"
             maxlength="1"
             type="number"
-            onkeydown="if(this.value.length==1) return false;"
             autofocus="true"
+            oninput="if(value.length>1)value=value.slice(0,1)"
             class="code-input"
+            :tabindex="toString(index + 1)"
           ></el-input>
         </el-form-item>
         <!-- <span v-if="showWarn">{{ message }}</span> -->
@@ -51,7 +52,7 @@
 import { mapState } from "vuex";
 import { validNumber } from "@/utils/validate";
 import { getVerifyCode } from "@/api/user";
-import { Message } from 'element-ui'
+import { Message } from "element-ui";
 import Back from "../components/Back";
 
 export default {
@@ -80,6 +81,9 @@ export default {
   computed: {
     ...mapState(["user"])
   },
+  created() {
+    this.countDown();
+  },
   watch: {
     "codeForm.codes": {
       handler(newVal) {
@@ -93,10 +97,10 @@ export default {
   },
   beforeRouteEnter(to, from, next) {
     next(vm => {
-      if(from.path === '/user/register') {
-        vm.countDown()
+      if (from.path === "/user/register") {
+        vm.countDown();
       }
-    })
+    });
   },
   destroyed() {
     clearInterval(this.interval);
@@ -107,9 +111,9 @@ export default {
       if (this.verify_code.length !== 6) {
         Message({
           message: this.message,
-          type: 'error',
+          type: "error",
           duration: 5000
-        })
+        });
       } else {
         this.loading = true;
         // 验证码长度为6时存入vuex
@@ -126,14 +130,14 @@ export default {
     },
     // 创建定时任务
     countDown() {
-      this.showTimer = true
+      this.showTimer = true;
       this.countDownTimer = 60;
       this.interval = setInterval(() => {
-        if (this.countDownTimer > 0) {
+        if (this.countDownTimer > 1) {
           this.countDownTimer = this.countDownTimer - 1;
-          console.log(this.countDownTimer);
-        } else if (this.countDownTimer == 0) {
-            this.showTimer = false;
+          // console.log(this.countDownTimer);
+        } else if (this.countDownTimer == 1) {
+          this.showTimer = false;
         }
       }, 1000);
     }

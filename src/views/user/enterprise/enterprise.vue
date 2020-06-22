@@ -57,7 +57,7 @@
 
 <script>
 import { validName, validEnterpriseName } from "@/utils/validate";
-import { enterpriseRegister } from '@/api/user'
+import { enterpriseRegister } from "@/api/user";
 import { Message } from "element-ui";
 import Back from "../components/Back";
 
@@ -93,6 +93,7 @@ export default {
     enterpriseRegister() {
       const username = this.enterpriseForm.username;
       const enterpriseName = this.enterpriseForm.enterpriseName;
+
       if (username && enterpriseName) {
         if (this.checked) {
           this.loading = true;
@@ -104,13 +105,18 @@ export default {
             enterpriseName: enterpriseName
           });
 
-          let userInfo = this.$store.state.user.info 
-          // enterpriseRegister({
-          //   real_name: userInfo.username.username,
-          //   password: userInfo.password.password,
-          //   password_confirmation: userInfo.password.password,
-          //   company_name: userInfo.enterpriseName.enterpriseName
-          // })
+          let userInfo = this.$store.state.user.info
+          enterpriseRegister({
+            real_name: userInfo.username.username,
+            password: userInfo.password.password,
+            password_confirmation: userInfo.password.password,
+            company_name: userInfo.enterpriseName.enterpriseName
+          }).then(() => {
+            this.loading = false
+            this.$router.push('/')
+          }).catch(() => {
+            this.loading = false
+          })
         } else {
           Message({
             message: "请先阅读并同意服务条款",

@@ -4,7 +4,7 @@
     <AddMember />
     <div class="nav">
       <svg-icon class="svg" icon-class="contact" @click="switchMember" />
-      <svg-icon class="svg" icon-class="organization" @click="switchOrganize" />
+      <svg-icon class="svg" icon-class="no-organization" @click="switchOrganize" />
     </div>
     <div class="item" @click="focus">
       <svg-icon icon-class="new-member"></svg-icon>

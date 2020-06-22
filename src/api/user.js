@@ -28,9 +28,18 @@ export function login(data) {
 }
 
 // 获取个人信息
-export function getUserinfo() {
+export function getUserinfo(id) {
     return request({
-        url: 'info',
+        url: `info/${id}`,
+    })
+}
+
+// 注册企业
+export function enterpriseRegister(data) {
+    return request({
+        url: 'company/register',
+        method: 'post',
+        data
     })
 }
 
@@ -41,10 +50,19 @@ export function getEnterpriseList() {
     })
 }
 
-// 注册企业
-export function enterpriseRegister() {
+// 获取企业列表
+export function getQuitReasons() {
     return request({
-        url: 'company/register',
+        url: 'quit_reasons',
+    })
+}
+
+// 退出企业
+export function quitEnterprise(data) {
+    return request({
+        url: 'quit_company',
+        method: 'post',
+        data
     })
 }
 
@@ -81,6 +99,22 @@ export function changeMobile(data) {
         url: 'change_mobile',
         method: 'post',
         data
+    })
+}
+
+// 获取一级部门列表
+export function getDeparments(data) {
+    return request({
+        url: 'company_department_list',
+        params:data
+    })
+}
+
+// 获取子集部门列表含成员
+export function getDeparmentMember(data) {
+    return request({
+        url: 'company_department_member',
+        params:data
     })
 }
 

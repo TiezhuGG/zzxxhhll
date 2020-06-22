@@ -2,88 +2,112 @@
   <layout>
     <div class="out-firm-container">
       <div class="title">退出企业理由</div>
-      <el-checkbox-group v-model="checkedCities">
-        <el-checkbox v-for="city in cities" :label="city" :key="city">{{city}}</el-checkbox>
+      <el-checkbox-group v-model="checkedReasons" @change="select">
+        <el-checkbox v-for="item in reasons" :label="item.id" :key="item.id">{{ item.name }}</el-checkbox>
       </el-checkbox-group>
-      <el-input
-        type="textarea"
-        placeholder="请输入内容"
-        v-model="textarea"
-      >
-      </el-input>
+      <el-input type="textarea" placeholder="请输入内容" v-model="textarea"></el-input>
       <div class="button">
         <el-button type="primary">返回</el-button>
-        <el-button>残忍退出</el-button>
+        <el-button @click="quit">残忍退出</el-button>
       </div>
     </div>
   </layout>
 </template>
 
 <script>
-import { Layout } from './index'
+import { Layout } from "./index";
+import { quitEnterprise, getQuitReasons } from "@/api/user";
+import { removeToken } from '@/utils/auth'
 export default {
-  name: 'OutFirm',
+  name: "OutFirm",
   components: {
     Layout
   },
   data() {
     return {
-      checkedCities: ['离职主动退出'],
-      cities: ['离职主动退出', '被加入不需要或不了解的组织', '加错企业', '误创建的企业', '重复加入', '广告骚扰', '其他'],
-      textarea: ''
-    }
+      checkedReasons: [], // 存入理由的id
+      reasons: [],
+      textarea: "",
+      company_id: null,
+      reason_id: null
+    };
   },
-  mounted() {
+  created() {
+    this.company_id = localStorage.getItem("company_id");
+
+    this.getQuitReasons();
+  },
+  methods: {
+    select() {
+      // console.log("choice", this.checkedReasons);
+      this.reason_id = this.checkedReasons[0]
+    },
+    // 获取退出企业理由列表
+    async getQuitReasons() {
+      const res = await getQuitReasons();
+      this.reasons = res.data;
+    },
+    // 退出企业
+    async quit() {
+      const res = await quitEnterprise({
+        company_id: this.company_id,
+        reason_id: this.reason_id
+      });
+      if(res.status_code === 200) {
+        removeToken()
+        this.$router.push('/user/login')
+      }
+    }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
-  >>>main {
-    background-color: #F5F6F7;
-    display: block!important;
-    padding-top: 61px;
+>>> main {
+  background-color: #f5f6f7;
+  display: block !important;
+  padding-top: 61px;
+}
+.out-firm-container {
+  width: 933px;
+  margin: 0 auto;
+  padding: 53px;
+  background: rgba(255, 255, 255, 1);
+  border-radius: 5px;
+  border: 1px solid rgba(235, 238, 245, 1);
+  >>> * {
+    font-size: 19px !important;
   }
-  .out-firm-container {
-    width:933px;
-    margin: 0 auto;
-    padding: 53px;
-    background:rgba(255,255,255,1);
-    border-radius:5px;
-    border:1px solid rgba(235,238,245,1);
-    >>>* {
-      font-size: 19px!important;
-    }
-    .title {
-      font-weight:500;
-      font-size: 21px;
-      text-align: center;
-    }
-    .el-checkbox {
-      min-width: 25%;
-      margin-top: 40px;
-      &:nth-child(3n - 1) {
-        min-width: 37%;
-      }
-    }
-    .el-textarea {
-      margin-top: 40px;
-      >>>.el-textarea__inner {
-        height: 400px;
-        resize: none;
-        padding :15px 20px;
-        box-sizing: border-box;
-        line-height: 27px;
-      }
-    }
-    .button {
-      padding-top: 50px;
-      .el-button {
-        width: 131px;
-        &+.el-button {
-          margin-left: 53px;
-        }
-      }
+  .title {
+    font-weight: 500;
+    font-size: 21px;
+    text-align: center;
+  }
+  .el-checkbox {
+    min-width: 25%;
+    margin-top: 40px;
+    &:nth-child(3n - 1) {
+      min-width: 37%;
     }
   }
+  .el-textarea {
+    margin-top: 40px;
+    >>> .el-textarea__inner {
+      height: 300px;
+      resize: none;
+      padding: 15px 20px;
+      box-sizing: border-box;
+      line-height: 27px;
+    }
+  }
+  .button {
+    padding-top: 50px;
+    .el-button {
+      width: 131px;
+      & + .el-button {
+        margin-left: 53px;
+      }
+    }
+  }
+}
 </style>

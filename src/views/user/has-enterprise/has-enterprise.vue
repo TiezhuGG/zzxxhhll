@@ -23,7 +23,7 @@
 
 <script>
 import ChoiceEnterprise from "./components/ChoiceEnterprise";
-import { getEnterpriseList } from "@/api/user";
+import { getEnterpriseList, getUserinfo } from "@/api/user";
 
 export default {
   name: "HasEnterprise",
@@ -40,6 +40,7 @@ export default {
     };
   },
   created() {
+    this.fetchUserInfo();
     this.fetchEnterpriseList();
 
     if (this.enterpriseList.length) {
@@ -47,12 +48,21 @@ export default {
     }
   },
   methods: {
+    // 获取用户信息
+    async fetchUserInfo() {
+      const uesr_id = this.$store.state.user.info.user_id.user_id;
+      const res = await getUserinfo(uesr_id);
+      this.$store.commit("user/setUserinfo", {
+        userinfo: res.data
+      });
+      console.log("getUserInfo", res);
+    },
+    // 获取企业列表
     async fetchEnterpriseList() {
       const res = await getEnterpriseList();
-      console.log("res", res);
       this.enterprise_num = res.data.length;
-      if (res.data.company && res.data.is_allow === 1) {
-        for (let item of res.data) {
+      for (let item of res.data) {
+        if (item.company && item.is_allow === 1) {
           item.company.svg = "analyze";
           this.enterpriseList.push(item.company);
         }

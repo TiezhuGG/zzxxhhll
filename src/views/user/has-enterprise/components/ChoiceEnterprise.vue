@@ -1,6 +1,6 @@
 <template>
   <div class="choice-enterprise">
-    <div class="container" v-for="(item, index) in enterpriseList" :key="index">
+    <div class="container" v-for="(item, index) in enterpriseList" :key="index" @click="toIndex(item.id)">
       <svg-icon :icon-class="item.svg"></svg-icon>
       <span>{{ item.company_name }}</span>
     </div>
@@ -21,6 +21,11 @@ export default {
   },
   data() {
     return {};
+  },
+  methods: {
+    toIndex(id) {
+      this.$router.push({ path: '/', query: { id: id }})
+    },
   }
 };
 </script>

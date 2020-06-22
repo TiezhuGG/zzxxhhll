@@ -11,9 +11,6 @@
             <el-input placeholder="请输入手机号码" class="input-with-select">
               <el-select v-model="select" slot="prepend" placeholder="+86" class="select">
                 <el-option label="+86" value="1"></el-option>
-                <!-- <el-option label="2222" value="2"></el-option>
-              <el-option label="3333" value="3"></el-option>
-                <el-option label="4444" value="4"></el-option>-->
               </el-select>
             </el-input>
             <el-input placeholder="请输入成员姓名" class="input-with-select"></el-input>

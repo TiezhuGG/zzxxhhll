@@ -132,7 +132,14 @@ export default {
           login({ mobile: mobile, password: password })
             .then(res => {
               const token = res.data.token;
+              const id = res.data.id;
               setToken(token); // 将token存入本地Cookie
+              this.$store.commit("user/setPassword", { // 数据存入vuex
+                password: password,
+              });
+              this.$store.commit("user/setUserid", { // 数据存入vuex
+                user_id: id,
+              });
               // this.$router.push({ path: this.redirect || "/" });
               this.$router.push("has-enterprise");
               this.loading = false;

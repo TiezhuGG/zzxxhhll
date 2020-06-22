@@ -24,7 +24,6 @@
           name="password"
           tabindex="1"
           auto-complete="on"
-          @keyup.enter.native="register"
         />
       </el-form-item>
 
@@ -38,7 +37,7 @@
           name="password"
           tabindex="2"
           auto-complete="on"
-          @keyup.enter.native="register"
+          @keyup.enter.native="next"
         />
       </el-form-item>
 
@@ -90,7 +89,7 @@ export default {
     next() {
       const password = this.passwordForm.password
       const confirmPassword = this.passwordForm.confirmPassword
-      if(password && confirmPassword && password.length > 7 && password.length < 20) {
+      if(password && confirmPassword && password.length > 7 && password.length < 21) {
         if(password === confirmPassword) {
           console.log('password', this.passwordForm.password, 'confirmPassword',this.passwordForm.confirmPassword)
           this.loading = true
@@ -106,8 +105,10 @@ export default {
             code: userInfo.code.code,
           }).then(() => {
             this.loading = false;
-            this.$router.push('/user/has-enterprise')
-          });
+            this.$router.push('/user/login')
+          }).catch(() => {
+            this.loading = false;
+          })
         } else {
           this.loading = false
           Message({

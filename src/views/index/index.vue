@@ -18,7 +18,6 @@ import Search from "./components/search";
 import Apply from "./components/apply";
 import CommonApply from "./components/common-apply";
 import Perfect from "./components/perfect";
-import { getUserinfo } from "@/api/user";
 export default {
   name: "Index",
   data() {
@@ -45,27 +44,23 @@ export default {
           icon: "namematerial",
           name: "材料名称表"
         }
-      ]
+      ],
+      company_id: null
     };
+  },
+  created() {
+    const company_id = this.$route.query.id;
+    if (company_id) {
+      this.company_id = company_id;
+      localStorage.setItem("company_id", company_id);
+    }
+    console.log("id", this.company_id);
   },
   components: {
     Search,
     Apply,
     CommonApply,
     Perfect
-  },
-  created() {
-    this.fetchUserInfo();
-  },
-  methods: {
-    // 获取用户信息
-    async fetchUserInfo() {
-      const res = await getUserinfo();
-      this.$store.commit("user/setUserinfo", {
-        userinfo: res.data
-      });
-      console.log("getUserInfo", res);
-    }
   }
 };
 </script>

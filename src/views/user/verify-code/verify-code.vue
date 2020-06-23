@@ -150,28 +150,28 @@ export default {
 
 <style lang="scss">
 // 处理input type = number的上下箭头
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-}
-input[type="number"] {
-  -moz-appearance: textfield;
-}
-.code-container {
-  .el-input__inner {
-    height: 59px;
-  }
+// input::-webkit-outer-spin-button,
+// input::-webkit-inner-spin-button {
+//   -webkit-appearance: none;
+// }
+// input[type="number"] {
+//   -moz-appearance: textfield;
+// }
+// .code-container {
+//   .el-input__inner {
+//     height: 59px;
+//   }
 
-  .input-with-select .el-input-group__prepend {
-    background-color: #fff;
-  }
+//   .input-with-select .el-input-group__prepend {
+//     background-color: #fff;
+//   }
 
-  .el-form-item__content {
-    width: 100%;
-    display: flex;
-    justify-content: space-around;
-  }
-}
+//   .el-form-item__content {
+//     width: 100%;
+//     display: flex;
+//     justify-content: space-around;
+//   }
+// }
 </style>
 
 
@@ -249,6 +249,30 @@ $i-fs: 19px;
     }
   }
 }
+
+// 处理input type = number的上下箭头
+>>> input::-webkit-outer-spin-button,
+>>> input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+>>> input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+>>> .el-input__inner {
+  height: 59px;
+}
+
+>>> .input-with-select .el-input-group__prepend {
+  background-color: #fff;
+}
+
+>>> .el-form-item__content {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+}
+
 @media screen and(max-width: 1150px) {
   .title {
     display: none;

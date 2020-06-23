@@ -7,7 +7,7 @@
       <common-apply @add="comboBoxShow = true" />
       <!--全部应用-->
       <apply :apply-list="applyList" />
-      <perfect />
+      <perfect :dialogFormVisible="dialogFormVisible" />
       <combo-box @close="comboBoxShow = false" :apply-list="applyList" :pop-show="comboBoxShow" />
     </div>
   </div>
@@ -45,12 +45,18 @@ export default {
           name: "材料名称表"
         }
       ],
-      company_id: null
+      company_id: null,
+      dialogFormVisible: false
     };
   },
   created() {
     const company_id = this.$route.query.id;
-    if (company_id) {
+    const registerEnterprise = this.$route.query.registerEnterprise;
+    if (registerEnterprise) { // 从创建企业页面进来会有
+      this.dialogFormVisible = true;
+    }
+
+    if (company_id) { // 从企业列表选择企业登录会有
       this.company_id = company_id;
       localStorage.setItem("company_id", company_id);
     }

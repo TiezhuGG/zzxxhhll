@@ -29,10 +29,11 @@
             :key="indexB"
             v-show="showIt&&EmployeeIndex===index"
           >
-            <img class="logo" src="../../../assets/imgs/test.jpg" />
+            <!-- <img class="logo" src="../../../assets/imgs/test.jpg" /> -->
+            <img class="logo" :src="employee.admins.avatar" />
             <div class="employee-info">
               <span class="name">{{ employee.admins.user_name }}</span>
-              <span class="position">{{ employee.position }}</span>
+              <span class="position">{{ employee.admins.post_info.name }}</span>
             </div>
           </div>
         </div>

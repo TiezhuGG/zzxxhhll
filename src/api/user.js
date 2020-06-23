@@ -43,6 +43,15 @@ export function enterpriseRegister(data) {
     })
 }
 
+// 完善企业信息
+export function completeInfo(data) {
+    return request({
+        url: 'company/complete',
+        method: 'post',
+        data
+    })
+}
+
 // 获取企业列表
 export function getEnterpriseList() {
     return request({
@@ -50,7 +59,7 @@ export function getEnterpriseList() {
     })
 }
 
-// 获取企业列表
+// 获取退出企业理由列表
 export function getQuitReasons() {
     return request({
         url: 'quit_reasons',
@@ -115,6 +124,20 @@ export function getDeparmentMember(data) {
     return request({
         url: 'company_department_member',
         params:data
+    })
+}
+
+// 获取省市区列表
+export function getArea() {
+    return request({
+        url: 'china_area',
+    })
+}
+
+// 获取行业列表
+export function getBusiness() {
+    return request({
+        url: 'businesses',
     })
 }
 

@@ -86,7 +86,6 @@ export default {
   },
 
   methods: {
-    // 同意条款
     agree(e) {
       this.checked = e;
     },
@@ -105,18 +104,24 @@ export default {
             enterpriseName: enterpriseName
           });
 
-          let userInfo = this.$store.state.user.info
+          let userInfo = this.$store.state.user.info;
           enterpriseRegister({
             real_name: userInfo.username.username,
             password: userInfo.password.password,
             password_confirmation: userInfo.password.password,
             company_name: userInfo.enterpriseName.enterpriseName
-          }).then(() => {
-            this.loading = false
-            this.$router.push('/')
-          }).catch(() => {
-            this.loading = false
           })
+            .then(res => {
+              console.log("注册企业", res);
+              this.loading = false;
+              this.$router.push({
+                path: "/",
+                query: { registerEnterprise: true }
+              });
+            })
+            .catch(() => {
+              this.loading = false;
+            });
         } else {
           Message({
             message: "请先阅读并同意服务条款",
@@ -138,34 +143,6 @@ export default {
   }
 };
 </script>
-
-<style lang="scss">
-.enterprise-container {
-  .el-input__inner {
-    height: 60px;
-  }
-
-  .input-with-select .el-input-group__prepend {
-    background-color: #fff;
-  }
-
-  .el-form-item__content {
-    width: 430px;
-    margin: auto;
-  }
-
-  .el-checkbox {
-    margin-top: 10px;
-    margin-bottom: 21px;
-    color: #999;
-    font-size: 19px;
-  }
-
-  .el-checkbox__label {
-    margin-right: 160px;
-  }
-}
-</style>
 
 <style lang="scss" scoped>
 $h-color: #333;
@@ -200,4 +177,34 @@ $i-fs: 19px;
     }
   }
 }
+
+>>> .el-input__inner {
+  height: 60px;
+}
+
+>>> .input-with-select .el-input-group__prepend {
+  background-color: #fff;
+}
+
+>>> .el-form-item__content {
+  width: 430px;
+  margin: auto;
+}
+
+>>> .el-checkbox {
+  margin-top: 10px;
+  margin-bottom: 21px;
+  color: #999;
+  font-size: 19px;
+}
+
+>>> .el-checkbox__label {
+  margin-right: 160px;
+}
+
+// @media screen and(max-width: 1500px) {
+//   >>> .el-checkbox {
+//     margin-left: 22px;
+//   }
+// }
 </style>

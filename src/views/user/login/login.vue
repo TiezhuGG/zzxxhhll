@@ -156,109 +156,36 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .login-container {
-  .el-form-item__content {
+>>> .el-form-item__content {
     margin: 0;
     padding: 0;
   }
-  .el-select {
+>>> .el-select {
     height: 60px;
     line-height: 60px;
   }
 
-  .input-container .input-with-select .el-input__inner {
+>>> .input-container .input-with-select .el-input__inner {
     height: 60px;
   }
-  .input-password .el-input__inner {
+>>> .input-password .el-input__inner {
     width: 430px;
     height: 60px;
   }
 
-  .input-with-select .el-input-group__prepend {
+>>> .input-with-select .el-input-group__prepend {
     width: 89px;
     color: #333;
     background-color: #fff;
   }
 
-  .el-checkbox {
+>>> .el-checkbox {
     margin-top: 118px;
     margin-bottom: 21px;
     color: #999;
     font-size: 19px;
   }
 }
-</style>
-
-<style lang="scss" scoped>
-$h-color: #333;
-$s-color: #999;
-$h-fs: 27px;
-$s-fs: 17px;
-$i-fs: 19px;
-
-// .login-container {
-//   min-height: 100%;
-//   width: 100%;
-//   display: flex;
-//   align-items: center;
-
-//   .login-form {
-//     width: 488px;
-//     max-width: 100%;
-//     height: 675px;
-//     padding: 88px 0 0 30px;
-//     margin-right: 100px;
-//     border: 1px solid #e4e5e7;
-//     border-radius: 7px;
-//     font-family: PingFangSC-Regular, PingFang SC;
-
-//     .title-container {
-//       margin-bottom: 64px;
-//       .title {
-//         color: $h-color;
-//         font-size: $h-fs;
-//         margin-bottom: 20px;
-//       }
-//       .warning {
-//         color: $s-color;
-//         font-size: $s-fs;
-//       }
-//     }
-
-//     .input-container {
-//       .input-with-select {
-//         width: 430px;
-//       }
-//     }
-
-//     .login-button {
-//       width: 430px !important;
-//       height: 60px;
-//       font-size: $i-fs;
-//     }
-
-//     .tips {
-//       width: 430px;
-//       margin: 19px 0 30px 0;
-//       display: flex;
-//       justify-content: space-between;
-//       font-size: $i-fs;
-
-//       .txt {
-//         color: $s-color;
-//       }
-
-//       .business,
-//       .forget {
-//         color: #409eff;
-//       }
-//     }
-
-//     .checkbox {
-//       width: 100%;
-//       text-align: center;
-//     }
-//   }
-// }
 </style>

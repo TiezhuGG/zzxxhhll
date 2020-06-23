@@ -129,39 +129,6 @@ export default {
 };
 </script>
 
-<style lang="scss">
-.register-container {
-  .el-select .el-input {
-    width: 100px;
-    color: #333;
-  }
-  .el-select {
-    height: 60px;
-    line-height: 60px;
-  }
-
-  .el-input__inner {
-    height: 60px;
-  }
-
-  .input-with-select .el-input-group__prepend {
-    background-color: #fff;
-  }
-
-  .el-form-item__content {
-    width: 430px;
-    margin: auto;
-  }
-
-  .el-checkbox {
-    margin-top: 231px;
-    margin-bottom: 21px;
-    color: #999;
-    font-size: 19px;
-  }
-}
-</style>
-
 <style lang="scss" scoped>
 $h-color: #333;
 $s-color: #999;
@@ -187,6 +154,35 @@ $i-fs: 19px;
         font-size: $s-fs;
       }
     }
+  }
+
+  >>> .el-select .el-input {
+    width: 100px;
+    color: #333;
+  }
+  >>> .el-select {
+    height: 60px;
+    line-height: 60px;
+  }
+
+  >>> .el-input__inner {
+    height: 60px;
+  }
+
+  >>> .input-with-select .el-input-group__prepend {
+    background-color: #fff;
+  }
+
+  >>> .el-form-item__content {
+    width: 430px;
+    margin: auto;
+  }
+
+  >>> .el-checkbox {
+    margin-top: 231px;
+    margin-bottom: 21px;
+    color: #999;
+    font-size: 19px;
   }
 }
 </style>

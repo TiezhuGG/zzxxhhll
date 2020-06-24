@@ -115,7 +115,7 @@ export function changeMobile(data) {
 export function getDeparments(data) {
     return request({
         url: 'company_department_list',
-        params:data
+        params: data
     })
 }
 
@@ -123,7 +123,7 @@ export function getDeparments(data) {
 export function getDeparmentMember(data) {
     return request({
         url: 'company_department_member',
-        params:data
+        params: data
     })
 }
 
@@ -141,6 +141,22 @@ export function getBusiness() {
     })
 }
 
+// 邀请成员
+export function inviteMember(data) {
+    return request({
+        url: 'invite_member',
+        method: 'post',
+        headers: {'Content-Type': 'x-www-form-urlencoded'},
+        data
+    })
+}
+
+// 邀请注册页面信息
+export function inviteInfo(id) {
+    return request({
+        url: `invite_member/register/${id}`,
+    })
+}
 
 
 export function logout() {

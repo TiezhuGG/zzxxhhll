@@ -6,106 +6,110 @@
         <div class="main-tab">
           <span>手机邀请</span>
         </div>
-        <div class="main-input">
-          <div class="input-item" v-for="(item, index) in input_num" :key="index">
-            <el-input placeholder="请输入手机号码" class="input-with-select">
-              <el-select v-model="select" slot="prepend" placeholder="+86" class="select">
-                <el-option label="+86" value="1"></el-option>
-              </el-select>
-            </el-input>
-            <el-input placeholder="请输入成员姓名" class="input-with-select"></el-input>
-            <svg-icon icon-class="add" @click="deleteInput"></svg-icon>
+        <el-form ref="form" :model="form" :rules="rules" class="main-input">
+          <div class="form-item-container">
+            <el-col>
+              <el-form-item
+                class="input-item"
+                v-for="(item, index) in form.mobiles"
+                :prop="'mobiles.' + index + '.mobile'"
+                :key="index"
+                :rules="rules.mobile"
+              >
+                <el-input placeholder="请输入手机号码" v-model="item.mobile" class="input-with-select">
+                  <el-select v-model="select" slot="prepend" placeholder="+86" class="select">
+                    <el-option label="+86" value="1"></el-option>
+                  </el-select>
+                </el-input>
+              </el-form-item>
+            </el-col>
+
+            <el-col>
+              <el-form-item
+                class="input-item"
+                v-for="(item, index) in form.names"
+                :prop="'names.' + index + '.name'"
+                :key="item.key"
+                :rules="rules.name"
+              >
+                <el-input placeholder="请输入成员姓名" v-model="item.name" class="input-with-select"></el-input>
+                <svg-icon icon-class="delete" @click="deleteInput(index)"></svg-icon>
+              </el-form-item>
+            </el-col>
           </div>
           <div class="add" @click="addInput">
             <svg-icon icon-class="add"></svg-icon>继续添加
           </div>
-        </div>
-        <el-button class="btn">添加成员</el-button>
+        </el-form>
+        <el-button type="primary" class="btn" @click="addMember">添加成员</el-button>
       </el-main>
     </el-container>
   </div>
 </template>
 
 <script>
+import { inviteMember } from "@/api/user";
+import { validMobile } from "@/utils/validate";
+
 export default {
   data() {
+    const validateMobile = (rule, value, callback) => {
+      if (!validMobile(value)) {
+        callback(new Error("请输入正确的手机号"));
+      } else {
+        callback();
+      }
+    };
     return {
-      employees: [
-        {
-          name: "杨玉环",
-          position: "测试",
-          avatar: "../../../assets/imgs/test.jpg",
-          add: false
-        },
-        {
-          name: "貂蝉",
-          position: "后端",
-          avatar: "../../../assets/imgs/test.jpg",
-          add: true
-        },
-        {
-          name: "王昭君",
-          position: "前端",
-          avatar: "../../../assets/imgs/test.jpg",
-          add: true
-        },
-        {
-          name: "西施",
-          position: "全栈",
-          avatar: "../../../assets/imgs/test.jpg",
-          add: false
-        },
-        {
-          name: "如花",
-          position: "产品",
-          avatar: "../../../assets/imgs/test.jpg",
-          add: false
-        }
-      ],
-      select: "",
-      input_num: 1
+      form: {
+        mobiles: [{ mobile: "" }],
+        names: [{ name: "" }]
+      },
+      rules: {
+        mobile: [
+          { required: true, trigger: "blur", validator: validateMobile }
+        ],
+        name: [{ required: true, trigger: "blur", message: "请输入成员姓名" }]
+      },
+      select: ""
     };
   },
   methods: {
     addInput() {
-      this.input_num = this.input_num + 1;
+      this.form.mobiles.push({ mobile: "" });
+      this.form.names.push({ name: "" });
     },
-    deleteInput() {
-      if (this.input_num > 1) {
-        this.input_num = this.input_num - 1;
+    deleteInput(index) {
+      if (this.form.mobiles.length > 1) {
+        this.form.mobiles.splice(index, 1);
+        this.form.names.splice(index, 1);
       }
+    },
+    addMember() {
+      this.$refs.form.validate(valid => {
+        if (valid) {
+          const data = this.constructData(this.form.mobiles, this.form.names);
+          // console.log("data", data);
+          inviteMember({ data: data }).then(res => {
+            this.$router.push("/");
+          });
+        }
+      });
+    },
+    // a,b为数组,默认a.length=b.length
+    constructData(a, b) {
+      const list = [];
+      for (let i = 0; i < a.length; i++) {
+        const obj = {};
+        obj.mobile = a[i].mobile;
+        obj.realname = b[i].name;
+        list.push(obj);
+      }
+      return list;
     }
   }
 };
 </script>
-
-<style lang="scss">
-.add-new-member {
-  .el-form-item__content {
-    margin: 0;
-    padding: 0;
-  }
-
-  .el-select {
-    height: 60px;
-    line-height: 60px;
-  }
-
-  .input-container .input-with-select .el-input__inner {
-    height: 60px;
-  }
-
-  .el-input__inner {
-    height: 60px;
-  }
-
-  .input-with-select .el-input-group__prepend {
-    width: 89px;
-    color: #333;
-    background-color: #fff;
-  }
-}
-</style>
 
 <style lang="scss" scoped>
 .add-new-member {
@@ -148,11 +152,13 @@ export default {
 
       .main-input {
         padding-top: 160px;
-
-        .input-item {
+        .form-item-container {
           display: flex;
-          align-items: center;
-          margin-bottom: 27px;
+        }
+        .input-item {
+          // display: flex;
+          // align-items: center;
+          // margin-bottom: 27px;
 
           .input-with-select {
             width: 430px;
@@ -161,6 +167,8 @@ export default {
 
           svg {
             font-size: 27px;
+            position: absolute;
+            top: 29%;
           }
         }
         .add {
@@ -178,12 +186,36 @@ export default {
         width: 184px;
         height: 53px;
         margin-top: 71px;
-        background: rgba(159, 206, 255, 1);
+        // background: rgba(159, 206, 255, 1);
         color: #fff;
         font-size: 19px;
         border-radius: 5px;
       }
     }
   }
+}
+
+>>> .el-form-item__content {
+  margin: 0;
+  padding: 0;
+}
+
+>>> .el-select {
+  height: 60px;
+  line-height: 60px;
+}
+
+>>> .input-container .input-with-select .el-input__inner {
+  height: 60px;
+}
+
+>>> .el-input__inner {
+  height: 60px;
+}
+
+>>> .input-with-select .el-input-group__prepend {
+  width: 89px;
+  color: #333;
+  background-color: #fff;
 }
 </style>

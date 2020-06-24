@@ -30,9 +30,6 @@
           >
             <el-select v-model="select" slot="prepend" placeholder="+86">
               <el-option label="+86" value="1"></el-option>
-              <!-- <el-option label="2222" value="2"></el-option>
-              <el-option label="3333" value="3"></el-option>
-              <el-option label="4444" value="4"></el-option>-->
             </el-select>
           </el-input>
         </div>
@@ -41,7 +38,7 @@
       <el-button
         :loading="loading"
         type="primary"
-        @click.native.prevent="$router.push('verify-code')"
+        @click.native.prevent="register"
         class="login-button"
       >获取验证码</el-button>
       <div class="txt">
@@ -56,6 +53,7 @@
 
 <script>
 import { validRegisterUsername } from "@/utils/validate";
+import { inviteInfo } from '@/api/user'
 
 export default {
   name: "Register",
@@ -69,7 +67,7 @@ export default {
     };
     return {
       name: "王力宏",
-      compony: "厦门触享网络科技有限公司",
+      compony: "中国人民解放军炊事班一班",
       loginForm: {
         username: ""
       },
@@ -83,7 +81,20 @@ export default {
       checked: true
     };
   },
+  created() {
+    this.fetchInviteInfo()
+  },
   methods: {
+    async fetchInviteInfo() {
+      const res = await inviteInfo(18)
+      if(res.status_code === 200) {
+        console.log('invite info',res)
+        // this.name = res.data.admin_info.real_name
+        // this.name = res.data.realname
+        // this.compony = res.data.company_info.company_name
+      }
+    },
+
     register() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
@@ -92,7 +103,7 @@ export default {
           this.$store
             .dispatch("user/register", this.loginForm)
             .then(() => {
-              this.$router.push({ path: "/verify-code" });
+              this.$router.push({ path: "user/verify-code" });
               this.loading = false;
             })
             .catch(() => {
@@ -107,34 +118,6 @@ export default {
   }
 };
 </script>
-
-<style lang="scss">
-/* 修复input 背景不协调 和光标变色 */
-/* Detail see https://github.com/PanJiaChen/vue-element-admin/pull/927 */
-.member-container {
-  .el-select .el-input {
-    width: 100px;
-    color: #333;
-  }
-  .el-select {
-    height: 60px;
-    line-height: 60px;
-  }
-
-  .el-input__inner {
-    height: 60px;
-  }
-
-  .input-with-select .el-input-group__prepend {
-    background-color: #fff;
-  }
-
-  .el-form-item__content {
-    width: 430px;
-    margin: auto;
-  }
-}
-</style>
 
 <style lang="scss" scoped>
 $h-color: #333;
@@ -184,5 +167,27 @@ $i-fs: 19px;
       color: $s-color;
     }
   }
+}
+
+>>> .el-select .el-input {
+  width: 100px;
+  color: #333;
+}
+>>> .el-select {
+  height: 60px;
+  line-height: 60px;
+}
+
+>>> .el-input__inner {
+  height: 60px;
+}
+
+>>> .input-with-select .el-input-group__prepend {
+  background-color: #fff;
+}
+
+>>> .el-form-item__content {
+  width: 430px;
+  margin: auto;
 }
 </style>

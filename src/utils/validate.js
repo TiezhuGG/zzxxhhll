@@ -51,7 +51,7 @@ export function validEnterpriseName(str) {
  */
 export function validMobile(str) {
   // 验证注册手机号
-  const phoneReg = /^(13[0-9]{9})|(15[0-9][0-9]{8})|(18[0-9][0-9]{8})$/
+  const phoneReg = /^1[3456789]\d{9}$/
   if (!phoneReg.test(str)) {
     return false
   } else {

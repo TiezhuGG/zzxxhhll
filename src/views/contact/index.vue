@@ -96,6 +96,7 @@ export default {
 
   .el-aside {
     width: 390px!important;
+    height: 95vh;
     border-right: 1px solid rgb(241, 241, 241);
     color: #333;
   }

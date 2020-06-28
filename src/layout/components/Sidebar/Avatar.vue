@@ -15,7 +15,7 @@
             <p>管理后台</p>
             <i class="el-icon-arrow-right"/>
           </div>
-          <div @click="topage('/')" class="option">
+          <div @click="topage('/invite/member')" class="option">
             <p>邀请</p>
             <i class="el-icon-arrow-right"/>
           </div>

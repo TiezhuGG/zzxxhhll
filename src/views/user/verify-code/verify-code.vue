@@ -31,14 +31,12 @@
             :tabindex="toString(index + 1)"
           ></el-input>
         </el-form-item>
-        <!-- <span v-if="showWarn">{{ message }}</span> -->
       </div>
 
       <div class="bottom-section">
         <span class="prompt" v-if="showTimer">{{ countDownTimer }} {{ promptMessage }}</span>
         <span class="re-prompt" v-else @click="getCode">重新获取验证码</span>
         <el-button
-          :loading="loading"
           type="primary"
           @click.native.prevent="next"
           class="login-button"
@@ -72,7 +70,6 @@ export default {
       message: "请输入正确的验证码",
       promptMessage: "秒后可重新获取验证码",
       showTimer: false,
-      loading: false,
       interval: null, // 定时任务对象
       countDownTimer: null,
       verify_code: ""
@@ -81,13 +78,9 @@ export default {
   computed: {
     ...mapState(["user"])
   },
-  created() {
-    this.countDown();
-  },
   watch: {
     "codeForm.codes": {
-      handler(newVal) {
-        // 构造6位数验证码
+      handler(newVal) {// 构造6位数验证码
         let list = [];
         newVal.forEach(item => list.push(item.value));
         this.verify_code = list.join("");
@@ -115,7 +108,6 @@ export default {
           duration: 5000
         });
       } else {
-        this.loading = true;
         // 验证码长度为6时存入vuex
         this.$store.commit("user/setCode", {
           code: this.verify_code
@@ -135,7 +127,6 @@ export default {
       this.interval = setInterval(() => {
         if (this.countDownTimer > 1) {
           this.countDownTimer = this.countDownTimer - 1;
-          // console.log(this.countDownTimer);
         } else if (this.countDownTimer == 1) {
           this.showTimer = false;
         }
@@ -147,33 +138,6 @@ export default {
   }
 };
 </script>
-
-<style lang="scss">
-// 处理input type = number的上下箭头
-// input::-webkit-outer-spin-button,
-// input::-webkit-inner-spin-button {
-//   -webkit-appearance: none;
-// }
-// input[type="number"] {
-//   -moz-appearance: textfield;
-// }
-// .code-container {
-//   .el-input__inner {
-//     height: 59px;
-//   }
-
-//   .input-with-select .el-input-group__prepend {
-//     background-color: #fff;
-//   }
-
-//   .el-form-item__content {
-//     width: 100%;
-//     display: flex;
-//     justify-content: space-around;
-//   }
-// }
-</style>
-
 
 <style lang="scss" scoped>
 $h-color: #333;
@@ -248,23 +212,6 @@ $i-fs: 19px;
       }
     }
   }
-}
-
-// 处理input type = number的上下箭头
->>> input::-webkit-outer-spin-button,
->>> input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-}
->>> input[type="number"] {
-  -moz-appearance: textfield;
-}
-
->>> .el-input__inner {
-  height: 59px;
-}
-
->>> .input-with-select .el-input-group__prepend {
-  background-color: #fff;
 }
 
 >>> .el-form-item__content {

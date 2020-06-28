@@ -2,19 +2,19 @@
   <layout>
     <el-form label-position="right" :model="formData" :rules="formRules" ref="formData">
       <el-form-item label="旧手机号" prop="oldMobile">
-        <el-input placeholder="旧手机号" type="number" v-model="formData.oldMobile">
+        <el-input placeholder="请输入旧手机号" type="number" v-model="formData.oldMobile">
           <el-select v-model="value" slot="prepend">
             <el-option label="+86" value="1" />
           </el-select>
         </el-input>
       </el-form-item>
       <el-form-item label="短信验证码" prop="verifyCode">
-        <el-input placeholder="短信验证码" type="number" v-model="formData.verifyCode">
+        <el-input placeholder="请输入短信验证码" type="number" v-model="formData.verifyCode">
           <el-button slot="append" @click="getCode">获取验证码</el-button>
         </el-input>
       </el-form-item>
       <el-form-item label="旧密码" prop="password">
-        <el-input placeholder="旧密码" type="password" v-model="formData.password" />
+        <el-input placeholder="请输入旧密码" type="password" v-model="formData.password" />
       </el-form-item>
       <div class="button">
         <!-- <el-button type="primary" @click="$api.topage('TelTwo')">下一步</el-button> -->
@@ -27,7 +27,6 @@
             
 <script>
 import { Contact, Layout } from "./index";
-import { mapState } from "vuex";
 import { validMobile, validCode } from "@/utils/validate";
 import { getVerifyCode, checkAccount } from "@/api/user";
 import { Message } from "element-ui";
@@ -74,9 +73,7 @@ export default {
       loading: false
     };
   },
-  computed: {
-    ...mapState["user"]
-  },
+
   methods: {
     // 获取验证码
     async getCode() {
@@ -103,14 +100,12 @@ export default {
             mobile: this.formData.oldMobile,
             code: this.formData.verifyCode,
             password: this.formData.password
-          })
-            .then(() => {
-              this.$router.push("/changeuser/telTwo");
-              this.loading = false;
-            })
-            .catch(() => {
-              this.loading = false;
-            });
+          }).then(() => {
+            this.$router.push("/changeuser/telTwo");
+            this.loading = false;
+          }).catch(() => {
+            this.loading = false;
+          });
         } else {
           Message({
             message: "请填写完整的资料",
@@ -124,22 +119,3 @@ export default {
 };
 </script>
 
-<style lang="scss">
-// 处理input type = number的上下箭头
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-}
-input[type="number"] {
-  -moz-appearance: textfield;
-}
-</style>
-
-<style lang="scss" scoped>
->>> .el-input-group__prepend {
-  /*background-color: transparent;*/
-  .el-select .el-input {
-    width: 88px !important;
-  }
-}
-</style>

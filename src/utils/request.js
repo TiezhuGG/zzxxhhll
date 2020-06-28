@@ -46,7 +46,7 @@ service.interceptors.response.use(
      */
     response => {
         const res = response.data
-        console.log('响应拦截', res)
+        console.log('response success', res)
 
         if (res.status_code === 200) {
             Message({
@@ -84,11 +84,20 @@ service.interceptors.response.use(
         // }
     },
     error => {
-        Message({
-            message: error.response.data.message,
-            type: 'error',
-            duration: 5 * 1000
-        })
+        console.log('response error', error.response)
+        if (error.response.status === 422 && error.response.data.errors.mobile) {
+            Message({
+                message: error.response.data.errors.mobile[0],
+                type: "error",
+                duration: 5000
+            })
+        } else {
+            Message({
+                message: error.response.data.message,
+                type: 'error',
+                duration: 5 * 1000
+            })
+        }
         return Promise.reject(error)
     }
 )

@@ -1,7 +1,7 @@
 <template>
   <div class="password-container">
     <el-form
-      ref="loginForm"
+      ref="passwordForm"
       :model="passwordForm"
       :rules="passwordRules"
       class="login-form"
@@ -54,13 +54,15 @@
 <script>
 import Back from "../components/Back";
 import { register } from "@/api/user";
-import { Message } from 'element-ui'
+import { Message } from "element-ui";
 
 export default {
   name: "SetPassword",
   data() {
     const validatePassword = (rule, value, callback) => {
-      if (value.length < 8) {
+      if (!value) {
+        callback(new Error("请输入密码"));
+      } else if (value.length < 8) {
         callback(new Error("密码不能少于8位"));
       } else if (value.length > 20) {
         callback(new Error("密码不能大于20位"));
@@ -87,68 +89,44 @@ export default {
   },
   methods: {
     next() {
-      const password = this.passwordForm.password
-      const confirmPassword = this.passwordForm.confirmPassword
-      if(password && confirmPassword && password.length > 7 && password.length < 21) {
-        if(password === confirmPassword) {
-          console.log('password', this.passwordForm.password, 'confirmPassword',this.passwordForm.confirmPassword)
-          this.loading = true
-          // 保存密码到vuex
-          this.$store.commit("user/setPassword", {
-            password: this.passwordForm.password,
-          })
-          let userInfo = this.$store.state.user.info;
-          register({
-            mobile: userInfo.mobile.mobile,
-            password: userInfo.password.password,
-            password_confirmation: userInfo.password.password,
-            code: userInfo.code.code,
-          }).then(() => {
+      const password = this.passwordForm.password;
+      const confirmPassword = this.passwordForm.confirmPassword;
+      this.$refs.passwordForm.validate(valid => {
+        if (valid) {
+          if (password === confirmPassword) {
+            this.loading = true;
+            this.$store.commit("user/setPassword", {
+              password: password
+            });
+            let userInfo = this.$store.state.user.info;
+            register({
+              mobile: userInfo.mobile.mobile,
+              password: userInfo.password.password,
+              password_confirmation: userInfo.password.password,
+              code: userInfo.code.code
+            }).then(() => {
+                this.loading = false;
+                this.$router.push("/user/login");
+            }).catch(() => {
+                this.loading = false;
+            });
+          } else {
             this.loading = false;
-            this.$router.push('/user/login')
-          }).catch(() => {
-            this.loading = false;
-          })
-        } else {
-          this.loading = false
-          Message({
-            message: '两次输入的密码不一致',
-            type: 'error',
-            duration: 5000
-          })
+            Message({
+              message: "两次输入的密码不一致",
+              type: "error",
+              duration: 5000
+            });
+          }
         }
-      } else {
-        this.loading = false
-        Message({
-          message: '请输入正确的密码',
-          type: 'error',
-          duration: 5000
-        })
-      }
-    },
+      });
+    }
   },
   components: {
     Back
   }
 };
 </script>
-
-<style lang="scss">
-.password-container {
-  .el-input__inner {
-    height: 60px;
-  }
-
-  .input-with-select .el-input-group__prepend {
-    background-color: #fff;
-  }
-
-  .el-form-item__content {
-    width: 430px;
-    margin: auto;
-  }
-}
-</style>
 
 <style lang="scss" scoped>
 $h-color: #333;

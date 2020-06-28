@@ -7,7 +7,7 @@
       </el-checkbox-group>
       <el-input type="textarea" placeholder="请输入内容" v-model="textarea"></el-input>
       <div class="button">
-        <el-button type="primary">返回</el-button>
+        <el-button type="primary" @click="$router.go(-1)">返回</el-button>
         <el-button @click="quit">残忍退出</el-button>
       </div>
     </div>
@@ -34,7 +34,6 @@ export default {
   },
   created() {
     this.company_id = localStorage.getItem("company_id");
-
     this.getQuitReasons();
   },
   methods: {

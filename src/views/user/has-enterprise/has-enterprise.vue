@@ -40,23 +40,9 @@ export default {
     };
   },
   created() {
-    this.fetchUserInfo();
     this.fetchEnterpriseList();
-
-    if (this.enterpriseList.length) {
-      this.enterprise_num = this.enterpriseList.length;
-    }
   },
   methods: {
-    // 获取用户信息
-    async fetchUserInfo() {
-      const uesr_id = this.$store.state.user.info.user_id.user_id;
-      const res = await getUserinfo(uesr_id);
-      this.$store.commit("user/setUserinfo", {
-        userinfo: res.data
-      });
-      console.log("getUserInfo", res);
-    },
     // 获取企业列表
     async fetchEnterpriseList() {
       const res = await getEnterpriseList();
@@ -67,6 +53,7 @@ export default {
           this.enterpriseList.push(item.company);
         }
       }
+      this.enterprise_num = this.enterpriseList.length
     }
   },
   components: {

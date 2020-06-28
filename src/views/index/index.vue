@@ -18,6 +18,8 @@ import Search from "./components/search";
 import Apply from "./components/apply";
 import CommonApply from "./components/common-apply";
 import Perfect from "./components/perfect";
+import { getUserinfo } from "@/api/user";
+
 export default {
   name: "Index",
   data() {
@@ -49,18 +51,33 @@ export default {
       dialogFormVisible: false
     };
   },
+
   created() {
+    this.fetchUserInfo();
     const company_id = this.$route.query.id;
     const registerEnterprise = this.$route.query.registerEnterprise;
-    if (registerEnterprise) { // 从创建企业页面进来会有
+    if (registerEnterprise) {
+      // 从创建企业页面进来会有
       this.dialogFormVisible = true;
     }
 
-    if (company_id) { // 从企业列表选择企业登录会有
+    if (company_id) {
+      // 从企业列表选择企业登录会有
       this.company_id = company_id;
       localStorage.setItem("company_id", company_id);
     }
     console.log("id", this.company_id);
+  },
+  methods: {
+    // 获取用户信息
+    async fetchUserInfo() {
+      const uesr_id = this.$store.state.user.info.user_id.user_id;
+      const res = await getUserinfo(uesr_id);
+      this.$store.commit("user/setUserinfo", {
+        userinfo: res.data
+      });
+      console.log("getUserInfo", res);
+    }
   },
   components: {
     Search,

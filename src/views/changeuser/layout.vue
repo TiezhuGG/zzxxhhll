@@ -1,5 +1,5 @@
 <template>
-  <div class="password-container">
+  <div class="layout-container">
     <header>{{ title }}</header>
     <main>
       <slot></slot>
@@ -54,7 +54,7 @@ export default {
     font-size: 19px;
   }
 }
-.password-container {
+.layout-container {
   height: 100vh;
   background-color: #ffffff;
   header {
@@ -71,5 +71,25 @@ export default {
     flex-direction: column;
     justify-content: center;
   }
+}
+// 处理input type = number的上下箭头
+>>> input::-webkit-outer-spin-button,
+>>> input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+>>> input[type="number"] {
+  -moz-appearance: textfield;
+}
+>>> .el-input-group__prepend {
+  background-color: transparent;
+  .el-select .el-input {
+    width: 88px !important;
+  }
+}
+>>> .el-input-group__append {
+  background-color: transparent;
+}
+>>> .el-form-item__content {
+  margin: 0;
 }
 </style>

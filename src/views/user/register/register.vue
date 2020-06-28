@@ -22,7 +22,7 @@
             ref="mobile"
             v-model="registerForm.mobile"
             name="mobile"
-            type="text"
+            type="number"
             tabindex="1"
             auto-complete="on"
             class="input-with-select"
@@ -156,33 +156,8 @@ $i-fs: 19px;
     }
   }
 
-  >>> .el-select .el-input {
-    width: 100px;
-    color: #333;
-  }
-  >>> .el-select {
-    height: 60px;
-    line-height: 60px;
-  }
-
-  >>> .el-input__inner {
-    height: 60px;
-  }
-
-  >>> .input-with-select .el-input-group__prepend {
-    background-color: #fff;
-  }
-
-  >>> .el-form-item__content {
-    width: 430px;
-    margin: auto;
-  }
-
   >>> .el-checkbox {
     margin-top: 231px;
-    margin-bottom: 21px;
-    color: #999;
-    font-size: 19px;
   }
 }
 </style>

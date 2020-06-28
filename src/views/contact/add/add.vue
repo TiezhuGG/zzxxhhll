@@ -96,16 +96,16 @@ export default {
         }
       });
     },
-    // a,b为数组,默认a.length=b.length
+    // 构造data参数, a,b为数组,默认a.length=b.length
     constructData(a, b) {
-      const list = [];
+      const data = [];
       for (let i = 0; i < a.length; i++) {
         const obj = {};
         obj.mobile = a[i].mobile;
         obj.realname = b[i].name;
-        list.push(obj);
+        data.push(obj);
       }
-      return list;
+      return data;
     }
   }
 };

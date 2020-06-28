@@ -178,33 +178,12 @@ $i-fs: 19px;
   }
 }
 
->>> .el-input__inner {
-  height: 60px;
-}
-
->>> .input-with-select .el-input-group__prepend {
-  background-color: #fff;
-}
-
->>> .el-form-item__content {
-  width: 430px;
-  margin: auto;
-}
-
 >>> .el-checkbox {
   margin-top: 10px;
-  margin-bottom: 21px;
-  color: #999;
-  font-size: 19px;
 }
 
 >>> .el-checkbox__label {
   margin-right: 160px;
 }
 
-// @media screen and(max-width: 1500px) {
-//   >>> .el-checkbox {
-//     margin-left: 22px;
-//   }
-// }
 </style>

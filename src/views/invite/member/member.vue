@@ -1,9 +1,9 @@
 <template>
   <div class="member-container">
     <el-form
-      ref="loginForm"
-      :model="loginForm"
-      :rules="loginRules"
+      ref="formData"
+      :model="formData"
+      :rules="rules"
       class="login-form"
       auto-complete="on"
       label-position="left"
@@ -13,18 +13,18 @@
           {{ name }}
           <span>邀请您加入</span>
         </h3>
-        <span class="warning">{{ compony }}</span>
+        <div class="warning">{{ company }}</div>
       </div>
 
-      <el-form-item prop="username">
+      <el-form-item prop="mobile">
         <div>
           <el-input
             placeholder="请输入你的手机号"
-            ref="username"
-            v-model="loginForm.username"
-            name="username"
-            type="text"
+            ref="mobile"
+            v-model="formData.mobile"
+            name="mobile"
             tabindex="1"
+            type="number"
             auto-complete="on"
             class="input-with-select"
           >
@@ -42,7 +42,7 @@
         class="login-button"
       >获取验证码</el-button>
       <div class="txt">
-        <span>点击验证码代表您已经阅读并同意</span>
+        <span>点击获取验证码代表您已经阅读并同意</span>
         <span style="color:#409EFF">服务协议</span>
         <span>与</span>
         <span style="color:#409EFF">隐私政策</span>
@@ -52,29 +52,27 @@
 </template>
 
 <script>
-import { validRegisterUsername } from "@/utils/validate";
-import { inviteInfo } from '@/api/user'
+import { validMobile } from "@/utils/validate";
+import { inviteInfo, getVerifyCode } from "@/api/user";
 
 export default {
   name: "Register",
   data() {
-    const validateUsername = (rule, value, callback) => {
-      if (!validRegisterUsername(value)) {
-        callback(new Error("请输入正确的用户名"));
+    const validateMobile = (rule, value, callback) => {
+      if (!validMobile(value)) {
+        callback(new Error("请输入正确的手机号"));
       } else {
         callback();
       }
     };
     return {
-      name: "王力宏",
-      compony: "中国人民解放军炊事班一班",
-      loginForm: {
-        username: ""
+      name: "",
+      company: "",
+      formData: {
+        mobile: ""
       },
-      loginRules: {
-        username: [
-          { required: true, trigger: "blur", validator: validateUsername }
-        ]
+      rules: {
+        mobile: [{ required: true, trigger: "blur", validator: validateMobile }]
       },
       loading: false,
       select: "",
@@ -82,36 +80,32 @@ export default {
     };
   },
   created() {
-    this.fetchInviteInfo()
+    this.fetchInviteInfo();
   },
   methods: {
     async fetchInviteInfo() {
-      const res = await inviteInfo(18)
-      if(res.status_code === 200) {
-        console.log('invite info',res)
+      const res = await inviteInfo(18);
+      if (res.status_code === 200) {
+        console.log("invite info", res);
         // this.name = res.data.admin_info.real_name
-        // this.name = res.data.realname
-        // this.compony = res.data.company_info.company_name
+        this.name = res.data.realname;
+        this.company = res.data.company_info.company_name;
       }
     },
 
-    register() {
-      this.$refs.loginForm.validate(valid => {
+    getVerifyCode() {
+      this.$refs.formData.validate(valid => {
+        console.log("valid", valid);
         if (valid) {
-          console.log("valid", this.loginForm);
           this.loading = true;
-          this.$store
-            .dispatch("user/register", this.loginForm)
-            .then(() => {
-              this.$router.push({ path: "user/verify-code" });
-              this.loading = false;
-            })
-            .catch(() => {
-              this.loading = false;
-            });
-        } else {
-          console.log("注册失败");
-          return false;
+          getVerifyCode({ type: "register", mobile: this.formData.mobile })
+          .then(() => {
+            this.loading = false;
+            this.$router.push('/invite/member')
+          })
+          .catch(() => {
+            this.loading = false;
+          });
         }
       });
     }
@@ -132,13 +126,9 @@ $i-fs: 19px;
   justify-content: center;
 
   .login-form {
-    text-align: center;
     padding-left: 0;
 
     .title-container {
-      width: 430px;
-      display: flex;
-      flex-wrap: wrap;
       margin-left: 30px;
 
       .title {
@@ -158,13 +148,13 @@ $i-fs: 19px;
     }
 
     .login-button {
-      margin-top: 244px;
-      margin-bottom: 21px;
+      margin: 244px 0 21px 30px;
     }
 
     .txt {
       font-size: 16px;
       color: $s-color;
+      margin-left: 30px;
     }
   }
 }

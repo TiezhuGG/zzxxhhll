@@ -20,7 +20,7 @@
             ref="username"
             v-model="loginForm.username"
             name="username"
-            type="text"
+            type="number"
             tabindex="1"
             auto-complete="on"
             class="input-with-select"
@@ -62,9 +62,9 @@
         <p>
           <!-- <router-link to="register" class="business">注册</router-link> -->
           <span class="txt">或</span>
-          <router-link to="register" class="business">注册</router-link>
+          <router-link to="/user/register" class="business">注册</router-link>
         </p>
-        <router-link class="forget" to="/user/set-password">忘记密码？</router-link>
+        <router-link class="forget" to="/">忘记密码？</router-link>
       </div>
     </el-form>
   </div>
@@ -134,11 +134,11 @@ export default {
               const token = res.data.token;
               const id = res.data.id;
               setToken(token); // 将token存入本地Cookie
-              this.$store.commit("user/setPassword", { // 数据存入vuex
-                password: password,
+              this.$store.commit("user/setPassword", {
+                password: password
               });
-              this.$store.commit("user/setUserid", { // 数据存入vuex
-                user_id: id,
+              this.$store.commit("user/setUserid", {
+                user_id: id
               });
               // this.$router.push({ path: this.redirect || "/" });
               this.$router.push("has-enterprise");
@@ -147,8 +147,6 @@ export default {
             .catch(err => {
               this.loading = false;
             });
-        } else {
-          return false;
         }
       });
     }
@@ -157,35 +155,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.login-container {
 >>> .el-form-item__content {
-    margin: 0;
-    padding: 0;
-  }
->>> .el-select {
-    height: 60px;
-    line-height: 60px;
-  }
-
->>> .input-container .input-with-select .el-input__inner {
-    height: 60px;
-  }
->>> .input-password .el-input__inner {
-    width: 430px;
-    height: 60px;
-  }
-
->>> .input-with-select .el-input-group__prepend {
-    width: 89px;
-    color: #333;
-    background-color: #fff;
-  }
-
->>> .el-checkbox {
-    margin-top: 118px;
-    margin-bottom: 21px;
-    color: #999;
-    font-size: 19px;
-  }
+  margin: 0;
 }
 </style>

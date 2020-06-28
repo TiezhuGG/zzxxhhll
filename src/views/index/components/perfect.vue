@@ -2,7 +2,7 @@
   <el-dialog title="完善企业信息" center width="auto" top="20vh" :visible.sync="showDialog">
     <div class="desc">
       恭喜，您的企业
-      <span>厦门触享网络科技有限公司</span> 已经成功注册！
+      <span>{{ company_name }}</span> 已经成功注册！
       <br />完善您的企业信息，马上邀请同事加入协作吧。
     </div>
     <el-form :model="form" :rules="rules" ref="form">
@@ -52,7 +52,6 @@
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
-      <!-- <el-button type="primary" @click="showDialog = false">下一步</el-button> -->
       <el-button type="primary" @click="next">下一步</el-button>
     </div>
   </el-dialog>
@@ -71,7 +70,7 @@ export default {
   },
   data() {
     return {
-      showDialog: null,
+      showDialog: false,
       form: {
         scaleValue: "",
         businessValue: "",
@@ -97,10 +96,12 @@ export default {
     };
   },
   created() {
+    this.company_name = this.$store.state.user.info.enterpriseName.enterpriseName
     this.showDialog = this.dialogFormVisible
-
-    this.getArea();
-    this.getBusiness();
+    if(this.showDialog) {
+      this.getArea();
+      this.getBusiness();
+    }
   },
   computed: {
     provinceValue() {
@@ -204,9 +205,12 @@ export default {
     padding-right: 23.5px;
   }
   .el-form-item__content {
+    width:100%;
+    margin:0;
     font-size: 0;
   }
 }
+
 
 .enterprise {
   width: 667px;

@@ -16,7 +16,7 @@
                 :key="index"
                 :rules="rules.mobile"
               >
-                <el-input placeholder="请输入手机号码" v-model="item.mobile" class="input-with-select">
+                <el-input placeholder="请输入手机号码" v-model="item.mobile" type="number" class="input-with-select">
                   <el-select v-model="select" slot="prepend" placeholder="+86" class="select">
                     <el-option label="+86" value="1"></el-option>
                   </el-select>
@@ -167,8 +167,8 @@ export default {
 
           svg {
             font-size: 27px;
-            position: absolute;
-            top: 29%;
+            position: absolute!important;
+            top: 29%!important;
           }
         }
         .add {
@@ -196,8 +196,7 @@ export default {
 }
 
 >>> .el-form-item__content {
-  margin: 0;
-  padding: 0;
+  width: 100%;
 }
 
 >>> .el-select {
@@ -217,5 +216,14 @@ export default {
   width: 89px;
   color: #333;
   background-color: #fff;
+}
+
+// 处理input type = number的上下箭头
+>>> input::-webkit-outer-spin-button,
+>>> input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+>>> input[type="number"] {
+  -moz-appearance: textfield;
 }
 </style>

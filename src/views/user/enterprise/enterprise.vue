@@ -114,6 +114,7 @@ export default {
             .then(res => {
               console.log("注册企业", res);
               this.loading = false;
+              localStorage.setItem('company_name', enterpriseName)
               this.$router.push({
                 path: "/",
                 query: { registerEnterprise: true }

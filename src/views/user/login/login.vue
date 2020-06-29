@@ -137,9 +137,7 @@ export default {
               this.$store.commit("user/setPassword", {
                 password: password
               });
-              this.$store.commit("user/setUserid", {
-                user_id: id
-              });
+              localStorage.setItem('user_id', id)
               // this.$router.push({ path: this.redirect || "/" });
               this.$router.push("has-enterprise");
               this.loading = false;

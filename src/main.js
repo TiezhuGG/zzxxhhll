@@ -42,7 +42,8 @@ Vue.component('zx-search', ZxSearch)
 
 Vue.config.productionTip = false
 
-Vue.prototype.$api = require('@/utils/utils.js')
+import utils from '@/utils/utils.js'
+Vue.prototype.$api = utils
 
 new Vue({
   el: '#app',

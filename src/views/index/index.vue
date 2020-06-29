@@ -53,7 +53,7 @@ export default {
   },
 
   created() {
-    this.fetchUserInfo();
+    // this.fetchUserInfo();
     const company_id = this.$route.query.id;
     const registerEnterprise = this.$route.query.registerEnterprise;
     if (registerEnterprise) {
@@ -71,7 +71,7 @@ export default {
   methods: {
     // 获取用户信息
     async fetchUserInfo() {
-      const uesr_id = this.$store.state.user.info.user_id.user_id;
+      const uesr_id = localStorage.getItem('user_id')
       const res = await getUserinfo(uesr_id);
       this.$store.commit("user/setUserinfo", {
         userinfo: res.data

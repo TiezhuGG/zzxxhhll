@@ -25,6 +25,7 @@ export default {
   methods: {
     toIndex(item) {
       console.log('item', item)
+      localStorage.setItem('company_name', item.company_name)
       this.$router.push({ path: '/', query: { id: item.id }})
     },
   }

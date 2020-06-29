@@ -76,6 +76,15 @@ export const constantRoutes = [
         title: '邀请加入团队'
       }
     },
+    // {
+    //   path: 'verify-code',
+    //   name: 'Verify-code',
+    //   component: resolve => require(['@/views/invite/verify-code/verify-code'], resolve),
+    //   hidden: true,
+    //   meta: {
+    //     title: '填写验证码'
+    //   }
+    // },
     {
       path: 'write-name',
       name: 'WriteName',

@@ -38,7 +38,7 @@
       <el-button
         :loading="loading"
         type="primary"
-        @click.native.prevent="register"
+        @click.native.prevent="getVerifyCode"
         class="login-button"
       >获取验证码</el-button>
       <div class="txt">
@@ -76,11 +76,13 @@ export default {
       },
       loading: false,
       select: "",
-      checked: true
+      checked: true,
+      inviterId: ''
     };
   },
   created() {
     this.fetchInviteInfo();
+    this.getInviterId()
   },
   methods: {
     async fetchInviteInfo() {
@@ -108,7 +110,13 @@ export default {
           });
         }
       });
-    }
+    },
+
+    getInviterId() {
+      const href = window.location.href
+      const hrefList = href.split('/')
+      this.inviterId = hrefList[hrefList.length - 1]
+    },
   }
 };
 </script>

@@ -241,6 +241,7 @@ export default {
   width: 100%;
   .el-container {
     background-color: #fff;
+    height: 95vh;
 
     .el-header {
       height: 80px !important;

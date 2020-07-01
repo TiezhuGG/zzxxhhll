@@ -1,15 +1,15 @@
 <template>
   <div class="write-name-container">
     <el-form
-      ref="loginForm"
-      :model="loginForm"
-      :rules="loginRules"
+      ref="formData"
+      :model="formData"
+      :rules="formRule"
       class="login-form"
       auto-complete="on"
       label-position="left"
     >
       <div class="title-container">
-        <h3 class="title">请填写您的姓名</h3>
+        <h3 class="title">请填写您的信息</h3>
         <span class="warning">参与聊天及协作的各方都能看到彼此的姓名</span>
       </div>
 
@@ -18,7 +18,7 @@
           <el-input
             placeholder="请输入你的姓名"
             ref="username"
-            v-model="loginForm.username"
+            v-model="formData.username"
             name="username"
             type="text"
             tabindex="1"
@@ -28,10 +28,37 @@
         </div>
       </el-form-item>
 
+      <el-form-item prop="password">
+        <el-input
+          key="password"
+          ref="password"
+          v-model="formData.password"
+          type="password"
+          placeholder="请输入你的密码"
+          name="password"
+          tabindex="1"
+          auto-complete="on"
+        />
+      </el-form-item>
+
+      <el-form-item prop="confirmPassword">
+        <el-input
+          key="confirmPassword"
+          ref="confirmPassword"
+          v-model="formData.confirmPassword"
+          type="password"
+          placeholder="请重新输入你的密码"
+          name="confirmPassword"
+          tabindex="2"
+          auto-complete="on"
+          @keyup.enter.native="next"
+        />
+      </el-form-item>
+
       <el-button
         :loading="loading"
         type="primary"
-        @click.native.prevent="$router.push('/application')"
+        @click.native.prevent="join"
         class="login-button"
       >加入团队</el-button>
     </el-form>
@@ -39,72 +66,102 @@
 </template>
 
 <script>
-import { validRegisterUsername } from "@/utils/validate";
+import { validName } from "@/utils/validate";
+import { Message } from "element-ui";
+import { inviteRegister } from "@/api/user";
 
 export default {
   name: "Register",
   data() {
+    const validatePassword = (rule, value, callback) => {
+      if (!value) {
+        callback(new Error("请输入密码"));
+      } else if (value.length < 8) {
+        callback(new Error("密码不能少于8位"));
+      } else if (value.length > 20) {
+        callback(new Error("密码不能大于20位"));
+      } else {
+        callback();
+      }
+    };
     const validateUsername = (rule, value, callback) => {
-      if (!validRegisterUsername(value)) {
+      if (!validName(value)) {
         callback(new Error("请输入正确的用户名"));
       } else {
         callback();
       }
     };
     return {
-      name: "王力宏",
-      compony: "厦门触享网络科技有限公司",
-      loginForm: {
-        username: ""
+      formData: {
+        username: "",
+        password: "",
+        confirmPassword: ""
       },
-      loginRules: {
+      formRule: {
         username: [
           { required: true, trigger: "blur", validator: validateUsername }
+        ],
+        password: [
+          { required: true, trigger: "blur", validator: validatePassword }
+        ],
+        confirmPassword: [
+          { required: true, trigger: "blur", validator: validatePassword }
         ]
       },
-      loading: false,
-      select: "",
-      checked: true
+      mobile: "",
+      code: "",
+      company_id: "",
+      loading: false
     };
   },
+  created() {
+    this.mobile = this.$route.query.mobile;
+    this.code = this.$route.query.code;
+    this.company_id = this.$route.query.company_id;
+    console.log("write-name page", this.mobile, this.code, this.company_id);
+  },
   methods: {
-    register() {
-      this.$refs.loginForm.validate(valid => {
+    join() {
+      const password = this.formData.password;
+      const confirmPassword = this.formData.confirmPassword;
+      this.$refs.formData.validate(valid => {
         if (valid) {
-          console.log("valid", this.loginForm);
-          this.loading = true;
-          this.$store
-            .dispatch("user/register", this.loginForm)
-            .then(() => {
-              this.$router.push({ path: "/verify-code" });
-              this.loading = false;
+          if (password === confirmPassword) {
+            this.loading = true;
+            inviteRegister({
+              mobile: this.mobile,
+              password: this.formData.password,
+              password_confirmation: this.formData.confirmPassword,
+              real_name: this.formData.username,
+              code: this.code,
+              company_id: this.company_id
             })
-            .catch(() => {
-              this.loading = false;
+              .then(() => {
+                this.loading = false;
+                this.$router.push("/application");
+              })
+              .catch(() => {
+                this.loading = false;
+              });
+          } else {
+            Message({
+              message: "两次输入的密码不一致",
+              type: "error",
+              duration: 5000
             });
+          }
         } else {
-          console.log("注册失败");
-          return false;
+          Message({
+            message: "请输入正确的用户名和密码",
+            type: "error",
+            duration: 5000
+          });
         }
       });
     }
   }
 };
 </script>
-
-<style lang="scss">
-/* 修复input 背景不协调 和光标变色 */
-/* Detail see https://github.com/PanJiaChen/vue-element-admin/pull/927 */
-.write-name-container {
-  .el-input__inner {
-    height: 60px;
-  }
-
-  .el-form-item__content {
-    width: 430px;
-  }
-}
-</style>
 
 <style lang="scss" scoped>
 .write-name-container {
@@ -114,7 +171,7 @@ export default {
 
   .login-form {
     .login-button {
-      margin-top: 271px;
+      margin-top: 121px;
     }
   }
 }

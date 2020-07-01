@@ -1,17 +1,11 @@
 <template>
   <div class="code-container">
-    <el-form
-      ref="loginForm"
-      :model="codeForm"
-      class="login-form"
-      auto-complete="on"
-      label-position="left"
-    >
+    <el-form :model="codeForm" class="login-form" auto-complete="on" label-position="left">
       <Back />
       <div class="title-container">
         <h3 class="title">验证手机号</h3>
         <p class="warning">
-          <span>请输入发送至 +86 {{ user.info.mobile.mobile }} 的 6 位验证码，有效</span>
+          <span>请输入发送至 +86 {{ mobile }} 的 6 位验证码，有效</span>
           <span>期十分钟。如未收到，请尝试重新获取验证码。</span>
         </p>
       </div>
@@ -37,21 +31,21 @@
         <span class="prompt" v-if="showTimer">{{ countDownTimer }} {{ promptMessage }}</span>
         <span class="re-prompt" v-else @click="getCode">重新获取验证码</span>
         <el-button
+          :loading="loading"
           type="primary"
           @click.native.prevent="next"
           class="login-button"
-        >下一步</el-button>
+        >{{ jump_type === 1 ? '加入团队' : '下一步'}}</el-button>
       </div>
     </el-form>
   </div>
 </template>
 
 <script>
-import { mapState } from "vuex";
 import { validNumber } from "@/utils/validate";
-import { getVerifyCode } from "@/api/user";
+import { getInviteCode, joinCompany } from "@/api/user";
 import { Message } from "element-ui";
-import Back from "../components/Back";
+import Back from "@/views/user/components/Back";
 
 export default {
   name: "VerifyCode",
@@ -67,20 +61,23 @@ export default {
           { value: "" }
         ]
       },
+      loading: false,
       message: "请输入正确的验证码",
       promptMessage: "秒后可重新获取验证码",
       showTimer: false,
       interval: null, // 定时任务对象
       countDownTimer: null,
-      verify_code: ""
+      verify_code: "",
+      mobile: "",
+      jump_type: null,
+      company_id: "",
+      admin_id: ""
     };
-  },
-  computed: {
-    ...mapState(["user"])
   },
   watch: {
     "codeForm.codes": {
-      handler(newVal) {// 构造6位数验证码
+      handler(newVal) {
+        // 构造6位数验证码
         let list = [];
         newVal.forEach(item => list.push(item.value));
         this.verify_code = list.join("");
@@ -90,17 +87,25 @@ export default {
   },
   beforeRouteEnter(to, from, next) {
     next(vm => {
-      if (from.path === "/user/register") {
+      if (from.path === "/invite/member") {
         vm.countDown();
       }
     });
+  },
+  created() {
+    console.log("$route", this.$route);
+    this.mobile = this.$route.query.mobile;
+    this.jump_type = this.$route.query.jump_type;
+    this.company_id = this.$route.query.company_id;
+    this.admin_id = this.$route.query.admin_id;
   },
   destroyed() {
     clearInterval(this.interval);
   },
   methods: {
-    // 下一步
     next() {
+      // this.$router.push({path: "/invite/write-name", query: {code: this.verify_code, company_id: this.company_id}});
+
       if (this.verify_code.length !== 6) {
         Message({
           message: this.message,
@@ -108,17 +113,32 @@ export default {
           duration: 5000
         });
       } else {
-        // 验证码长度为6时存入vuex
-        this.$store.commit("user/setCode", {
-          code: this.verify_code
-        });
-        this.$router.push("/user/set-password");
+        this.loading = true;
+        if (this.jump_type === 0) {
+          this.$router.push({
+            path: "/invite/write-name",
+            query: { code: this.verify_code, company_id: this.company_id, mobile: this.mobile }
+          });
+        } else {
+          joinCompany({ admin_id: this.admin_id, company_id: this.company_id })
+          .then(() => {
+            this.loading = false;
+            this.$router.push("/application");
+          })
+          .catch(() => {
+            this.loading = false;
+          });
+        }
       }
     },
     // 重新获取验证码
     getCode() {
       this.countDown();
-      getVerifyCode({ type: "register", mobile: this.user.info.mobile.mobile });
+      getInviteCode({
+        type: "invite_member",
+        mobile: this.mobile,
+        company_id: this.company_id
+      });
     },
     // 创建定时任务
     countDown() {
@@ -147,7 +167,8 @@ $s-fs: 17px;
 $i-fs: 19px;
 
 .code-container {
-  position: relative;
+  width: calc(100% - 827px);
+  justify-content: center;
   .login-form {
     .code {
       text-align: center;

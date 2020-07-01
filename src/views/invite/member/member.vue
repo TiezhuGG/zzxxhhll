@@ -13,7 +13,7 @@
           {{ name }}
           <span>邀请您加入</span>
         </h3>
-        <div class="warning">{{ company }}</div>
+        <div class="warning">{{ company_name }}</div>
       </div>
 
       <el-form-item prop="mobile">
@@ -38,7 +38,7 @@
       <el-button
         :loading="loading"
         type="primary"
-        @click.native.prevent="getVerifyCode"
+        @click.native.prevent="getInviteCode"
         class="login-button"
       >获取验证码</el-button>
       <div class="txt">
@@ -53,7 +53,7 @@
 
 <script>
 import { validMobile } from "@/utils/validate";
-import { inviteInfo, getVerifyCode } from "@/api/user";
+import { inviteInfo, getInviteCode } from "@/api/user";
 
 export default {
   name: "Register",
@@ -66,8 +66,6 @@ export default {
       }
     };
     return {
-      name: "",
-      company: "",
       formData: {
         mobile: ""
       },
@@ -77,46 +75,78 @@ export default {
       loading: false,
       select: "",
       checked: true,
-      inviterId: ''
+      inviterId: "",
+      name: "",
+      company_name: "",
+      company_id: "",
+      admin_id: ""
     };
   },
   created() {
-    this.fetchInviteInfo();
-    this.getInviterId()
+    this.getInviterId();
   },
   methods: {
     async fetchInviteInfo() {
-      const res = await inviteInfo(18);
+      // const res = await inviteInfo(this.inviterId);
+      const res = await inviteInfo(18); // test id
       if (res.status_code === 200) {
         console.log("invite info", res);
         // this.name = res.data.admin_info.real_name
         this.name = res.data.realname;
-        this.company = res.data.company_info.company_name;
+        this.company_name = res.data.company_info.company_name;
+        this.company_id = res.data.company_info.id;
       }
     },
 
-    getVerifyCode() {
+    getInviteCode() {
       this.$refs.formData.validate(valid => {
         console.log("valid", valid);
         if (valid) {
           this.loading = true;
-          getVerifyCode({ type: "register", mobile: this.formData.mobile })
-          .then(() => {
-            this.loading = false;
-            this.$router.push('/invite/member')
+          // this.$router.push({path: '/invite/verify-code', query: {mobile: this.formData.mobile}})
+          getInviteCode({
+            type: "invite_member",
+            mobile: this.formData.mobile,
+            company_id: this.company_id
           })
-          .catch(() => {
-            this.loading = false;
-          });
+            .then(res => {
+              this.loading = false;
+              const jump_type = res.data.jump_type;
+              if (res.data.info) {
+                this.admin_id = res.data.info.id;
+                this.$router.push({
+                  path: "/invite/verify-code",
+                  query: {
+                    mobile: this.formData.mobile,
+                    jump_type: jump_type,
+                    company_id: this.company_id,
+                    admin_id: this.admin_id
+                  }
+                });
+              } else {
+                this.$router.push({
+                  path: "/invite/verify-code",
+                  query: {
+                    mobile: this.formData.mobile,
+                    jump_type: jump_type,
+                    company_id: this.company_id
+                  }
+                });
+              }
+            })
+            .catch(() => {
+              this.loading = false;
+            });
         }
       });
     },
 
     getInviterId() {
-      const href = window.location.href
-      const hrefList = href.split('/')
-      this.inviterId = hrefList[hrefList.length - 1]
-    },
+      const href = window.location.href;
+      const hrefList = href.split("/");
+      this.inviterId = hrefList[hrefList.length - 1];
+      this.fetchInviteInfo();
+    }
   }
 };
 </script>
@@ -167,25 +197,7 @@ $i-fs: 19px;
   }
 }
 
->>> .el-select .el-input {
-  width: 100px;
-  color: #333;
-}
->>> .el-select {
-  height: 60px;
-  line-height: 60px;
-}
-
->>> .el-input__inner {
-  height: 60px;
-}
-
->>> .input-with-select .el-input-group__prepend {
-  background-color: #fff;
-}
-
 >>> .el-form-item__content {
-  width: 430px;
   margin: auto;
 }
 </style>

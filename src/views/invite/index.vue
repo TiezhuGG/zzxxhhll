@@ -36,6 +36,28 @@ export default {
   }
 }
 
+.el-input__inner {
+  height: 60px;
+}
+
+.el-select .el-input {
+  width: 100px;
+  color: #333;
+}
+
+.el-select {
+  height: 60px;
+  line-height: 60px;
+}
+
+.input-with-select .el-input-group__prepend {
+  background-color: #fff;
+}
+
+.el-form-item__content {
+  width: 430px;
+}
+
 // 处理input type = number的上下箭头
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {

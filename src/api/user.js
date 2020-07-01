@@ -151,6 +151,15 @@ export function inviteMember(data) {
     })
 }
 
+// 获取邀请验证码
+export function getInviteCode(data) {
+    return request({
+        url: 'send_invite_sms',
+        method: 'post',
+        data
+    })
+}
+
 // 邀请注册页面信息
 export function inviteInfo(id) {
     return request({
@@ -158,9 +167,20 @@ export function inviteInfo(id) {
     })
 }
 
-export function logout() {
+// 申请加入公司
+export function joinCompany(data) {
     return request({
-        url: '/vue-admin-template/user/logout',
-        method: 'post'
+        url: 'join_company',
+        method: 'post',
+        data
+    })
+}
+
+// 邀请用户(加入团队)注册
+export function inviteRegister(data) {
+    return request({
+        url: 'admin_invite_register',
+        method: 'post',
+        data
     })
 }

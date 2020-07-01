@@ -25,7 +25,7 @@ export function validUsername(str) {
  */
 export function validName(str) {
   // 验证姓名
-  const nameReg = /^[\u4E00-\u9FA5a-zA-Z0-9_]{2,10}$/
+  const nameReg = /^[\u4E00-\u9FA5a-zA-Z0-9_]{2,20}$/
   if (!nameReg.test(str)) {
     return false
   } else {
@@ -71,4 +71,3 @@ export function validCode(str) {
     return true
   }
 }
-

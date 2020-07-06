@@ -54,6 +54,8 @@ export default {
       });
       if(res.status_code === 200) {
         removeToken()
+        localStorage.removeItem('company_id')
+        localStorage.removeItem('company_name')
         this.$router.push('/user/login')
       }
     }

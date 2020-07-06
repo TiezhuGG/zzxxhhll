@@ -3,16 +3,24 @@
     <img src="../../../assets/imgs/apply-success.png" />
     <span class="success">申请成功</span>
     <span class="info">
-      你已完成加入 厦门触享网络科技有限公司 的申请，管理员审核通过后，
+      你已完成加入 {{ company_name }} 的申请，管理员审核通过后，
       你将收到短信/邮件通知，敬请留意。
     </span>
-    <el-button type="primary" @click.native.prevent="$router.push('/')">返回首页</el-button>
+    <!-- <el-button type="primary" @click.native.prevent="$router.push('/')">返回首页</el-button> -->
   </div>
 </template>
 
 <script>
 export default {
-  name: "Application"
+  name: "Application",
+  data() {
+    return {
+      company_name: ""
+    }
+  },
+  created() {
+    this.company_name = this.$route.query.company_name
+  },
 };
 </script>
 

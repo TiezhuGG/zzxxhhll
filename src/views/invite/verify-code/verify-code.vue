@@ -71,7 +71,8 @@ export default {
       mobile: "",
       jump_type: null,
       company_id: "",
-      admin_id: ""
+      admin_id: "",
+      company_name: ""
     };
   },
   watch: {
@@ -98,6 +99,7 @@ export default {
     this.jump_type = this.$route.query.jump_type;
     this.company_id = this.$route.query.company_id;
     this.admin_id = this.$route.query.admin_id;
+    this.company_name = this.$route.query.company_name;
   },
   destroyed() {
     clearInterval(this.interval);
@@ -105,7 +107,6 @@ export default {
   methods: {
     next() {
       // this.$router.push({path: "/invite/write-name", query: {code: this.verify_code, company_id: this.company_id}});
-
       if (this.verify_code.length !== 6) {
         Message({
           message: this.message,
@@ -117,17 +118,25 @@ export default {
         if (this.jump_type === 0) {
           this.$router.push({
             path: "/invite/write-name",
-            query: { code: this.verify_code, company_id: this.company_id, mobile: this.mobile }
+            query: {
+              code: this.verify_code,
+              company_id: this.company_id,
+              mobile: this.mobile,
+              company_name: this.company_name
+            }
           });
         } else {
           joinCompany({ admin_id: this.admin_id, company_id: this.company_id })
-          .then(() => {
-            this.loading = false;
-            this.$router.push("/application");
-          })
-          .catch(() => {
-            this.loading = false;
-          });
+            .then(() => {
+              this.loading = false;
+              this.$router.push({
+                path: "/application",
+                query: { company_name: this.company_name }
+              });
+            })
+            .catch(() => {
+              this.loading = false;
+            });
         }
       }
     },

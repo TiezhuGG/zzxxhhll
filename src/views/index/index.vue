@@ -54,24 +54,23 @@ export default {
 
   created() {
     // this.fetchUserInfo();
-    const company_id = this.$route.query.id;
+    const company_id = localStorage.getItem("company_id");
+    if (company_id) {
+      // 从企业列表选择企业登录会有
+      this.company_id = company_id;
+    }
+    console.log("id", this.company_id);
+    
     const registerEnterprise = this.$route.query.registerEnterprise;
     if (registerEnterprise) {
       // 从创建企业页面进来会有
       this.dialogFormVisible = true;
     }
-
-    if (company_id) {
-      // 从企业列表选择企业登录会有
-      this.company_id = company_id;
-      localStorage.setItem("company_id", company_id);
-    }
-    console.log("id", this.company_id);
   },
   methods: {
     // 获取用户信息
     async fetchUserInfo() {
-      const uesr_id = localStorage.getItem('user_id')
+      const uesr_id = localStorage.getItem("user_id");
       const res = await getUserinfo(uesr_id);
       this.$store.commit("user/setUserinfo", {
         userinfo: res.data

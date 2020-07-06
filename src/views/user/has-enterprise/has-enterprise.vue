@@ -54,6 +54,9 @@ export default {
         }
       }
       this.enterprise_num = this.enterpriseList.length
+      // if(this.enterprise_num === 0) {
+      //   this.$router.push('/user/enterprise')
+      // }
     }
   },
   components: {

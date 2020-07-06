@@ -120,7 +120,8 @@ export default {
                     mobile: this.formData.mobile,
                     jump_type: jump_type,
                     company_id: this.company_id,
-                    admin_id: this.admin_id
+                    admin_id: this.admin_id,
+                    company_name: this.company_name
                   }
                 });
               } else {
@@ -129,7 +130,8 @@ export default {
                   query: {
                     mobile: this.formData.mobile,
                     jump_type: jump_type,
-                    company_id: this.company_id
+                    company_id: this.company_id,
+                    company_name: this.company_name
                   }
                 });
               }

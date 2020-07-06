@@ -33,6 +33,18 @@ export default {
     .svg {
       font-size: 71px;
     }
+    @media screen and (max-width: 1700px) {
+      .svg {
+        font-size: 65px;
+        margin-right: 14px;
+      }
+    }
+    @media screen and (max-width: 1440px) {
+      .svg {
+        font-size: 51px;
+        margin-right: 14px;
+      }
+    }
     .add-txt {
       height: 47px;
       display: flex;
@@ -45,6 +57,24 @@ export default {
       .add-txt-bottom {
         color: #999;
         font-size: 13px;
+      }
+      @media screen and (max-width: 1700px) {
+        .add-txt-top {
+          font-size: 18px;
+          margin-right: 14px;
+        }
+        .add-txt-bottom {
+          margin-right: 14px;
+        }
+      }
+      @media screen and (max-width: 1440px) {
+        .add-txt-top {
+          font-size: 11px;
+          margin-right: 14px;
+        }
+        .add-txt-bottom {
+          margin-right: 14px;
+        }
       }
     }
     .el-button {

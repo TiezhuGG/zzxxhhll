@@ -73,7 +73,7 @@
 <script>
 import { validMobile } from "@/utils/validate";
 import { setToken, getToken } from "@/utils/auth";
-import { login, getInfo } from "@/api/user";
+import { login, getEnterpriseList } from "@/api/user";
 
 export default {
   name: "Login",
@@ -112,6 +112,7 @@ export default {
       checked: true
     };
   },
+
   watch: {
     $route: {
       handler: function(route) {
@@ -137,10 +138,28 @@ export default {
               this.$store.commit("user/setPassword", {
                 password: password
               });
-              localStorage.setItem('user_id', id)
+              localStorage.setItem("user_id", id);
+              getEnterpriseList().then(res => {
+                this.loading = false;
+                const company_list = res.data;
+                console.log("company_list", company_list);
+                if (company_list.length !== 0) {
+                  for (let item of company_list) {
+                    if (item.is_default === 1) {
+                      // 有默认企业直接登录，否则去选择企业
+                      localStorage.setItem("company_id", item.company_id);
+                      this.$router.push("/");
+                      break;
+                    } else {
+                      this.$router.push("has-enterprise");
+                    }
+                  }
+                } else {
+                  // 没有注册企业直接去创建企业
+                  this.$router.push("enterprise");
+                }
+              });
               // this.$router.push({ path: this.redirect || "/" });
-              this.$router.push("has-enterprise");
-              this.loading = false;
             })
             .catch(err => {
               this.loading = false;

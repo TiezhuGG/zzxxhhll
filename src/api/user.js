@@ -59,6 +59,15 @@ export function getEnterpriseList() {
     })
 }
 
+// 更改默认企业
+export function changeEnterprise(data) {
+    return request({
+        url: 'change_company',
+        method: 'post',
+        data
+    })
+}
+
 // 获取退出企业理由列表
 export function getQuitReasons() {
     return request({

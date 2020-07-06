@@ -1,6 +1,11 @@
 <template>
   <div class="choice-enterprise">
-    <div class="container" v-for="(item, index) in enterpriseList" :key="index" @click="toIndex(item)">
+    <div
+      class="container"
+      v-for="(item, index) in enterpriseList"
+      :key="index"
+      @click="toIndex(item)"
+    >
       <svg-icon :icon-class="item.svg"></svg-icon>
       <span>{{ item.company_name }}</span>
     </div>
@@ -8,6 +13,8 @@
 </template>
 
 <script>
+import { changeEnterprise } from "@/api/user";
+
 export default {
   name: "ChoiceEnterprise",
   props: {
@@ -24,10 +31,13 @@ export default {
   },
   methods: {
     toIndex(item) {
-      console.log('item', item)
-      localStorage.setItem('company_name', item.company_name)
-      this.$router.push({ path: '/', query: { id: item.id }})
-    },
+      console.log("item", item);
+      localStorage.setItem("company_name", item.company_name);
+      localStorage.setItem("company_id", item.id);
+      changeEnterprise({ company_id: item.id }).then(() => {
+        this.$router.push("/");
+      });
+    }
   }
 };
 </script>

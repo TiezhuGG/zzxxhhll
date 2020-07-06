@@ -56,7 +56,7 @@ export default {
   data() {
     return {
       userSettingShow: false,
-      userinfo: null,
+      userinfo: {},
       company_name: ''
     };
   },

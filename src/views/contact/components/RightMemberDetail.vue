@@ -42,12 +42,15 @@
               <span class="save" @click="base_info_show = false" v-show="base_info_show">保存</span>
             </div>
 
-            <el-form>
-              <el-table :data="tabledatas">
+            <el-form :model="formData" ref="formData" :rules="rules">
+              <el-table :data="formData.tabledatas">
                 <el-table-column>
                   <template slot-scope="scope">
                     <div class="table-item">
-                      <el-form-item>
+                      <el-form-item
+                        :prop="'tabledatas.' + scope.$index + '.name'"
+                        :rules="rules.name"
+                      >
                         <el-input
                           placeholder="请输入姓名"
                           v-show="base_info_show"
@@ -60,22 +63,40 @@
                       </div>
                     </div>
                     <div class="table-item">
-                      <el-input
+                      <el-select
+                        v-show="base_info_show"
+                        v-model="scope.row.department"
+                        @change="selectDepartment"
+                        placeholder="请选择部门"
+                      >
+                        <el-option
+                          v-for="item in formData.tabledatas[0].departments"
+                          :key="item.id"
+                          :label="item.name"
+                          :value="item.name"
+                        ></el-option>
+                      </el-select>
+                      <!-- <el-input
                         placeholder="请输入部门"
                         v-show="base_info_show"
                         v-model="scope.row.department"
-                      ></el-input>
+                      ></el-input>-->
                       <div class="item" v-show="!base_info_show">
                         <label>部门：</label>
                         <span>{{scope.row.department}}</span>
                       </div>
                     </div>
                     <div class="table-item">
-                      <el-input
-                        placeholder="请输入职位"
-                        v-show="base_info_show"
-                        v-model="scope.row.position"
-                      ></el-input>
+                      <el-form-item
+                        :prop="'tabledatas.' + scope.$index + '.position'"
+                        :rules="rules.position"
+                      >
+                        <el-input
+                          placeholder="请输入职位"
+                          v-show="base_info_show"
+                          v-model="scope.row.position"
+                        ></el-input>
+                      </el-form-item>
                       <div class="item" v-show="!base_info_show">
                         <label>职位：</label>
                         <span>{{scope.row.position}}</span>
@@ -119,33 +140,56 @@
                 <el-table-column>
                   <template slot-scope="scope">
                     <div class="table-item">
-                      <el-input
-                        placeholder="请输入邮箱"
-                        v-show="base_info_show"
-                        v-model="scope.row.email"
-                      ></el-input>
+                      <el-form-item
+                        :prop="'tabledatas.' + scope.$index + '.email'"
+                        :rules="rules.email"
+                      >
+                        <el-input
+                          placeholder="请输入邮箱"
+                          v-show="base_info_show"
+                          v-model="scope.row.email"
+                        ></el-input>
+                      </el-form-item>
                       <div class="item" v-show="!base_info_show">
                         <label>邮箱：</label>
                         <span>{{scope.row.email}}</span>
                       </div>
                     </div>
                     <div class="table-item">
-                      <el-input
+                      <el-select
+                        v-show="base_info_show"
+                        v-model="scope.row.mainDepartment"
+                        @change="selectMainDepartment"
+                        placeholder="请选择主部门"
+                      >
+                        <el-option
+                          v-for="item in formData.tabledatas[0].main_departments"
+                          :key="item.id"
+                          :label="item.name"
+                          :value="item.name"
+                        ></el-option>
+                      </el-select>
+                      <!-- <el-input
                         placeholder="请输入主部门"
                         v-show="base_info_show"
                         v-model="scope.row.main_department"
-                      ></el-input>
+                      ></el-input>-->
                       <div class="item" v-show="!base_info_show">
                         <label>主部门：</label>
-                        <span>{{scope.row.main_department}}</span>
+                        <span>{{scope.row.mainDepartment}}</span>
                       </div>
                     </div>
                     <div class="table-item">
-                      <el-input
-                        placeholder="请输入手机号"
-                        v-show="base_info_show"
-                        v-model="scope.row.phone"
-                      ></el-input>
+                      <el-form-item
+                        :prop="'tabledatas.' + scope.$index + '.phone'"
+                        :rules="rules.phone"
+                      >
+                        <el-input
+                          placeholder="请输入手机号"
+                          v-show="base_info_show"
+                          v-model="scope.row.phone"
+                        ></el-input>
+                      </el-form-item>
                       <div class="item" v-show="!base_info_show">
                         <label>手机号：</label>
                         <span>{{scope.row.phone}}</span>
@@ -202,7 +246,7 @@
                 <span class="save" @click="work_info_show = false" v-show="work_info_show">保存</span>
               </div>
 
-              <el-table :data="tabledatas">
+              <el-table :data="formData.tabledatas">
                 <el-table-column>
                   <template slot-scope="scope">
                     <div class="table-item">
@@ -280,7 +324,7 @@
                 >保存</span>
               </div>
 
-              <el-table :data="tabledatas">
+              <el-table :data="formData.tabledatas">
                 <el-table-column>
                   <template slot-scope="scope">
                     <div class="table-item">
@@ -487,7 +531,7 @@
                 >保存</span>
               </div>
 
-              <el-table :data="tabledatas">
+              <el-table :data="formData.tabledatas">
                 <el-table-column>
                   <template slot-scope="scope">
                     <div class="table-item">
@@ -550,7 +594,7 @@
                 <span class="save" @click="bank_info_show = false" v-show="bank_info_show">保存</span>
               </div>
 
-              <el-table :data="tabledatas">
+              <el-table :data="formData.tabledatas">
                 <el-table-column>
                   <template slot-scope="scope">
                     <div class="table-item">
@@ -595,7 +639,7 @@
                 >保存</span>
               </div>
 
-              <el-table :data="tabledatas">
+              <el-table :data="formData.tabledatas">
                 <el-table-column>
                   <template slot-scope="scope">
                     <div class="table-item">
@@ -706,7 +750,7 @@
                 >保存</span>
               </div>
 
-              <el-table :data="tabledatas">
+              <el-table :data="formData.tabledatas">
                 <el-table-column>
                   <template slot-scope="scope">
                     <div class="table-item">
@@ -758,7 +802,7 @@
                 <span class="save" @click="family_info_show = false" v-show="family_info_show">保存</span>
               </div>
 
-              <el-table :data="tabledatas">
+              <el-table :data="formData.tabledatas">
                 <el-table-column>
                   <template slot-scope="scope">
                     <div class="table-item">
@@ -825,7 +869,7 @@
                 >保存</span>
               </div>
 
-              <el-table :data="tabledatas">
+              <el-table :data="formData.tabledatas">
                 <el-table-column>
                   <template slot-scope="scope">
                     <div class="table-item">
@@ -925,73 +969,117 @@
 </template>
 
 <script>
+import { validName, validEmail, validMobile } from "@/utils/validate";
 export default {
   data() {
+    const validateName = (rule, value, callback) => {
+      if (!validName(value)) {
+        callback(new Error("请输入正确的姓名"));
+      } else {
+        callback();
+      }
+    };
+    const validateEmail = (rule, value, callback) => {
+      if (!validEmail(value)) {
+        callback(new Error("请输入正确的邮箱"));
+      } else {
+        callback();
+      }
+    };
+    const validateMobile = (rule, value, callback) => {
+      if (!validMobile(value)) {
+        callback(new Error("请输入正确的手机号"));
+      } else {
+        callback();
+      }
+    };
     return {
-      tabledatas: [
-        {
-          name: "白白", // 姓名
-          email: "bai@bai.com", // 邮箱
-          department: "技术部", // 部门
-          main_department: "技术部", // 主部门
-          position: "前端", // 职位
-          phone: "12345678910", // 手机号
-          job_num: "11号", // 工号
-          extension_num: "110", // 分机号
-          office_location: "泉州", // 办公地点
-          remarks: "备注", // 备注
-          hire_date: "2222-02-22", // 入职时间
-          job_year: "5年6个月", // 司龄
-          employee_type: "全职", // 员工类型
-          employee_status: "正式", // 员工状态
-          probation_period: "2个月", // 试用期
-          formal_date: "2015-11-25", // 转正日期
-          job_grade: "初级", // 岗位职级
-          name_in_id: "白白", // 身份证姓名
-          id_card: "350582222202022022", // 证件号码
-          born_date: "2022-02-22", // 出生日期
-          age: 3, // 年龄
-          gender: "男", // 性别
-          nation: "汉族", // 民族
-          id_card_address: "中国", // 身份证地址
-          valid_until: "2022-02-22", // 证件有效期
-          marriage: "未婚", // 婚姻情况
-          first_working_time: "2022-02-22", // 首次参加工作时间
-          work_year: "5年", // 工龄
-          domicile_type: "农民", // 户籍类型
-          address: "泉州", // 地址
-          political: "党员", // 政治面貌
-          social_insurance: "11111", // 个人社保账号
-          accumulation_fund: "22222", // 个人公积金账号
-          education: "本科", // 学历
-          school: "泉州五中", // 毕业学校
-          graduation_date: "2022-02-02", // 毕业时间
-          major: "计算机", // 专业
-          bank_card: "12345678910", // 银行卡号
-          bank: "农行", // 开户行
-          contract_compony: "触享", // 合同公司
-          contract_type: "合同类型", // 合同类型
-          first_contract_start_date: "2022-02-02", // 首次合同起始日
-          first_contract_end_date: "2022-02-22", // 首次合同结束日
-          now_contract_start_date: "2022-02-02", // 现合同起始日
-          now_contract_end_date: "2022-02-22", // 现次合同结束日
-          contract_period: "1年", // 合同期限
-          renewal_num: 1, // 续约次数
-          emergency_contact_person: "铁锤", // 紧急联系人
-          contact_relationship: "同事", // 联系人关系
-          contact_phone: "13559422222", // 联系电话
-          has_child: "有", // 有无子女
-          child_name: "铁锤妹妹", // 子女姓名
-          child_gender: "女", // 子女性别
-          child_born_date: "2022-02-22", // 子女出生日期
-          human_face_image: "未上传", // 身份证(人像面)
-          national_emblem_image: "未上传", // 身份证(国徽面)
-          education_certificate_image: "未上传", // 学历证书
-          degree_certificate_image: "未上传", // 学位证书
-          resign_certificate_image: "未上传", // 离职证明
-          employee_image: "未上传" // 员工照片
-        }
-      ],
+      formData: {
+        tabledatas: [
+          {
+            name: "白白", // 姓名
+            email: "bai@bai.com", // 邮箱
+            // department: "技术部", // 部门
+            // main_department: "技术部", // 主部门
+            departments: [
+              { id: 1, name: "技术部" },
+              { id: 2, name: "业务部" },
+              { id: 3, name: "运营部" }
+            ], // 部门
+            main_departments: [
+              { id: 1, name: "篮球部" },
+              { id: 2, name: "足球部" },
+              { id: 3, name: "游泳部" }
+            ], // 主部门
+            position: "前端", // 职位
+            phone: "12345678910", // 手机号
+            job_num: "11号", // 工号
+            extension_num: "110", // 分机号
+            office_location: "泉州", // 办公地点
+            remarks: "备注", // 备注
+            hire_date: "2222-02-22", // 入职时间
+            job_year: "5年6个月", // 司龄
+            employee_type: "全职", // 员工类型
+            employee_status: "正式", // 员工状态
+            probation_period: "2个月", // 试用期
+            formal_date: "2015-11-25", // 转正日期
+            job_grade: "初级", // 岗位职级
+            name_in_id: "白白", // 身份证姓名
+            id_card: "350582222202022022", // 证件号码
+            born_date: "2022-02-22", // 出生日期
+            age: 3, // 年龄
+            gender: "男", // 性别
+            nation: "汉族", // 民族
+            id_card_address: "中国", // 身份证地址
+            valid_until: "2022-02-22", // 证件有效期
+            marriage: "未婚", // 婚姻情况
+            first_working_time: "2022-02-22", // 首次参加工作时间
+            work_year: "5年", // 工龄
+            domicile_type: "农民", // 户籍类型
+            address: "泉州", // 地址
+            political: "党员", // 政治面貌
+            social_insurance: "11111", // 个人社保账号
+            accumulation_fund: "22222", // 个人公积金账号
+            education: "本科", // 学历
+            school: "泉州五中", // 毕业学校
+            graduation_date: "2022-02-02", // 毕业时间
+            major: "计算机", // 专业
+            bank_card: "12345678910", // 银行卡号
+            bank: "农行", // 开户行
+            contract_compony: "触享", // 合同公司
+            contract_type: "合同类型", // 合同类型
+            first_contract_start_date: "2022-02-02", // 首次合同起始日
+            first_contract_end_date: "2022-02-22", // 首次合同结束日
+            now_contract_start_date: "2022-02-02", // 现合同起始日
+            now_contract_end_date: "2022-02-22", // 现次合同结束日
+            contract_period: "1年", // 合同期限
+            renewal_num: 1, // 续约次数
+            emergency_contact_person: "铁锤", // 紧急联系人
+            contact_relationship: "同事", // 联系人关系
+            contact_phone: "13559422222", // 联系电话
+            has_child: "有", // 有无子女
+            child_name: "铁锤妹妹", // 子女姓名
+            child_gender: "女", // 子女性别
+            child_born_date: "2022-02-22", // 子女出生日期
+            human_face_image: "未上传", // 身份证(人像面)
+            national_emblem_image: "未上传", // 身份证(国徽面)
+            education_certificate_image: "未上传", // 学历证书
+            degree_certificate_image: "未上传", // 学位证书
+            resign_certificate_image: "未上传", // 离职证明
+            employee_image: "未上传", // 员工照片
+            department: "",
+            mainDepartment: ""
+          }
+        ]
+      },
+      rules: {
+        name: [{ required: true, trigger: "blur", validator: validateName }],
+        position: [
+          { required: true, trigger: "blur", message: "请输入职位" }
+        ],
+        phone: [{ required: true, trigger: "blur", validator: validateMobile }],
+        email: [{ required: true, trigger: "blur", validator: validateEmail }]
+      },
       base_info_show: false,
       work_info_show: false,
       personal_info_show: false,
@@ -1072,6 +1160,12 @@ export default {
   methods: {
     deleteRow(index, rows) {
       rows.splice(index, 1);
+    },
+    selectDepartment(e) {
+      console.log("选择部门", e);
+    },
+    selectMainDepartment(e) {
+      console.log("选择主部门", e);
     }
   }
 };
@@ -1282,5 +1376,9 @@ export default {
   height: 93px;
   border-radius: 50%;
   margin: 64px 0 33px 0;
+}
+
+>>> .el-select {
+  width: 100%;
 }
 </style>

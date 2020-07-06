@@ -87,8 +87,8 @@ export default {
   },
   methods: {
     async fetchInviteInfo() {
-      // const res = await inviteInfo(this.inviterId);
-      const res = await inviteInfo(18); // test id
+      const res = await inviteInfo(this.inviterId);
+      // const res = await inviteInfo(18); // test id
       if (res.status_code === 200) {
         console.log("invite info", res);
         // this.name = res.data.admin_info.real_name
@@ -103,7 +103,6 @@ export default {
         console.log("valid", valid);
         if (valid) {
           this.loading = true;
-          // this.$router.push({path: '/invite/verify-code', query: {mobile: this.formData.mobile}})
           getInviteCode({
             type: "invite_member",
             mobile: this.formData.mobile,

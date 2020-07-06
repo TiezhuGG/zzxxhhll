@@ -53,7 +53,7 @@
 
 <script>
 import { validMobile } from "@/utils/validate";
-import { getVerifyCode } from "@/api/user";
+import { getVerifyCode, register } from "@/api/user";
 import { Message } from "element-ui";
 import Back from "../components/Back";
 
@@ -98,14 +98,12 @@ export default {
             getVerifyCode({
               type: "register",
               mobile: this.registerForm.mobile
-            })
-              .then(() => {
-                this.loading = false;
-                this.$router.push("/user/verify-code");
-              })
-              .catch(() => {
-                this.loading = false;
-              });
+            }).then(res => {
+              this.loading = false;
+              this.$router.push("/user/verify-code");
+            }).catch(() => {
+              this.loading = false;
+            });
           } else {
             Message({
               message: "请先阅读并同意服务条款",

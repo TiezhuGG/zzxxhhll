@@ -64,7 +64,7 @@
           <span class="txt">或</span>
           <router-link to="/user/register" class="business">注册</router-link>
         </p>
-        <router-link class="forget" to="/">忘记密码？</router-link>
+        <router-link class="forget" to="/user/forget-password">忘记密码？</router-link>
       </div>
     </el-form>
   </div>
@@ -145,8 +145,7 @@ export default {
                 console.log("company_list", company_list);
                 if (company_list.length !== 0) {
                   for (let item of company_list) {
-                    if (item.is_default === 1) {
-                      // 有默认企业直接登录，否则去选择企业
+                    if (item.is_default === 1) {// 有默认企业直接登录，否则去选择企业
                       localStorage.setItem("company_id", item.company_id);
                       this.$router.push("/");
                       break;
@@ -154,8 +153,7 @@ export default {
                       this.$router.push("has-enterprise");
                     }
                   }
-                } else {
-                  // 没有注册企业直接去创建企业
+                } else {// 没有注册企业直接去创建企业
                   this.$router.push("enterprise");
                 }
               });

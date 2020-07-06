@@ -106,7 +106,8 @@ export default {
               code: userInfo.code.code
             }).then(() => {
                 this.loading = false;
-                this.$router.push("/user/login");
+                // this.$router.push("/user/login");
+                this.$router.push("/user/enterprise");
             }).catch(() => {
                 this.loading = false;
             });

@@ -40,6 +40,15 @@ const user = {
     }
   },
   {
+    path: 'forget-password',
+    name: 'ForgetPassword',
+    component: resolve => require(['@/views/user/forget-password/forget-password'], resolve),
+    hidden: true,
+    meta: {
+      title: '忘记密码'
+    }
+  },
+  {
     path: 'enterprise',
     name: 'Enterprise',
     component: resolve => require(['@/views/user/enterprise/enterprise'], resolve),

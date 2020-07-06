@@ -110,19 +110,19 @@ export default {
             password: userInfo.password.password,
             password_confirmation: userInfo.password.password,
             company_name: userInfo.enterpriseName.enterpriseName
-          })
-            .then(res => {
-              console.log("注册企业", res);
-              this.loading = false;
-              localStorage.setItem("company_name", enterpriseName);
-              this.$router.push({
-                path: "/",
-                query: { registerEnterprise: true }
-              });
-            })
-            .catch(() => {
-              this.loading = false;
+          }).then(res => {
+            console.log("注册企业", res);
+            const company_id = res.data.id
+            this.loading = false;
+            localStorage.setItem("company_name", enterpriseName);
+            localStorage.setItem("company_id", company_id);
+            this.$router.push({
+              path: "/",
+              query: { registerEnterprise: true }
             });
+          }).catch(() => {
+            this.loading = false;
+          });
         } else {
           Message({
             message: "请先阅读并同意服务条款",

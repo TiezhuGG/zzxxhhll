@@ -104,6 +104,7 @@ export const constantRoutes = [
       title: '申请成功'
     }
   },
+
   // 联系人
   {
     path: '/contact',

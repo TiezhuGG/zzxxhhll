@@ -39,7 +39,8 @@
               <span class="txt">基础信息</span>
               <span class="line"></span>
               <span class="edit" @click="base_info_show = true">编辑</span>
-              <span class="save" @click="base_info_show = false" v-show="base_info_show">保存</span>
+              <!-- <span class="save" @click="base_info_show = false" v-show="base_info_show">保存</span> -->
+              <span class="save" @click="saveBaseInfo" v-show="base_info_show">保存</span>
             </div>
 
             <el-form :model="formData" ref="formData" :rules="rules">
@@ -63,19 +64,24 @@
                       </div>
                     </div>
                     <div class="table-item">
-                      <el-select
-                        v-show="base_info_show"
-                        v-model="scope.row.department"
-                        @change="selectDepartment"
-                        placeholder="请选择部门"
+                      <el-form-item
+                        :prop="'tabledatas.' + scope.$index + '.department'"
+                        :rules="rules.department"
                       >
-                        <el-option
-                          v-for="item in formData.tabledatas[0].departments"
-                          :key="item.id"
-                          :label="item.name"
-                          :value="item.name"
-                        ></el-option>
-                      </el-select>
+                        <el-select
+                          v-show="base_info_show"
+                          v-model="scope.row.department"
+                          @change="selectDepartment"
+                          placeholder="请选择部门"
+                        >
+                          <el-option
+                            v-for="item in formData.tabledatas[0].departments"
+                            :key="item.id"
+                            :label="item.name"
+                            :value="item.name"
+                          ></el-option>
+                        </el-select>
+                      </el-form-item>
                       <!-- <el-input
                         placeholder="请输入部门"
                         v-show="base_info_show"
@@ -103,33 +109,54 @@
                       </div>
                     </div>
                     <div class="table-item">
-                      <el-input
-                        placeholder="请输入工号"
-                        v-show="base_info_show"
-                        v-model="scope.row.job_num"
-                      ></el-input>
+                      <el-form-item
+                        :prop="'tabledatas.' + scope.$index + '.job_num'"
+                        :rules="rules.job_num"
+                      >
+                        <el-input
+                          placeholder="请输入工号"
+                          v-show="base_info_show"
+                          v-model="scope.row.job_num"
+                        ></el-input>
+                      </el-form-item>
                       <div class="item" v-show="!base_info_show">
                         <label>工号：</label>
                         <span>{{scope.row.job_num}}</span>
                       </div>
                     </div>
                     <div class="table-item">
-                      <el-input
-                        placeholder="请输入办公地点"
-                        v-show="base_info_show"
-                        v-model="scope.row.office_location"
-                      ></el-input>
+                      <el-form-item
+                        :prop="'tabledatas.' + scope.$index + '.office_location'"
+                        :rules="rules.office_location"
+                      >
+                        <el-input
+                          placeholder="请输入办公地点"
+                          v-show="base_info_show"
+                          v-model="scope.row.office_location"
+                        ></el-input>
+                      </el-form-item>
                       <div class="item" v-show="!base_info_show">
                         <label>办公地点：</label>
                         <span>{{scope.row.office_location}}</span>
                       </div>
                     </div>
                     <div class="table-item">
-                      <el-input
+                      <!-- <el-input
                         placeholder="请输入入职时间"
                         v-show="base_info_show"
                         v-model="scope.row.hire_date"
-                      ></el-input>
+                      ></el-input>-->
+                      <el-form-item
+                        :prop="'tabledatas.' + scope.$index + '.hire_date'"
+                        :rules="rules.hire_date"
+                      >
+                        <el-date-picker
+                          v-model="scope.row.hire_date"
+                          v-show="base_info_show"
+                          type="date"
+                          placeholder="请输入入职时间"
+                        ></el-date-picker>
+                      </el-form-item>
                       <div class="item" v-show="!base_info_show">
                         <label>入职时间：</label>
                         <span>{{scope.row.hire_date}}</span>
@@ -156,19 +183,24 @@
                       </div>
                     </div>
                     <div class="table-item">
-                      <el-select
-                        v-show="base_info_show"
-                        v-model="scope.row.mainDepartment"
-                        @change="selectMainDepartment"
-                        placeholder="请选择主部门"
+                      <el-form-item
+                        :prop="'tabledatas.' + scope.$index + '.mainDepartment'"
+                        :rules="rules.mainDepartment"
                       >
-                        <el-option
-                          v-for="item in formData.tabledatas[0].main_departments"
-                          :key="item.id"
-                          :label="item.name"
-                          :value="item.name"
-                        ></el-option>
-                      </el-select>
+                        <el-select
+                          v-show="base_info_show"
+                          v-model="scope.row.mainDepartment"
+                          @change="selectMainDepartment"
+                          placeholder="请选择主部门"
+                        >
+                          <el-option
+                            v-for="item in formData.tabledatas[0].main_departments"
+                            :key="item.id"
+                            :label="item.name"
+                            :value="item.name"
+                          ></el-option>
+                        </el-select>
+                      </el-form-item>
                       <!-- <el-input
                         placeholder="请输入主部门"
                         v-show="base_info_show"
@@ -196,33 +228,48 @@
                       </div>
                     </div>
                     <div class="table-item">
-                      <el-input
-                        placeholder="请输入分机号"
-                        v-show="base_info_show"
-                        v-model="scope.row.extension_num"
-                      ></el-input>
+                      <el-form-item
+                        :prop="'tabledatas.' + scope.$index + '.extension_num'"
+                        :rules="rules.extension_num"
+                      >
+                        <el-input
+                          placeholder="请输入分机号"
+                          v-show="base_info_show"
+                          v-model="scope.row.extension_num"
+                        ></el-input>
+                      </el-form-item>
                       <div class="item" v-show="!base_info_show">
                         <label>分机号：</label>
                         <span>{{scope.row.extension_num}}</span>
                       </div>
                     </div>
                     <div class="table-item">
-                      <el-input
-                        placeholder="请输入备注"
-                        v-show="base_info_show"
-                        v-model="scope.row.remarks"
-                      ></el-input>
+                      <el-form-item
+                        :prop="'tabledatas.' + scope.$index + '.remarks'"
+                        :rules="rules.remarks"
+                      >
+                        <el-input
+                          placeholder="请输入备注"
+                          v-show="base_info_show"
+                          v-model="scope.row.remarks"
+                        ></el-input>
+                      </el-form-item>
                       <div class="item" v-show="!base_info_show">
                         <label>备注：</label>
                         <span>{{scope.row.remarks}}</span>
                       </div>
                     </div>
                     <div class="table-item">
-                      <el-input
-                        placeholder="请输入司龄"
-                        v-show="base_info_show"
-                        v-model="scope.row.job_year"
-                      ></el-input>
+                      <el-form-item
+                        :prop="'tabledatas.' + scope.$index + '.job_year'"
+                        :rules="rules.job_year"
+                      >
+                        <el-input
+                          placeholder="请输入司龄"
+                          v-show="base_info_show"
+                          v-model="scope.row.job_year"
+                        ></el-input>
+                      </el-form-item>
                       <div class="item" v-show="!base_info_show">
                         <label>司龄：</label>
                         <span>{{scope.row.job_year}}</span>
@@ -1006,18 +1053,21 @@ export default {
               { id: 2, name: "业务部" },
               { id: 3, name: "运营部" }
             ], // 部门
+            department: "", // 部门value
             main_departments: [
               { id: 1, name: "篮球部" },
               { id: 2, name: "足球部" },
               { id: 3, name: "游泳部" }
             ], // 主部门
+            mainDepartment: "", // 主部门value
             position: "前端", // 职位
-            phone: "12345678910", // 手机号
+            phone: "13559411110", // 手机号
             job_num: "11号", // 工号
             extension_num: "110", // 分机号
             office_location: "泉州", // 办公地点
             remarks: "备注", // 备注
-            hire_date: "2222-02-22", // 入职时间
+            // hire_date: "2222-02-22", // 入职时间
+            hire_date: "", // 入职时间
             job_year: "5年6个月", // 司龄
             employee_type: "全职", // 员工类型
             employee_status: "正式", // 员工状态
@@ -1066,19 +1116,31 @@ export default {
             education_certificate_image: "未上传", // 学历证书
             degree_certificate_image: "未上传", // 学位证书
             resign_certificate_image: "未上传", // 离职证明
-            employee_image: "未上传", // 员工照片
-            department: "",
-            mainDepartment: ""
+            employee_image: "未上传" // 员工照片
           }
         ]
       },
       rules: {
         name: [{ required: true, trigger: "blur", validator: validateName }],
-        position: [
-          { required: true, trigger: "blur", message: "请输入职位" }
+        department: [
+          { required: true, trigger: "blur", message: "请选择部门" }
         ],
+        email: [{ required: true, trigger: "blur", validator: validateEmail }],
+        mainDepartment: [
+          { required: true, trigger: "blur", message: "请选择主部门" }
+        ],
+        position: [{ required: true, trigger: "blur", message: "请输入职位" }],
         phone: [{ required: true, trigger: "blur", validator: validateMobile }],
-        email: [{ required: true, trigger: "blur", validator: validateEmail }]
+        job_num: [{ required: true, trigger: "blur", message: "请输入工号" }],
+        extension_num: [
+          { required: true, trigger: "blur", message: "请输入分机号" }
+        ],
+        office_location: [
+          { required: true, trigger: "blur", message: "请输入办公地点" }
+        ],
+        remarks: [{ required: true, trigger: "blur", message: "请输入备注" }],
+        hire_date: [{ required: true, trigger: "blur", message: "请选择入职日期" }],
+        job_year: [{ required: true, trigger: "blur", message: "请输入司龄" }]
       },
       base_info_show: false,
       work_info_show: false,
@@ -1166,6 +1228,14 @@ export default {
     },
     selectMainDepartment(e) {
       console.log("选择主部门", e);
+    },
+    saveBaseInfo() {
+      this.$refs.formData.validate(valid => {
+        console.log("valid", valid);
+        if (valid) {
+          this.base_info_show = false;
+        }
+      });
     }
   }
 };
@@ -1379,6 +1449,10 @@ export default {
 }
 
 >>> .el-select {
+  width: 100%;
+}
+>>> .el-date-editor.el-input,
+.el-date-editor.el-input__inner {
   width: 100%;
 }
 </style>

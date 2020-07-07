@@ -155,7 +155,6 @@ export function inviteMember(data) {
     return request({
         url: 'invite_member',
         method: 'post',
-        headers: {'Content-Type': 'x-www-form-urlencoded'},
         data
     })
 }

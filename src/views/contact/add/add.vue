@@ -90,7 +90,7 @@ export default {
         if (valid) {
           const data = this.constructData(this.form.mobiles, this.form.names);
           // console.log("data", data);
-          inviteMember({ data: data }).then(res => {
+          inviteMember({ data: JSON.stringify(data) }).then(res => {
             this.$router.push("/");
           });
         }

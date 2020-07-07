@@ -30,10 +30,10 @@
             v-show="showIt&&EmployeeIndex===index"
           >
             <!-- <img class="logo" src="../../../assets/imgs/test.jpg" /> -->
-            <img class="logo" :src="employee.admins.avatar" />
+            <img class="logo" :src="employee.admins && employee.admins.avatar ? employee.admins.avatar : '../../../assets/imgs/test.jpg'" />
             <div class="employee-info">
-              <span class="name">{{ employee.admins.user_name }}</span>
-              <span class="position">{{ employee.admins.post_info.name }}</span>
+              <span class="name">{{ employee.admins && employee.admins.user_name ? employee.admins.user_name : ''}}</span>
+              <span class="position">{{ employee.admins && employee.admins.post_info.name ? employee.admins.post_info.name : '' }}</span>
             </div>
           </div>
         </div>
@@ -50,163 +50,6 @@ export default {
     return {
       showIt: true,
       EmployeeIndex: null,
-      // departments: [
-      //   {
-      //     departmentName: "技术部",
-      //     employees: [
-      //       {
-      //         name: "杨玉环",
-      //         position: "测试",
-      //         avatar: "../../../assets/imgs/test.jpg"
-      //       },
-      //       {
-      //         name: "貂蝉",
-      //         position: "后端",
-      //         avatar: "../../../assets/imgs/test.jpg"
-      //       },
-      //       {
-      //         name: "王昭君",
-      //         position: "前端",
-      //         avatar: "../../../assets/imgs/test.jpg"
-      //       },
-      //       {
-      //         name: "西施",
-      //         position: "全栈",
-      //         avatar: "../../../assets/imgs/test.jpg"
-      //       }
-      //     ]
-      //   },
-      //   {
-      //     departmentName: "业务部",
-      //     employees: [
-      //       {
-      //         name: "杨玉环",
-      //         position: "测试",
-      //         avatar: "../../../assets/imgs/test.jpg"
-      //       },
-      //       {
-      //         name: "貂蝉",
-      //         position: "后端",
-      //         avatar: "../../../assets/imgs/test.jpg"
-      //       },
-      //       {
-      //         name: "王昭君",
-      //         position: "前端",
-      //         avatar: "../../../assets/imgs/test.jpg"
-      //       },
-      //       {
-      //         name: "西施",
-      //         position: "全栈",
-      //         avatar: "../../../assets/imgs/test.jpg"
-      //       },
-      //       {
-      //         name: "如花",
-      //         position: "产品经理",
-      //         avatar: "../../../assets/imgs/test.jpg"
-      //       }
-      //     ]
-      //   },
-      //   {
-      //     departmentName: "人事部",
-      //     employees: [
-      //       {
-      //         name: "杨玉环",
-      //         position: "测试",
-      //         avatar: "../../../assets/imgs/test.jpg"
-      //       },
-      //       {
-      //         name: "貂蝉",
-      //         position: "后端",
-      //         avatar: "../../../assets/imgs/test.jpg"
-      //       },
-      //       {
-      //         name: "王昭君",
-      //         position: "前端",
-      //         avatar: "../../../assets/imgs/test.jpg"
-      //       },
-      //       {
-      //         name: "西施",
-      //         position: "全栈",
-      //         avatar: "../../../assets/imgs/test.jpg"
-      //       }
-      //     ]
-      //   },
-      //   {
-      //     departmentName: "贸易部",
-      //     employees: [
-      //       {
-      //         name: "杨玉环",
-      //         position: "测试",
-      //         avatar: "../../../assets/imgs/test.jpg"
-      //       },
-      //       {
-      //         name: "貂蝉",
-      //         position: "后端",
-      //         avatar: "../../../assets/imgs/test.jpg"
-      //       },
-      //       {
-      //         name: "王昭君",
-      //         position: "前端",
-      //         avatar: "../../../assets/imgs/test.jpg"
-      //       },
-      //       {
-      //         name: "西施",
-      //         position: "全栈",
-      //         avatar: "../../../assets/imgs/test.jpg"
-      //       }
-      //     ]
-      //   },
-      //   {
-      //     departmentName: "后勤部",
-      //     employees: [
-      //       {
-      //         name: "杨玉环",
-      //         position: "测试",
-      //         avatar: "../../../assets/imgs/test.jpg"
-      //       },
-      //       {
-      //         name: "貂蝉",
-      //         position: "后端",
-      //         avatar: "../../../assets/imgs/test.jpg"
-      //       },
-      //       {
-      //         name: "王昭君",
-      //         position: "前端",
-      //         avatar: "../../../assets/imgs/test.jpg"
-      //       },
-      //       {
-      //         name: "西施",
-      //         position: "全栈",
-      //         avatar: "../../../assets/imgs/test.jpg"
-      //       }
-      //     ]
-      //   },
-      //   {
-      //     departmentName: "车间",
-      //     employees: [
-      //       {
-      //         name: "杨玉环",
-      //         position: "测试",
-      //         avatar: "../../../assets/imgs/test.jpg"
-      //       },
-      //       {
-      //         name: "貂蝉",
-      //         position: "后端",
-      //         avatar: "../../../assets/imgs/test.jpg"
-      //       },
-      //       {
-      //         name: "王昭君",
-      //         position: "前端",
-      //         avatar: "../../../assets/imgs/test.jpg"
-      //       },
-      //       {
-      //         name: "西施",
-      //         position: "全栈",
-      //         avatar: "../../../assets/imgs/test.jpg"
-      //       }
-      //     ]
-      //   }
-      // ],
       departments: []
     };
   },
@@ -230,7 +73,7 @@ export default {
     async getDeparmentMember() {
       const res = await getDeparmentMember({ department_id : 1 })
       this.departments = res.data
-      console.log('获取子集部门列表含成员', res) 
+      console.log('获取子集部门列表含成员', this.departments) 
     }
   }
 };

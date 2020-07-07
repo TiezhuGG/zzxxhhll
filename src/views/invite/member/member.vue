@@ -88,11 +88,8 @@ export default {
   methods: {
     async fetchInviteInfo() {
       const res = await inviteInfo(this.inviterId);
-      // const res = await inviteInfo(18); // test id
       if (res.status_code === 200) {
-        console.log("invite info", res);
-        // this.name = res.data.admin_info.real_name
-        this.name = res.data.realname;
+        this.name = res.data.admin_info.real_name
         this.company_name = res.data.company_info.company_name;
         this.company_id = res.data.company_info.id;
       }
@@ -142,7 +139,7 @@ export default {
       });
     },
 
-    getInviterId() {
+    getInviterId() {  // 获取邀请人id
       const href = window.location.href;
       const hrefList = href.split("/");
       this.inviterId = hrefList[hrefList.length - 1];

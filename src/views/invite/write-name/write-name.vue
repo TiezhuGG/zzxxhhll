@@ -111,6 +111,7 @@ export default {
       mobile: "",
       code: "",
       company_id: "",
+      company_name: "",
       loading: false
     };
   },
@@ -118,7 +119,14 @@ export default {
     this.mobile = this.$route.query.mobile;
     this.code = this.$route.query.code;
     this.company_id = this.$route.query.company_id;
-    console.log("write-name page", this.mobile, this.code, this.company_id);
+    this.company_name = this.$route.query.company_name;
+    console.log(
+      "write-name page",
+      this.mobile,
+      this.code,
+      this.company_id,
+      this.company_name
+    );
   },
   methods: {
     join() {
@@ -138,7 +146,10 @@ export default {
             })
               .then(() => {
                 this.loading = false;
-                this.$router.push("/application");
+                this.$router.push({
+                  path: "/application",
+                  query: { company_name: this.company_name }
+                });
               })
               .catch(() => {
                 this.loading = false;

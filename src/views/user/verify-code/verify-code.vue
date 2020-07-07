@@ -23,12 +23,13 @@
             :key="index"
             v-model="code.value"
             name="code"
-            maxlength="1"
             type="number"
             autofocus="true"
             oninput="if(value.length>1)value=value.slice(0,1)"
             class="code-input"
-            :tabindex="toString(index + 1)"
+            :tabindex="(index + 1).toString()"
+            ref="inputRef"
+            @keyup.native.prevent="inputFocus(index + 1)"
           ></el-input>
         </el-form-item>
       </div>
@@ -36,11 +37,7 @@
       <div class="bottom-section">
         <span class="prompt" v-if="showTimer">{{ countDownTimer }} {{ promptMessage }}</span>
         <span class="re-prompt" v-else @click="getCode">重新获取验证码</span>
-        <el-button
-          type="primary"
-          @click.native.prevent="next"
-          class="login-button"
-        >下一步</el-button>
+        <el-button type="primary" @click.native.prevent="next" class="login-button">下一步</el-button>
       </div>
     </el-form>
   </div>
@@ -80,7 +77,8 @@ export default {
   },
   watch: {
     "codeForm.codes": {
-      handler(newVal) {// 构造6位数验证码
+      handler(newVal) {
+        // 构造6位数验证码
         let list = [];
         newVal.forEach(item => list.push(item.value));
         this.verify_code = list.join("");
@@ -131,6 +129,13 @@ export default {
           this.showTimer = false;
         }
       }, 1000);
+    },
+    inputFocus(index) {
+      if (index < 6) {
+        this.$refs.inputRef[index].focus();
+      } else {
+        this.$refs.inputRef[5].blur();
+      }
     }
   },
   components: {

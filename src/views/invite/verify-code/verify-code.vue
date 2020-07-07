@@ -22,7 +22,9 @@
             autofocus="true"
             oninput="if(value.length>1)value=value.slice(0,1)"
             class="code-input"
-            :tabindex="toString(index + 1)"
+            :tabindex="(index + 1).toString()"
+            ref="inputRef"
+            @keyup.native.prevent="inputFocus(index + 1)"
           ></el-input>
         </el-form-item>
       </div>
@@ -160,6 +162,13 @@ export default {
           this.showTimer = false;
         }
       }, 1000);
+    },
+    inputFocus(index) {
+      if (index < 6) {
+        this.$refs.inputRef[index].focus();
+      } else {
+        this.$refs.inputRef[5].blur();
+      }
     }
   },
   components: {

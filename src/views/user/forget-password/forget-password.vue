@@ -22,7 +22,12 @@
         <el-input type="password" v-model="formData.password" placeholder="请输入新密码" />
       </el-form-item>
       <el-form-item label="确认密码" prop="password_confirmation">
-        <el-input type="password" v-model="formData.password_confirmation" placeholder="请确认密码" @keyup.enter.native="changePassword" />
+        <el-input
+          type="password"
+          v-model="formData.password_confirmation"
+          placeholder="请确认密码"
+          @keyup.enter.native="changePassword"
+        />
       </el-form-item>
       <el-button :loading="loading" type="primary" class="button" @click="changePassword">重置密码</el-button>
     </el-form>
@@ -98,14 +103,16 @@ export default {
     }
   },
   components: {
-      Back
+    Back
   }
 };
 </script>
 
 <style lang="scss" scoped>
-.forget-container {
-  justify-content: center;
+@media screen and (max-width: 1150px) {
+  .forget-container {
+    justify-content: center;
+  }
 }
 .first {
   margin-top: 40px;
@@ -137,10 +144,10 @@ export default {
 >>> .el-form-item__content {
   margin: 0;
 }
->>>.el-form-item__label {
-    margin-left: 30px;
+>>> .el-form-item__label {
+  margin-left: 30px;
 }
->>>.el-form-item__content {
-    margin-left: 30px;
+>>> .el-form-item__content {
+  margin-left: 30px;
 }
 </style>

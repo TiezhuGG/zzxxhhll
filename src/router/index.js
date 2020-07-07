@@ -64,11 +64,11 @@ export const constantRoutes = [
    */
   {
     path: '/invite',
-    redirect: '/invite/member',
+    redirect: '/user/login',
     component: resolve => require(['@/views/invite/index'], resolve),
     hidden: true,
     children: [{
-      path: 'member',
+      path: 'member/:id',
       name: 'Member',
       component: resolve => require(['@/views/invite/member/member'], resolve),
       hidden: true,

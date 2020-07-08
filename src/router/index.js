@@ -35,137 +35,165 @@ import changeuser from './modules/changeuser'
  */
 
 export const constantRoutes = [
-  /**
-   * 用户端首页
-   */
-  {
-    path: '/',
-    component: Layout,
-    redirect: '/index',
-    children: [{
-      path: 'index',
-      name: 'Index',
-      component: resolve => require(['@/views/index/index'], resolve),
-      meta: {
-        title: '工作台',
-        icon: 'use'
-      }
-    }]
-  },
-  /**
-   * 登录注册
-   */
-  user,
-  // 修改密码
-  changeuser,
-
-  /**
-   *  邀请加入团队
-   */
-  {
-    path: '/invite',
-    redirect: '/user/login',
-    component: resolve => require(['@/views/invite/index'], resolve),
-    hidden: true,
-    children: [{
-      path: 'member/:id',
-      name: 'Member',
-      component: resolve => require(['@/views/invite/member/member'], resolve),
-      hidden: true,
-      meta: {
-        title: '邀请加入团队'
-      }
-    },
+    /**
+     * 用户端首页
+     */
     {
-      path: 'verify-code',
-      name: 'Verify-code',
-      component: resolve => require(['@/views/invite/verify-code/verify-code'], resolve),
-      hidden: true,
-      meta: {
-        title: '填写验证码'
-      }
+        path: '/',
+        component: Layout,
+        redirect: '/index',
+        children: [{
+            path: 'index',
+            name: 'Index',
+            component: resolve => require(['@/views/index/index'], resolve),
+            meta: {
+                title: '工作台',
+                icon: 'use'
+            }
+        }]
     },
+    /**
+     * 登录注册
+     */
+    user,
+    // 发送邮件
     {
-      path: 'write-name',
-      name: 'WriteName',
-      component: resolve => require(['@/views/invite/write-name/write-name'], resolve),
-      hidden: true,
-      meta: {
-        title: '填写姓名'
-      }
-    }]
-  },
-  {
-    path: '/application',
-    name: 'Application',
-    component: resolve => require(['@/views/invite/application/application'], resolve),
-    hidden: true,
-    meta: {
-      title: '申请成功'
-    }
-  },
-
-  // 联系人
-  {
-    path: '/contact',
-    component: Layout,
-    children: [
-      {
-        path: 'contact',
-        name: 'Contact',
-        component: resolve => require(['@/views/contact/index'], resolve),
-        meta: {
-          title: '联系人',
-          icon: 'record'
-        }
-      },
-      {
-        path: 'add',
-        name: 'Add',
+        path: '/send-email',
+        name: 'Send-Email',
+        component: resolve => require(['@/views/user/send-email/send-email'], resolve),
         hidden: true,
-        component: resolve => require(['@/views/contact/add/add'], resolve),
         meta: {
-          title: '添加团队成员',
-          icon: 'record'
+            title: '发送邮件'
         }
-      }
-    ]
-  },
+    },
 
-  /**
-   * 工作台应用程序
-   */
-  apps,
+    /**
+     *  邀请加入团队
+     */
+    {
+        path: '/invite',
+        redirect: '/user/login',
+        component: resolve => require(['@/views/invite/index'], resolve),
+        hidden: true,
+        children: [{
+                path: 'member/:id',
+                name: 'Member',
+                component: resolve => require(['@/views/invite/member/member'], resolve),
+                hidden: true,
+                meta: {
+                    title: '邀请加入团队'
+                }
+            },
+            {
+                path: 'verify-code',
+                name: 'Verify-code',
+                component: resolve => require(['@/views/invite/verify-code/verify-code'], resolve),
+                hidden: true,
+                meta: {
+                    title: '填写验证码'
+                }
+            },
+            {
+                path: 'write-name',
+                name: 'WriteName',
+                component: resolve => require(['@/views/invite/write-name/write-name'], resolve),
+                hidden: true,
+                meta: {
+                    title: '填写姓名'
+                }
+            }
+        ]
+    },
+    {
+        path: '/application',
+        name: 'Application',
+        component: resolve => require(['@/views/invite/application/application'], resolve),
+        hidden: true,
+        meta: {
+            title: '申请成功'
+        }
+    },
 
-  {
-    path: '/404',
-    component: resolve => require(['@/views/404/404'], resolve),
-    hidden: true,
-    meta: {
-      title: '404 Not Found'
+    // 修改密码
+    changeuser,
+
+    // 审批
+    {
+        path: '/approval',
+        component: Layout,
+        children: [
+            {
+                path: 'approval',
+                name: 'Approval',
+                component: resolve => require(['@/views/approval/index'],resolve),
+                meta: {
+                    title: '审批',
+                    icon: 'approval'
+                }
+            }
+        ]
+    },
+
+    // 联系人
+    {
+        path: '/contact',
+        component: Layout,
+        children: [{
+                path: 'contact',
+                name: 'Contact',
+                component: resolve => require(['@/views/contact/index'], resolve),
+                meta: {
+                    title: '联系人',
+                    icon: 'record'
+                }
+            },
+            {
+                path: 'add',
+                name: 'Add',
+                hidden: true,
+                component: resolve => require(['@/views/contact/add/add'], resolve),
+                meta: {
+                    title: '添加团队成员',
+                    icon: 'record'
+                }
+            }
+        ]
+    },
+
+    /**
+     * 工作台应用程序
+     */
+    apps,
+
+    {
+        path: '/404',
+        component: resolve => require(['@/views/404/404'], resolve),
+        hidden: true,
+        meta: {
+            title: '404 Not Found'
+        }
+    },
+
+    // 404 page must be placed at the end !!!
+    {
+        path: '*',
+        redirect: '/404',
+        hidden: true
     }
-  },
-
-  // 404 page must be placed at the end !!!
-  {
-    path: '*',
-    redirect: '/404',
-    hidden: true
-  }
 ]
 const createRouter = () => new Router({
-  mode: 'history', // require service support
-  scrollBehavior: () => ({
-    y: 0
-  }),
-  routes: constantRoutes
+    mode: 'history', // require service support
+    scrollBehavior: () => ({
+        y: 0
+    }),
+    routes: constantRoutes
 })
 
 const router = createRouter()
 
 export function resetRouter() {
-  const newRouter = createRouter()
-  router.matcher = newRouter.matcher // reset router
+    const newRouter = createRouter()
+    router.matcher = newRouter.matcher // reset router
 }
 
 export default router

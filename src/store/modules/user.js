@@ -14,6 +14,7 @@ const getDefaultState = () => {
             username: '',
             enterpriseName: '',
             avatar: '',
+            email: '',
         },
         userinfo: {}
     }
@@ -45,6 +46,9 @@ const mutations = {
     },
     setMobile: (state, mobile) => {
         state.info.mobile = mobile
+    },
+    setEmail: (state, email) => {
+        state.info.email = email
     },
     setInfo: (state, info) => {
         state.info = info

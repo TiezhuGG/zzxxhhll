@@ -8,36 +8,29 @@
       ref="formData"
     >
       <Back />
-      <el-form-item class="first" label="手机号" prop="mobile">
-        <el-input placeholder="请输入手机号" type="number" v-model="formData.mobile">
+      <div class="title-container">
+        <h3 class="title">找回密码</h3>
+        <span class="warning">
+          通过您的手机号充值密码，或
+          <router-link to="/user/forget-password-email" class="text-color">邮箱重置密码</router-link>
+        </span>
+      </div>
+
+      <el-form-item class="first" prop="mobile">
+        <el-input placeholder="请输入你的手机号" type="number" v-model="formData.mobile">
           <el-select v-model="value" slot="prepend">
             <el-option label="+86" value="1" />
           </el-select>
         </el-input>
       </el-form-item>
-      <el-form-item label="旧密码" prop="oldPassword">
-        <el-input type="password" v-model="formData.oldPassword" placeholder="请输入旧密码" />
-      </el-form-item>
-      <el-form-item label="新密码" prop="password">
-        <el-input type="password" v-model="formData.password" placeholder="请输入新密码" />
-      </el-form-item>
-      <el-form-item label="确认密码" prop="password_confirmation">
-        <el-input
-          type="password"
-          v-model="formData.password_confirmation"
-          placeholder="请确认密码"
-          @keyup.enter.native="changePassword"
-        />
-      </el-form-item>
-      <el-button :loading="loading" type="primary" class="button" @click="changePassword">重置密码</el-button>
+      <el-button :loading="loading" type="primary" class="button" @click="next">下一步</el-button>
     </el-form>
   </div>
 </template>
 
 <script>
-import { changePassword } from "@/api/user";
+import { getVerifyCode } from "@/api/user";
 import { validMobile } from "@/utils/validate";
-import { removeToken } from "@/utils/auth";
 import Back from "../components/Back";
 
 export default {
@@ -53,51 +46,33 @@ export default {
     return {
       value: "1",
       formData: {
-        mobile: "",
-        oldPassword: "",
-        password: "",
-        password_confirmation: ""
+        mobile: ""
       },
       formRules: {
-        mobile: [
-          { required: true, trigger: "blur", validator: validateMobile }
-        ],
-        oldPassword: [
-          { required: true, trigger: "blur", message: "请输入旧密码" },
-          { min: 8, max: 20, trigger: "blur", message: "密码长度在8-20位之间" }
-        ],
-        password: [
-          { required: true, trigger: "blur", message: "请输入新密码" },
-          { min: 8, max: 20, trigger: "blur", message: "密码长度在8-20位之间" }
-        ],
-        password_confirmation: [
-          { required: true, trigger: "blur", message: "请确认密码" },
-          { min: 8, max: 20, trigger: "blur", message: "密码长度在8-20位之间" }
-        ]
+        mobile: [{ required: true, trigger: "blur", validator: validateMobile }]
       },
       loading: false
     };
   },
 
   methods: {
-    changePassword() {
+    next() {
       this.$refs.formData.validate(valid => {
         if (valid) {
           this.loading = true;
-          changePassword({
-            mobile: this.formData.mobile,
-            old_password: this.formData.oldPassword,
-            password: this.formData.password,
-            password_confirmation: this.formData.password_confirmation
-          })
-            .then(() => {
-              removeToken();
-              this.$router.push("/user/login");
-              this.loading = false;
-            })
-            .catch(() => {
-              this.loading = false;
-            });
+          // 保存mobile到vuex
+          this.$store.commit("user/setMobile", {
+            mobile: this.formData.mobile
+          });
+          this.$router.push("/user/verify-code");
+          // getVerifyCode({ type: "find_password", mobile: this.formData.mobile })
+          //   .then(() => {
+          //     this.loading = false;
+          //     this.$router.push("/user/verify-code");
+          //   })
+          //   .catch(() => {
+          //     this.loading = false;
+          //   });
         }
       });
     }
@@ -120,9 +95,15 @@ export default {
 .button {
   width: 430px;
   height: 60px;
-  margin-top: 10px;
+  margin-top: 290px !important;
   margin-left: 30px;
   font-size: 19px;
+}
+.title-container {
+  margin: 37px 0 0 29px;
+}
+.text-color {
+  color: #409eff;
 }
 // 处理input type = number的上下箭头
 >>> input::-webkit-outer-spin-button,

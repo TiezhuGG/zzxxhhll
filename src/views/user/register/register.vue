@@ -94,6 +94,7 @@ export default {
             this.$store.commit("user/setMobile", {
               mobile: this.registerForm.mobile
             });
+            // this.$router.push("/user/verify-code");
             // 获取验证码
             getVerifyCode({
               type: "register",

@@ -117,17 +117,17 @@ export const constantRoutes = [
     // 修改密码
     changeuser,
 
-    // 审批
+    // 消息
     {
-        path: '/approval',
+        path: '/message',
         component: Layout,
         children: [
             {
-                path: 'approval',
-                name: 'Approval',
+                path: 'message',
+                name: 'Message',
                 component: resolve => require(['@/views/approval/index'],resolve),
                 meta: {
-                    title: '审批',
+                    title: '消息',
                     icon: 'approval'
                 }
             }
@@ -137,6 +137,7 @@ export const constantRoutes = [
     // 联系人
     {
         path: '/contact',
+        redirect: '/contact/contact',
         component: Layout,
         children: [{
                 path: 'contact',

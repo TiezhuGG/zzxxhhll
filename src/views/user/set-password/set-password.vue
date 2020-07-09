@@ -53,7 +53,7 @@
 
 <script>
 import Back from "../components/Back";
-import { register } from "@/api/user";
+import { register, findPassword } from "@/api/user";
 import { Message } from "element-ui";
 
 export default {
@@ -84,8 +84,12 @@ export default {
         ]
       },
       loading: false,
-      passwordType: "password"
+      passwordType: "password",
+      find_password: false
     };
+  },
+  created() {
+    this.find_password = this.$route.query.find_password;
   },
   methods: {
     next() {
@@ -99,18 +103,35 @@ export default {
               password: password
             });
             let userInfo = this.$store.state.user.info;
-            register({
-              mobile: userInfo.mobile.mobile,
-              password: userInfo.password.password,
-              password_confirmation: userInfo.password.password,
-              code: userInfo.code.code
-            }).then(() => {
-                this.loading = false;
-                // this.$router.push("/user/login");
-                this.$router.push("/user/enterprise");
-            }).catch(() => {
-                this.loading = false;
-            });
+            if (this.find_password) { // 重置密码
+              findPassword({
+                mobile: userInfo.mobile.mobile,
+                password: userInfo.password.password,
+                password_confirmation: userInfo.password.password
+              })
+                .then(() => {
+                  this.loading = false;
+                  this.$router.push("/user/login");
+                })
+                .catch(() => {
+                  this.loading = false;
+                });
+            } else {
+              register({  // 注册
+                mobile: userInfo.mobile.mobile,
+                password: userInfo.password.password,
+                password_confirmation: userInfo.password.password,
+                code: userInfo.code.code
+              })
+                .then(() => {
+                  this.loading = false;
+                  // this.$router.push("/user/login");
+                  this.$router.push("/user/enterprise");
+                })
+                .catch(() => {
+                  this.loading = false;
+                });
+            }
           } else {
             this.loading = false;
             Message({

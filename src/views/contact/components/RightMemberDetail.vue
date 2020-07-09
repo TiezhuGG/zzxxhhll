@@ -395,533 +395,826 @@
               <span class="txt">个人信息</span>
               <span class="line"></span>
               <span class="edit" @click="personal_info_show = true">编辑</span>
-              <span class="save" @click="personal_info_show = false" v-show="personal_info_show">保存</span>
+              <span class="save" @click="personalBaseInfo" v-show="personal_info_show">保存</span>
             </div>
 
-            <el-table :data="personalData.tabledatas">
-              <el-table-column>
-                <template slot-scope="scope">
-                  <div class="table-item">
-                    <el-input
-                      placeholder="请输入身份证姓名"
-                      v-show="personal_info_show"
-                      v-model="scope.row.name_in_id"
-                    ></el-input>
-                    <div class="item" v-show="!personal_info_show">
-                      <label>身份证姓名：</label>
-                      <span>{{scope.row.name_in_id}}</span>
+            <el-form :model="personalData" ref="personalData" :rules="personalRules">
+              <el-table :data="personalData.tabledatas">
+                <el-table-column>
+                  <template slot-scope="scope">
+                    <div class="table-item">
+                      <el-form-item
+                        :prop="'tabledatas.' + scope.$index + '.name_in_id'"
+                        :rules="personalRules.name_in_id"
+                      >
+                        <el-input
+                          placeholder="请输入身份证姓名"
+                          v-show="personal_info_show"
+                          v-model="scope.row.name_in_id"
+                        ></el-input>
+                      </el-form-item>
+                      <div class="item" v-show="!personal_info_show">
+                        <label>身份证姓名：</label>
+                        <span>{{scope.row.name_in_id}}</span>
+                      </div>
                     </div>
-                  </div>
 
-                  <div class="table-item">
-                    <el-input
-                      placeholder="请输入出生日期"
-                      v-show="personal_info_show"
-                      v-model="scope.row.born_date"
-                    ></el-input>
-                    <div class="item" v-show="!personal_info_show">
-                      <label>出生日期：</label>
-                      <span>{{scope.row.born_date}}</span>
+                    <div class="table-item">
+                      <el-form-item
+                        :prop="'tabledatas.' + scope.$index + '.born_date'"
+                        :rules="personalRules.born_date"
+                      >
+                        <el-date-picker
+                          v-model="scope.row.born_date"
+                          v-show="personal_info_show"
+                          type="date"
+                          placeholder="请选择出生日期"
+                          value-format="yyyy-MM-dd"
+                          @change="selectBornDate"
+                        ></el-date-picker>
+                      </el-form-item>
+                      <div class="item" v-show="!personal_info_show">
+                        <label>出生日期：</label>
+                        <span>{{scope.row.born_date}}</span>
+                      </div>
                     </div>
-                  </div>
 
-                  <div class="table-item">
-                    <el-input
-                      placeholder="请输入性别"
-                      v-show="personal_info_show"
-                      v-model="scope.row.gender"
-                    ></el-input>
-                    <div class="item" v-show="!personal_info_show">
-                      <label>性别：</label>
-                      <span>{{scope.row.gender}}</span>
+                    <div class="table-item">
+                      <el-form-item
+                        :prop="'tabledatas.' + scope.$index + '.gender'"
+                        :rules="personalRules.gender"
+                      >
+                        <el-select
+                          v-show="personal_info_show"
+                          v-model="scope.row.gender"
+                          @change="selectGender"
+                          placeholder="请选择性别"
+                        >
+                          <el-option
+                            v-for="item in personalData.tabledatas[0].genderList"
+                            :key="item.id"
+                            :label="item.name"
+                            :value="item.name"
+                          ></el-option>
+                        </el-select>
+                      </el-form-item>
+                      <div class="item" v-show="!personal_info_show">
+                        <label>性别：</label>
+                        <span>{{scope.row.gender}}</span>
+                      </div>
                     </div>
-                  </div>
-                  <div class="table-item">
-                    <el-input
-                      placeholder="请输入身份证地址"
-                      v-show="personal_info_show"
-                      v-model="scope.row.id_card_address"
-                    ></el-input>
-                    <div class="item" v-show="!personal_info_show">
-                      <label>身份证地址：</label>
-                      <span>{{scope.row.email}}</span>
+                    <div class="table-item">
+                      <el-form-item
+                        :prop="'tabledatas.' + scope.$index + '.id_card_address'"
+                        :rules="personalRules.id_card_address"
+                      >
+                        <el-input
+                          placeholder="请输入身份证地址"
+                          v-show="personal_info_show"
+                          v-model="scope.row.id_card_address"
+                        ></el-input>
+                      </el-form-item>
+                      <div class="item" v-show="!personal_info_show">
+                        <label>身份证地址：</label>
+                        <span>{{scope.row.id_card_address}}</span>
+                      </div>
                     </div>
-                  </div>
-                  <div class="table-item">
-                    <el-input
-                      placeholder="请输入婚姻情况"
-                      v-show="personal_info_show"
-                      v-model="scope.row.marriage"
-                    ></el-input>
-                    <div class="item" v-show="!personal_info_show">
-                      <label>婚姻情况：</label>
-                      <span>{{scope.row.marriage}}</span>
+                    <div class="table-item">
+                      <el-form-item
+                        :prop="'tabledatas.' + scope.$index + '.marriage'"
+                        :rules="personalRules.marriage"
+                      >
+                        <el-select
+                          v-show="personal_info_show"
+                          v-model="scope.row.marriage"
+                          @change="selectMarriage"
+                          placeholder="请选择婚姻情况"
+                        >
+                          <el-option
+                            v-for="item in personalData.tabledatas[0].marriageList"
+                            :key="item.id"
+                            :label="item.name"
+                            :value="item.name"
+                          ></el-option>
+                        </el-select>
+                      </el-form-item>
+                      <div class="item" v-show="!personal_info_show">
+                        <label>婚姻情况：</label>
+                        <span>{{scope.row.marriage}}</span>
+                      </div>
                     </div>
-                  </div>
-                  <div class="table-item">
-                    <el-input
-                      placeholder="请输入工龄(系统计算)"
-                      v-show="personal_info_show"
-                      v-model="scope.row.work_year"
-                    ></el-input>
-                    <div class="item" v-show="!personal_info_show">
-                      <label>工龄(系统计算)：</label>
-                      <span>{{scope.row.work_year}}</span>
+                    <div class="table-item">
+                      <el-input
+                        placeholder="请输入工龄(系统计算)"
+                        v-show="personal_info_show"
+                        v-model="scope.row.work_year"
+                      ></el-input>
+                      <div class="item" v-show="!personal_info_show">
+                        <label>工龄(系统计算)：</label>
+                        <span>{{scope.row.work_year}}</span>
+                      </div>
                     </div>
-                  </div>
-                  <div class="table-item">
-                    <el-input
-                      placeholder="请输入住址"
-                      v-show="personal_info_show"
-                      v-model="scope.row.address"
-                    ></el-input>
-                    <div class="item" v-show="!personal_info_show">
-                      <label>住址：</label>
-                      <span>{{scope.row.address}}</span>
+                    <div class="table-item">
+                      <el-form-item
+                        :prop="'tabledatas.' + scope.$index + '.address'"
+                        :rules="personalRules.address"
+                      >
+                        <el-input
+                          placeholder="请输入住址"
+                          v-show="personal_info_show"
+                          v-model="scope.row.address"
+                        ></el-input>
+                      </el-form-item>
+                      <div class="item" v-show="!personal_info_show">
+                        <label>住址：</label>
+                        <span>{{scope.row.address}}</span>
+                      </div>
                     </div>
-                  </div>
-                  <div class="table-item">
-                    <el-input
-                      placeholder="请输入个人社保账号"
-                      v-show="personal_info_show"
-                      v-model="scope.row.social_insurance"
-                    ></el-input>
-                    <div class="item" v-show="!personal_info_show">
-                      <label>个人社保账号：</label>
-                      <span>{{scope.row.social_insurance}}</span>
+                    <div class="table-item">
+                      <el-form-item
+                        :prop="'tabledatas.' + scope.$index + '.social_insurance'"
+                        :rules="personalRules.social_insurance"
+                      >
+                        <el-input
+                          placeholder="请输入个人社保账号"
+                          v-show="personal_info_show"
+                          v-model="scope.row.social_insurance"
+                        ></el-input>
+                      </el-form-item>
+                      <div class="item" v-show="!personal_info_show">
+                        <label>个人社保账号：</label>
+                        <span>{{scope.row.social_insurance}}</span>
+                      </div>
                     </div>
-                  </div>
-                </template>
-              </el-table-column>
+                  </template>
+                </el-table-column>
 
-              <el-table-column>
-                <template slot-scope="scope">
-                  <div class="table-item">
-                    <el-input
-                      placeholder="请输入证件号码"
-                      v-show="personal_info_show"
-                      v-model="scope.row.id_card"
-                    ></el-input>
-                    <div class="item" v-show="!personal_info_show">
-                      <label>证件号码：</label>
-                      <span>{{scope.row.id_card}}</span>
+                <el-table-column>
+                  <template slot-scope="scope">
+                    <div class="table-item">
+                      <el-form-item
+                        :prop="'tabledatas.' + scope.$index + '.id_card'"
+                        :rules="personalRules.id_card"
+                      >
+                        <el-input
+                          placeholder="请输入身份证号码"
+                          v-show="personal_info_show"
+                          v-model="scope.row.id_card"
+                        ></el-input>
+                      </el-form-item>
+                      <div class="item" v-show="!personal_info_show">
+                        <label>证件号码：</label>
+                        <span>{{scope.row.id_card}}</span>
+                      </div>
                     </div>
-                  </div>
-                  <div class="table-item">
-                    <el-input
-                      placeholder="请输入年龄"
-                      v-show="personal_info_show"
-                      v-model="scope.row.age"
-                    ></el-input>
-                    <div class="item" v-show="!personal_info_show">
-                      <label>年龄：</label>
-                      <span>{{scope.row.age}}</span>
+                    <div class="table-item">
+                      <el-form-item
+                        :prop="'tabledatas.' + scope.$index + '.age'"
+                        :personalRules="rules.age"
+                      >
+                        <el-input
+                          type="number"
+                          placeholder="请输入年龄"
+                          v-show="personal_info_show"
+                          v-model="scope.row.age"
+                        ></el-input>
+                      </el-form-item>
+                      <div class="item" v-show="!personal_info_show">
+                        <label>年龄：</label>
+                        <span>{{scope.row.age}}</span>
+                      </div>
                     </div>
-                  </div>
-                  <div class="table-item">
-                    <el-input
-                      placeholder="请输入民族"
-                      v-show="personal_info_show"
-                      v-model="scope.row.nation"
-                    ></el-input>
-                    <div class="item" v-show="!personal_info_show">
-                      <label>民族：</label>
-                      <span>{{scope.row.nation}}</span>
+                    <div class="table-item">
+                      <el-form-item
+                        :prop="'tabledatas.' + scope.$index + '.nation'"
+                        :rules="personalRules.nation"
+                      >
+                        <el-select
+                          v-show="personal_info_show"
+                          v-model="scope.row.nation"
+                          @change="selectNation"
+                          placeholder="请选择民族"
+                        >
+                          <el-option
+                            v-for="item in personalData.tabledatas[0].nationList"
+                            :key="item.id"
+                            :label="item.name"
+                            :value="item.name"
+                          ></el-option>
+                        </el-select>
+                      </el-form-item>
+                      <div class="item" v-show="!personal_info_show">
+                        <label>民族：</label>
+                        <span>{{scope.row.nation}}</span>
+                      </div>
                     </div>
-                  </div>
 
-                  <div class="table-item">
-                    <el-input
-                      placeholder="请输入证件有效期"
-                      v-show="personal_info_show"
-                      v-model="scope.row.valid_until"
-                    ></el-input>
-                    <div class="item" v-show="!personal_info_show">
-                      <label>证件有效期：</label>
-                      <span>{{scope.row.valid_until}}</span>
+                    <div class="table-item">
+                      <el-form-item
+                        :prop="'tabledatas.' + scope.$index + '.valid_until'"
+                        :personalRules="rules.valid_until"
+                      >
+                        <el-input
+                          placeholder="请输入证件有效期"
+                          v-show="personal_info_show"
+                          v-model="scope.row.valid_until"
+                        ></el-input>
+                      </el-form-item>
+                      <div class="item" v-show="!personal_info_show">
+                        <label>证件有效期：</label>
+                        <span>{{scope.row.valid_until}}</span>
+                      </div>
                     </div>
-                  </div>
 
-                  <div class="table-item">
-                    <el-input
-                      placeholder="请输入首次参加工作时间"
-                      v-show="personal_info_show"
-                      v-model="scope.row.first_working_time"
-                    ></el-input>
-                    <div class="item" v-show="!personal_info_show">
-                      <label>首次参加工作时间：</label>
-                      <span>{{scope.row.first_working_time}}</span>
+                    <div class="table-item">
+                      <el-form-item
+                        :prop="'tabledatas.' + scope.$index + '.first_working_time'"
+                        :rules="personalRules.first_working_time"
+                      >
+                        <el-date-picker
+                          v-model="scope.row.first_working_time"
+                          v-show="personal_info_show"
+                          type="date"
+                          placeholder="请选择首次参加工作时间"
+                          value-format="yyyy-MM-dd"
+                          @change="selectFirstWorkingTime"
+                        ></el-date-picker>
+                      </el-form-item>
+                      <div class="item" v-show="!personal_info_show">
+                        <label>首次参加工作时间：</label>
+                        <span>{{scope.row.first_working_time}}</span>
+                      </div>
                     </div>
-                  </div>
 
-                  <div class="table-item">
-                    <el-input
-                      placeholder="请输入户籍类型"
-                      v-show="personal_info_show"
-                      v-model="scope.row.domicile_type"
-                    ></el-input>
-                    <div class="item" v-show="!personal_info_show">
-                      <label>户籍类型：</label>
-                      <span>{{scope.row.domicile_type}}</span>
+                    <div class="table-item">
+                      <el-form-item
+                        :prop="'tabledatas.' + scope.$index + '.domicile_type'"
+                        :rules="personalRules.domicile_type"
+                      >
+                        <el-select
+                          v-show="personal_info_show"
+                          v-model="scope.row.domicile_type"
+                          @change="selectDomicileType"
+                          placeholder="请选择户籍类型"
+                        >
+                          <el-option
+                            v-for="item in personalData.tabledatas[0].domicileList"
+                            :key="item.id"
+                            :label="item.name"
+                            :value="item.name"
+                          ></el-option>
+                        </el-select>
+                      </el-form-item>
+                      <div class="item" v-show="!personal_info_show">
+                        <label>户籍类型：</label>
+                        <span>{{scope.row.domicile_type}}</span>
+                      </div>
                     </div>
-                  </div>
 
-                  <div class="table-item">
-                    <el-input
-                      placeholder="请输入政治面貌"
-                      v-show="personal_info_show"
-                      v-model="scope.row.political"
-                    ></el-input>
-                    <div class="item" v-show="!personal_info_show">
-                      <label>政治面貌：</label>
-                      <span>{{scope.row.political}}</span>
+                    <div class="table-item">
+                      <el-form-item
+                        :prop="'tabledatas.' + scope.$index + '.political'"
+                        :rules="personalRules.political"
+                      >
+                        <el-select
+                          v-show="personal_info_show"
+                          v-model="scope.row.political"
+                          @change="selectPolitical"
+                          placeholder="请选择政治面貌"
+                        >
+                          <el-option
+                            v-for="item in personalData.tabledatas[0].politicalList"
+                            :key="item.id"
+                            :label="item.name"
+                            :value="item.name"
+                          ></el-option>
+                        </el-select>
+                      </el-form-item>
+                      <div class="item" v-show="!personal_info_show">
+                        <label>政治面貌：</label>
+                        <span>{{scope.row.political}}</span>
+                      </div>
                     </div>
-                  </div>
 
-                  <div class="table-item">
-                    <el-input
-                      placeholder="请输入个人公积金账号"
-                      v-show="personal_info_show"
-                      v-model="scope.row.accumulation_fund"
-                    ></el-input>
-                    <div class="item" v-show="!personal_info_show">
-                      <label>个人公积金账号：</label>
-                      <span>{{scope.row.accumulation_fund}}</span>
+                    <div class="table-item">
+                      <el-form-item
+                        :prop="'tabledatas.' + scope.$index + '.accumulation_fund'"
+                        :rules="personalRules.accumulation_fund"
+                      >
+                        <el-input
+                          placeholder="请输入个人公积金账号"
+                          v-show="personal_info_show"
+                          v-model="scope.row.accumulation_fund"
+                        ></el-input>
+                      </el-form-item>
+                      <div class="item" v-show="!personal_info_show">
+                        <label>个人公积金账号：</label>
+                        <span>{{scope.row.accumulation_fund}}</span>
+                      </div>
                     </div>
-                  </div>
-                </template>
-              </el-table-column>
-            </el-table>
+                  </template>
+                </el-table-column>
+              </el-table>
+            </el-form>
 
             <!-- 学历信息 -->
             <div class="education_info">
               <span class="txt">学历信息</span>
               <span class="line"></span>
               <span class="edit" @click="education_info_show = true">编辑</span>
-              <span
-                class="save"
-                @click="education_info_show = false"
-                v-show="education_info_show"
-              >保存</span>
+              <span class="save" @click="educationBaseInfo" v-show="education_info_show">保存</span>
             </div>
 
-            <el-table :data="formData.tabledatas">
-              <el-table-column>
-                <template slot-scope="scope">
-                  <div class="table-item">
-                    <el-input
-                      placeholder="请输入学历"
-                      v-show="education_info_show"
-                      v-model="scope.row.education"
-                    ></el-input>
-                    <div class="item" v-show="!education_info_show">
-                      <label>学历：</label>
-                      <span>{{scope.row.education}}</span>
+            <el-form :model="educationData" ref="educationData" :rules="educationRules">
+              <el-table :data="educationData.tabledatas">
+                <el-table-column>
+                  <template slot-scope="scope">
+                    <div class="table-item">
+                      <el-form-item
+                        :prop="'tabledatas.' + scope.$index + '.education'"
+                        :rules="educationRules.education"
+                      >
+                        <el-select
+                          v-show="education_info_show"
+                          v-model="scope.row.education"
+                          @change="selectEducation"
+                          placeholder="请选择学历"
+                        >
+                          <el-option
+                            v-for="item in educationData.tabledatas[0].educationList"
+                            :key="item.id"
+                            :label="item.name"
+                            :value="item.name"
+                          ></el-option>
+                        </el-select>
+                      </el-form-item>
+                      <div class="item" v-show="!education_info_show">
+                        <label>学历：</label>
+                        <span>{{scope.row.education}}</span>
+                      </div>
                     </div>
-                  </div>
-                  <div class="table-item">
-                    <el-input
-                      placeholder="请输入毕业时间"
-                      v-show="education_info_show"
-                      v-model="scope.row.graduation_date"
-                    ></el-input>
-                    <div class="item" v-show="!education_info_show">
-                      <label>毕业时间：</label>
-                      <span>{{scope.row.graduation_date}}</span>
+                    <div class="table-item">
+                      <el-form-item
+                        :prop="'tabledatas.' + scope.$index + '.graduation_date'"
+                        :rules="educationRules.graduation_date"
+                      >
+                        <el-date-picker
+                          v-model="scope.row.graduation_date"
+                          v-show="education_info_show"
+                          type="date"
+                          placeholder="请选择毕业时间"
+                          value-format="yyyy-MM-dd"
+                          @change="selectGraduationDate"
+                        ></el-date-picker>
+                      </el-form-item>
+                      <div class="item" v-show="!education_info_show">
+                        <label>毕业时间：</label>
+                        <span>{{scope.row.graduation_date}}</span>
+                      </div>
                     </div>
-                  </div>
-                </template>
-              </el-table-column>
-              <el-table-column>
-                <template slot-scope="scope">
-                  <div class="table-item">
-                    <el-input
-                      placeholder="请输入毕业院校"
-                      v-show="education_info_show"
-                      v-model="scope.row.school"
-                    ></el-input>
-                    <div class="item" v-show="!education_info_show">
-                      <label>毕业院校：</label>
-                      <span>{{scope.row.school}}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column>
+                  <template slot-scope="scope">
+                    <div class="table-item">
+                      <el-form-item
+                        :prop="'tabledatas.' + scope.$index + '.school'"
+                        :rules="educationRules.school"
+                      >
+                        <el-input
+                          placeholder="请输入毕业院校"
+                          v-show="education_info_show"
+                          v-model="scope.row.school"
+                        ></el-input>
+                      </el-form-item>
+                      <div class="item" v-show="!education_info_show">
+                        <label>毕业院校：</label>
+                        <span>{{scope.row.school}}</span>
+                      </div>
                     </div>
-                  </div>
-                  <div class="table-item">
-                    <el-input
-                      placeholder="请输入所学专业"
-                      v-show="education_info_show"
-                      v-model="scope.row.major"
-                    ></el-input>
-                    <div class="item" v-show="!education_info_show">
-                      <label>所学专业：</label>
-                      <span>{{scope.row.major}}</span>
+                    <div class="table-item">
+                      <el-form-item
+                        :prop="'tabledatas.' + scope.$index + '.major'"
+                        :rules="educationRules.major"
+                      >
+                        <el-input
+                          placeholder="请输入所学专业"
+                          v-show="education_info_show"
+                          v-model="scope.row.major"
+                        ></el-input>
+                      </el-form-item>
+                      <div class="item" v-show="!education_info_show">
+                        <label>所学专业：</label>
+                        <span>{{scope.row.major}}</span>
+                      </div>
                     </div>
-                  </div>
-                </template>
-              </el-table-column>
-            </el-table>
+                  </template>
+                </el-table-column>
+              </el-table>
+            </el-form>
 
             <!-- 银行卡信息 -->
             <div class="education_info">
               <span class="txt">银行卡信息</span>
               <span class="line"></span>
               <span class="edit" @click="bank_info_show = true">编辑</span>
-              <span class="save" @click="bank_info_show = false" v-show="bank_info_show">保存</span>
+              <span class="save" @click="bankBaseInfo" v-show="bank_info_show">保存</span>
             </div>
 
-            <el-table :data="formData.tabledatas">
-              <el-table-column>
-                <template slot-scope="scope">
-                  <div class="table-item">
-                    <el-input
-                      placeholder="请输入银行卡号"
-                      v-show="bank_info_show"
-                      v-model="scope.row.bank_card"
-                    ></el-input>
-                    <div class="item" v-show="!bank_info_show">
-                      <label>银行卡号：</label>
-                      <span>{{scope.row.bank_card}}</span>
+            <el-form :model="bankData" ref="bankData" :rules="bankRules">
+              <el-table :data="bankData.tabledatas">
+                <el-table-column>
+                  <template slot-scope="scope">
+                    <div class="table-item">
+                      <el-form-item
+                        :prop="'tabledatas.' + scope.$index + '.bank_card'"
+                        :rules="bankRules.bank_card"
+                      >
+                        <el-input
+                          placeholder="请输入银行卡号"
+                          v-show="bank_info_show"
+                          v-model="scope.row.bank_card"
+                        ></el-input>
+                      </el-form-item>
+                      <div class="item" v-show="!bank_info_show">
+                        <label>银行卡号：</label>
+                        <span>{{scope.row.bank_card}}</span>
+                      </div>
                     </div>
-                  </div>
-                </template>
-              </el-table-column>
-              <el-table-column>
-                <template slot-scope="scope">
-                  <div class="table-item">
-                    <el-input placeholder="请输入开户行" v-show="bank_info_show" v-model="scope.row.bank"></el-input>
-                    <div class="item" v-show="!bank_info_show">
-                      <label>开户行：</label>
-                      <span>{{scope.row.bank}}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column>
+                  <template slot-scope="scope">
+                    <div class="table-item">
+                      <el-form-item
+                        :prop="'tabledatas.' + scope.$index + '.bank'"
+                        :rules="bankRules.bank"
+                      >
+                        <el-input
+                          placeholder="请输入开户行"
+                          v-show="bank_info_show"
+                          v-model="scope.row.bank"
+                        ></el-input>
+                      </el-form-item>
+                      <div class="item" v-show="!bank_info_show">
+                        <label>开户行：</label>
+                        <span>{{scope.row.bank}}</span>
+                      </div>
                     </div>
-                  </div>
-                </template>
-              </el-table-column>
-            </el-table>
+                  </template>
+                </el-table-column>
+              </el-table>
+            </el-form>
 
             <!-- 合同信息 -->
             <div class="contract_info">
               <span class="txt">合同信息</span>
               <span class="line"></span>
               <span class="edit" @click="contract_info_show = true">编辑</span>
-              <span class="save" @click="contract_info_show = false" v-show="contract_info_show">保存</span>
+              <span class="save" @click="contractBaseInfo" v-show="contract_info_show">保存</span>
             </div>
 
-            <el-table :data="formData.tabledatas">
-              <el-table-column>
-                <template slot-scope="scope">
-                  <div class="table-item">
-                    <el-input
-                      placeholder="请输入合同公司"
-                      v-show="contract_info_show"
-                      v-model="scope.row.contract_compony"
-                    ></el-input>
-                    <div class="item" v-show="!contract_info_show">
-                      <label>合同公司：</label>
-                      <span>{{scope.row.contract_compony}}</span>
+            <el-form :model="contractData" ref="contractData" :rules="contractRules">
+              <el-table :data="contractData.tabledatas">
+                <el-table-column>
+                  <template slot-scope="scope">
+                    <div class="table-item">
+                      <el-form-item
+                        :prop="'tabledatas.' + scope.$index + '.contract_compony'"
+                        :rules="contractRules.contract_compony"
+                      >
+                        <el-input
+                          placeholder="请输入合同公司"
+                          v-show="contract_info_show"
+                          v-model="scope.row.contract_compony"
+                        ></el-input>
+                      </el-form-item>
+                      <div class="item" v-show="!contract_info_show">
+                        <label>合同公司：</label>
+                        <span>{{scope.row.contract_compony}}</span>
+                      </div>
                     </div>
-                  </div>
-                  <div class="table-item">
-                    <el-input
-                      placeholder="请输入首次合同起始日"
-                      v-show="contract_info_show"
-                      v-model="scope.row.first_contract_start_date"
-                    ></el-input>
-                    <div class="item" v-show="!contract_info_show">
-                      <label>首次合同起始日：</label>
-                      <span>{{scope.row.first_contract_start_date}}</span>
+                    <div class="table-item">
+                      <el-form-item
+                        :prop="'tabledatas.' + scope.$index + '.first_contract_start_date'"
+                        :rules="contractRules.first_contract_start_date"
+                      >
+                        <el-date-picker
+                          v-model="scope.row.first_contract_start_date"
+                          v-show="contract_info_show"
+                          type="date"
+                          placeholder="请选择首次合同起始日"
+                          value-format="yyyy-MM-dd"
+                          @change="selectFirstContractStartDate"
+                        ></el-date-picker>
+                      </el-form-item>
+                      <div class="item" v-show="!contract_info_show">
+                        <label>首次合同起始日：</label>
+                        <span>{{scope.row.first_contract_start_date}}</span>
+                      </div>
                     </div>
-                  </div>
-                  <div class="table-item">
-                    <el-input
-                      placeholder="请输入现合同起始日"
-                      v-show="contract_info_show"
-                      v-model="scope.row.now_contract_start_date"
-                    ></el-input>
-                    <div class="item" v-show="!contract_info_show">
-                      <label>现合同起始日：</label>
-                      <span>{{scope.row.now_contract_start_date}}</span>
+                    <div class="table-item">
+                      <el-form-item
+                        :prop="'tabledatas.' + scope.$index + '.now_contract_start_date'"
+                        :rules="contractRules.now_contract_start_date"
+                      >
+                        <el-date-picker
+                          v-model="scope.row.now_contract_start_date"
+                          v-show="contract_info_show"
+                          type="date"
+                          placeholder="请选择现合同起始日"
+                          value-format="yyyy-MM-dd"
+                          @change="selectNowContractStartDate"
+                        ></el-date-picker>
+                      </el-form-item>
+                      <div class="item" v-show="!contract_info_show">
+                        <label>现合同起始日：</label>
+                        <span>{{scope.row.now_contract_start_date}}</span>
+                      </div>
                     </div>
-                  </div>
-                  <div class="table-item">
-                    <el-input
-                      placeholder="请输入合同期限"
-                      v-show="contract_info_show"
-                      v-model="scope.row.contract_period"
-                    ></el-input>
-                    <div class="item" v-show="!contract_info_show">
-                      <label>合同期限：</label>
-                      <span>{{scope.row.contract_period}}</span>
+                    <div class="table-item">
+                      <el-form-item
+                        :prop="'tabledatas.' + scope.$index + '.contract_period'"
+                        :rules="contractRules.contract_period"
+                      >
+                        <el-input
+                          placeholder="请输入合同期限"
+                          v-show="contract_info_show"
+                          v-model="scope.row.contract_period"
+                        ></el-input>
+                      </el-form-item>
+                      <div class="item" v-show="!contract_info_show">
+                        <label>合同期限：</label>
+                        <span>{{scope.row.contract_period}}</span>
+                      </div>
                     </div>
-                  </div>
-                </template>
-              </el-table-column>
-              <el-table-column>
-                <template slot-scope="scope">
-                  <div class="table-item">
-                    <el-input
-                      placeholder="请输入合同类型"
-                      v-show="contract_info_show"
-                      v-model="scope.row.contract_type"
-                    ></el-input>
-                    <div class="item" v-show="!contract_info_show">
-                      <label>合同类型：</label>
-                      <span>{{scope.row.contract_type}}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column>
+                  <template slot-scope="scope">
+                    <div class="table-item">
+                      <el-form-item
+                        :prop="'tabledatas.' + scope.$index + '.contract_type'"
+                        :rules="contractRules.contract_type"
+                      >
+                        <el-select
+                          v-show="education_info_show"
+                          v-model="scope.row.contract_type"
+                          @change="selectContractType"
+                          placeholder="请选择合同类型"
+                        >
+                          <el-option
+                            v-for="item in contractData.tabledatas[0].contractList"
+                            :key="item.id"
+                            :label="item.name"
+                            :value="item.name"
+                          ></el-option>
+                        </el-select>
+                      </el-form-item>
+                      <div class="item" v-show="!contract_info_show">
+                        <label>合同类型：</label>
+                        <span>{{scope.row.contract_type}}</span>
+                      </div>
                     </div>
-                  </div>
-                  <div class="table-item">
-                    <el-input
-                      placeholder="请输入首次合同到期日"
-                      v-show="contract_info_show"
-                      v-model="scope.row.first_contract_end_date"
-                    ></el-input>
-                    <div class="item" v-show="!contract_info_show">
-                      <label>首次合同到期日：</label>
-                      <span>{{scope.row.first_contract_end_date}}</span>
+                    <div class="table-item">
+                      <el-form-item
+                        :prop="'tabledatas.' + scope.$index + '.first_contract_end_date'"
+                        :rules="contractRules.first_contract_end_date"
+                      >
+                        <el-date-picker
+                          v-model="scope.row.first_contract_end_date"
+                          v-show="contract_info_show"
+                          type="date"
+                          placeholder="请选择首次合同到期日"
+                          value-format="yyyy-MM-dd"
+                          @change="selectFirstContractEndDate"
+                        ></el-date-picker>
+                      </el-form-item>
+                      <div class="item" v-show="!contract_info_show">
+                        <label>首次合同到期日：</label>
+                        <span>{{scope.row.first_contract_end_date}}</span>
+                      </div>
                     </div>
-                  </div>
-                  <div class="table-item">
-                    <el-input
-                      placeholder="请输入现合同到期日"
-                      v-show="contract_info_show"
-                      v-model="scope.row.now_contract_end_date"
-                    ></el-input>
-                    <div class="item" v-show="!contract_info_show">
-                      <label>现合同到期日：</label>
-                      <span>{{scope.row.now_contract_end_date}}</span>
+                    <div class="table-item">
+                      <el-form-item
+                        :prop="'tabledatas.' + scope.$index + '.now_contract_end_date'"
+                        :rules="contractRules.now_contract_end_date"
+                      >
+                        <el-date-picker
+                          v-model="scope.row.now_contract_end_date"
+                          v-show="contract_info_show"
+                          type="date"
+                          placeholder="请选择现合同到期日"
+                          value-format="yyyy-MM-dd"
+                          @change="selectNowContractEndDate"
+                        ></el-date-picker>
+                      </el-form-item>
+                      <div class="item" v-show="!contract_info_show">
+                        <label>现合同到期日：</label>
+                        <span>{{scope.row.now_contract_end_date}}</span>
+                      </div>
                     </div>
-                  </div>
-                  <div class="table-item">
-                    <el-input
-                      placeholder="请输入续签次数"
-                      v-show="contract_info_show"
-                      v-model="scope.row.renewal_num"
-                    ></el-input>
-                    <div class="item" v-show="!contract_info_show">
-                      <label>续签次数：</label>
-                      <span>{{scope.row.renewal_num}}</span>
+                    <div class="table-item">
+                      <el-form-item
+                        :prop="'tabledatas.' + scope.$index + '.renewal_num'"
+                        :rules="contractRules.renewal_num"
+                      >
+                        <el-input
+                          placeholder="请输入续签次数"
+                          v-show="contract_info_show"
+                          v-model="scope.row.renewal_num"
+                        ></el-input>
+                      </el-form-item>
+                      <div class="item" v-show="!contract_info_show">
+                        <label>续签次数：</label>
+                        <span>{{scope.row.renewal_num}}</span>
+                      </div>
                     </div>
-                  </div>
-                </template>
-              </el-table-column>
-            </el-table>
+                  </template>
+                </el-table-column>
+              </el-table>
+            </el-form>
 
             <!-- 紧急联系人 -->
             <div class="emergency_contact">
               <span class="txt">紧急联系人</span>
               <span class="line" style="width:824px;"></span>
               <span class="edit" @click="emergency_contact_show = true">编辑</span>
-              <span
-                class="save"
-                @click="emergency_contact_show = false"
-                v-show="emergency_contact_show"
-              >保存</span>
+              <span class="save" @click="emergencyBaseInfo" v-show="emergency_contact_show">保存</span>
             </div>
 
-            <el-table :data="formData.tabledatas">
-              <el-table-column>
-                <template slot-scope="scope">
-                  <div class="table-item">
-                    <el-input
-                      placeholder="请输入紧急联系人姓名"
-                      v-show="emergency_contact_show"
-                      v-model="scope.row.emergency_contact_person"
-                    ></el-input>
-                    <div class="item" v-show="!emergency_contact_show">
-                      <label>紧急联系人姓名：</label>
-                      <span>{{scope.row.emergency_contact_person}}</span>
+            <el-form :model="emergencyData" ref="emergencyData" :rules="emergencyRules">
+              <el-table :data="emergencyData.tabledatas">
+                <el-table-column>
+                  <template slot-scope="scope">
+                    <div class="table-item">
+                      <el-form-item
+                        :prop="'tabledatas.' + scope.$index + '.emergency_contact_person'"
+                        :rules="emergencyRules.emergency_contact_person"
+                      >
+                        <el-input
+                          placeholder="请输入紧急联系人姓名"
+                          v-show="emergency_contact_show"
+                          v-model="scope.row.emergency_contact_person"
+                        ></el-input>
+                      </el-form-item>
+                      <div class="item" v-show="!emergency_contact_show">
+                        <label>紧急联系人姓名：</label>
+                        <span>{{scope.row.emergency_contact_person}}</span>
+                      </div>
                     </div>
-                  </div>
-                  <div class="table-item">
-                    <el-input
-                      placeholder="请输入联系电话"
-                      v-show="emergency_contact_show"
-                      v-model="scope.row.contact_phone"
-                    ></el-input>
-                    <div class="item" v-show="!emergency_contact_show">
-                      <label>联系电话：</label>
-                      <span>{{scope.row.contact_phone}}</span>
+                    <div class="table-item">
+                      <el-form-item
+                        :prop="'tabledatas.' + scope.$index + '.contact_phone'"
+                        :rules="emergencyRules.contact_phone"
+                      >
+                        <el-input
+                          placeholder="请输入联系电话"
+                          v-show="emergency_contact_show"
+                          v-model="scope.row.contact_phone"
+                        ></el-input>
+                      </el-form-item>
+                      <div class="item" v-show="!emergency_contact_show">
+                        <label>联系电话：</label>
+                        <span>{{scope.row.contact_phone}}</span>
+                      </div>
                     </div>
-                  </div>
-                </template>
-              </el-table-column>
-              <el-table-column>
-                <template slot-scope="scope">
-                  <div class="table-item">
-                    <el-input
-                      placeholder="请输入联系人关系"
-                      v-show="emergency_contact_show"
-                      v-model="scope.row.contact_relationship"
-                    ></el-input>
-                    <div class="item" v-show="!emergency_contact_show">
-                      <label>联系人关系：</label>
-                      <span>{{scope.row.contact_relationship}}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column>
+                  <template slot-scope="scope">
+                    <div class="table-item">
+                      <el-form-item
+                        :prop="'tabledatas.' + scope.$index + '.contact_relationship'"
+                        :rules="emergencyRules.contact_relationship"
+                      >
+                        <el-select
+                          v-show="emergency_contact_show"
+                          v-model="scope.row.contact_relationship"
+                          @change="selectContactRelationship"
+                          placeholder="请选择联系人关系"
+                        >
+                          <el-option
+                            v-for="item in contractData.tabledatas[0].contactRelationshipList"
+                            :key="item.id"
+                            :label="item.name"
+                            :value="item.name"
+                          ></el-option>
+                        </el-select>
+                      </el-form-item>
+                      <div class="item" v-show="!emergency_contact_show">
+                        <label>联系人关系：</label>
+                        <span>{{scope.row.contact_relationship}}</span>
+                      </div>
                     </div>
-                  </div>
-                </template>
-              </el-table-column>
-            </el-table>
+                  </template>
+                </el-table-column>
+              </el-table>
+            </el-form>
 
             <!-- 家庭信息 -->
             <div class="education_info">
               <span class="txt">家庭信息</span>
               <span class="line"></span>
               <span class="edit" @click="family_info_show = true">编辑</span>
-              <span class="save" @click="family_info_show = false" v-show="family_info_show">保存</span>
+              <span class="save" @click="familyBaseInfo" v-show="family_info_show">保存</span>
             </div>
 
-            <el-table :data="formData.tabledatas">
-              <el-table-column>
-                <template slot-scope="scope">
-                  <div class="table-item">
-                    <el-input
-                      placeholder="请输入有无子女"
-                      v-show="family_info_show"
-                      v-model="scope.row.has_child"
-                    ></el-input>
-                    <div class="item" v-show="!family_info_show">
-                      <label>有无子女：</label>
-                      <span>{{scope.row.has_child}}</span>
+            <el-form :model="familyData" ref="familyData" :rules="familyRules">
+              <el-table :data="formData.tabledatas">
+                <el-table-column>
+                  <template slot-scope="scope">
+                    <div class="table-item">
+                      <el-form-item
+                        :prop="'tabledatas.' + scope.$index + '.has_child'"
+                        :rules="familyRules.has_child"
+                      >
+                        <el-select
+                          v-show="family_info_show"
+                          v-model="scope.row.has_child"
+                          @change="selecthasChild"
+                          placeholder="请选择有无子女"
+                        >
+                          <el-option
+                            v-for="item in familyData.tabledatas[0].hasChildList"
+                            :key="item.id"
+                            :label="item.name"
+                            :value="item.name"
+                          ></el-option>
+                        </el-select>
+                      </el-form-item>
+                      <div class="item" v-show="!family_info_show">
+                        <label>有无子女：</label>
+                        <span>{{scope.row.has_child}}</span>
+                      </div>
                     </div>
-                  </div>
-                  <div class="table-item">
-                    <el-input
-                      placeholder="请输入子女性别"
-                      v-show="family_info_show"
-                      v-model="scope.row.child_gender"
-                    ></el-input>
-                    <div class="item" v-show="!family_info_show">
-                      <label>子女性别：</label>
-                      <span>{{scope.row.child_gender}}</span>
+                    <div class="table-item">
+                      <el-form-item
+                        :prop="'tabledatas.' + scope.$index + '.child_gender'"
+                        :rules="familyRules.child_gender"
+                      >
+                        <el-select
+                          v-show="family_info_show"
+                          v-model="scope.row.child_gender"
+                          @change="selectChildGender"
+                          placeholder="请选择子女性别"
+                        >
+                          <el-option
+                            v-for="item in familyData.tabledatas[0].childGenderList"
+                            :key="item.id"
+                            :label="item.name"
+                            :value="item.name"
+                          ></el-option>
+                        </el-select>
+                      </el-form-item>
+                      <div class="item" v-show="!family_info_show">
+                        <label>子女性别：</label>
+                        <span>{{scope.row.child_gender}}</span>
+                      </div>
                     </div>
-                  </div>
-                </template>
-              </el-table-column>
-              <el-table-column>
-                <template slot-scope="scope">
-                  <div class="table-item">
-                    <el-input
-                      placeholder="请输入子女姓名"
-                      v-show="family_info_show"
-                      v-model="scope.row.child_name"
-                    ></el-input>
-                    <div class="item" v-show="!family_info_show">
-                      <label>子女姓名：</label>
-                      <span>{{scope.row.child_name}}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column>
+                  <template slot-scope="scope">
+                    <div class="table-item">
+                      <el-form-item
+                        :prop="'tabledatas.' + scope.$index + '.child_name'"
+                        :rules="familyRules.child_name"
+                      >
+                        <el-input
+                          placeholder="请输入子女姓名"
+                          v-show="family_info_show"
+                          v-model="scope.row.child_name"
+                        ></el-input>
+                      </el-form-item>
+                      <div class="item" v-show="!family_info_show">
+                        <label>子女姓名：</label>
+                        <span>{{scope.row.child_name}}</span>
+                      </div>
                     </div>
-                  </div>
-                  <div class="table-item">
-                    <el-input
-                      placeholder="请输入子女出生日期"
-                      v-show="family_info_show"
-                      v-model="scope.row.child_born_date"
-                    ></el-input>
-                    <div class="item" v-show="!family_info_show">
-                      <label>子女出生日期：</label>
-                      <span>{{scope.row.child_born_date}}</span>
+                    <div class="table-item">
+                      <el-form-item
+                        :prop="'tabledatas.' + scope.$index + '.child_born_date'"
+                        :rules="familyRules.child_born_date"
+                      >
+                        <el-date-picker
+                          v-model="scope.row.child_born_date"
+                          v-show="family_info_show"
+                          type="date"
+                          placeholder="请选择子女出生日期"
+                          value-format="yyyy-MM-dd"
+                          @change="selectChildBornDate"
+                        ></el-date-picker>
+                      </el-form-item>
+                      <div class="item" v-show="!family_info_show">
+                        <label>子女出生日期：</label>
+                        <span>{{scope.row.child_born_date}}</span>
+                      </div>
                     </div>
-                  </div>
-                </template>
-              </el-table-column>
-            </el-table>
+                  </template>
+                </el-table-column>
+              </el-table>
+            </el-form>
 
             <!-- 个人材料 -->
             <div class="personal_material">
@@ -930,88 +1223,130 @@
               <span class="edit" @click="personal_material_show = true">编辑</span>
               <span
                 class="save"
-                @click="personal_material_show = false"
+                @click="personalMaterialBaseInfo"
                 v-show="personal_material_show"
               >保存</span>
             </div>
 
-            <el-table :data="formData.tabledatas">
-              <el-table-column>
-                <template slot-scope="scope">
-                  <div class="table-item">
-                    <el-input
-                      placeholder="请输入身份证(人像面)"
-                      v-show="personal_material_show"
-                      v-model="scope.row.human_face_image"
-                    ></el-input>
-                    <div class="item" v-show="!personal_material_show">
-                      <label>身份证(人像面)：</label>
-                      <span>{{scope.row.human_face_image}}</span>
+            <el-form
+              :model="personalMaterialData"
+              ref="personalMaterialData"
+              :rules="personalMaterialRules"
+            >
+              <el-table :data="formData.tabledatas">
+                <el-table-column>
+                  <template slot-scope="scope">
+                    <div class="table-item">
+                      <el-upload
+                        class="avatar-uploader"
+                        action="https://jsonplaceholder.typicode.com/posts/"
+                        :show-file-list="false"
+                        :on-success="handleIdFaceImg"
+                        v-show="personal_material_show"
+                      >
+                        <img v-if="idFaceImg" :src="idFaceImg" class="avatar" />
+                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                      </el-upload>
+                      <div class="item" v-show="!personal_material_show">
+                        <label>身份证(人像面)：</label>
+                        <img v-if="idFaceImg" :src="idFaceImg" class="avatar" />
+                        <span v-else>未上传</span>
+                      </div>
                     </div>
-                  </div>
-                  <div class="table-item">
-                    <el-input
-                      placeholder="请输入学历证书"
-                      v-show="personal_material_show"
-                      v-model="scope.row.education_certificate_image"
-                    ></el-input>
-                    <div class="item" v-show="!personal_material_show">
-                      <label>学历证书：</label>
-                      <span>{{scope.row.education_certificate_image}}</span>
+                    <div class="table-item">
+                      <el-upload
+                        class="avatar-uploader"
+                        action="https://jsonplaceholder.typicode.com/posts/"
+                        :show-file-list="false"
+                        :on-success="handleEducationImg"
+                        v-show="personal_material_show"
+                      >
+                        <img v-if="educationImg" :src="educationImg" class="avatar" />
+                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                      </el-upload>
+                      <div class="item" v-show="!personal_material_show">
+                        <label>学历证书：</label>
+                        <img v-if="educationImg" :src="educationImg" class="avatar" />
+                        <span v-else>未上传</span>
+                      </div>
                     </div>
-                  </div>
-                  <div class="table-item">
-                    <el-input
-                      placeholder="请输入离职证明"
-                      v-show="personal_material_show"
-                      v-model="scope.row.resign_certificate_image"
-                    ></el-input>
-                    <div class="item" v-show="!personal_material_show">
-                      <label>离职证明：</label>
-                      <span>{{scope.row.resign_certificate_image}}</span>
+                    <div class="table-item">
+                      <el-upload
+                        class="avatar-uploader"
+                        action="https://jsonplaceholder.typicode.com/posts/"
+                        :show-file-list="false"
+                        :on-success="handleCertificateImg"
+                        v-show="personal_material_show"
+                      >
+                        <img v-if="certificateImg" :src="certificateImg" class="avatar" />
+                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                      </el-upload>
+                      <div class="item" v-show="!personal_material_show">
+                        <label>离职证明：</label>
+                        <img v-if="certificateImg" :src="certificateImg" class="avatar" />
+                        <span v-else>未上传</span>
+                      </div>
                     </div>
-                  </div>
-                </template>
-              </el-table-column>
-              <el-table-column>
-                <template slot-scope="scope">
-                  <div class="table-item">
-                    <el-input
-                      placeholder="请输入身份证(国徽面)"
-                      v-show="personal_material_show"
-                      v-model="scope.row.national_emblem_image"
-                    ></el-input>
-                    <div class="item" v-show="!personal_material_show">
-                      <label>身份证(国徽面)：</label>
-                      <span>{{scope.row.national_emblem_image}}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column>
+                  <template slot-scope="scope">
+                    <div class="table-item">
+                      <el-upload
+                        class="avatar-uploader"
+                        action="https://jsonplaceholder.typicode.com/posts/"
+                        :show-file-list="false"
+                        :on-success="handleIdbackImg"
+                        v-show="personal_material_show"
+                      >                        
+                        <img v-if="idBackImg" :src="idBackImg" class="avatar" />
+                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                      </el-upload>
+                      <div class="item" v-show="!personal_material_show">
+                        <label>身份证(国徽面)：</label>
+                        <img v-if="idBackImg" :src="idBackImg" class="avatar" />
+                        <span v-else>未上传</span>
+                      </div>
                     </div>
-                  </div>
 
-                  <div class="table-item">
-                    <el-input
-                      placeholder="请输入学位证书"
-                      v-show="personal_material_show"
-                      v-model="scope.row.degree_certificate_image"
-                    ></el-input>
-                    <div class="item" v-show="!personal_material_show">
-                      <label>学位证书：</label>
-                      <span>{{scope.row.degree_certificate_image}}</span>
+                    <div class="table-item">
+                      <el-upload
+                        class="avatar-uploader"
+                        action="https://jsonplaceholder.typicode.com/posts/"
+                        :show-file-list="false"
+                        :on-success="handleDegreeImg"
+                        v-show="personal_material_show"
+                      >                        
+                        <img v-if="degreeImg" :src="degreeImg" class="avatar" />
+                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                      </el-upload>
+                      <div class="item" v-show="!personal_material_show">
+                        <label>学位证书：</label>
+                        <img v-if="degreeImg" :src="degreeImg" class="avatar" />
+                        <span v-else>未上传</span>
+                      </div>
                     </div>
-                  </div>
-                  <div class="table-item">
-                    <el-input
-                      placeholder="请输入员工照片"
-                      v-show="personal_material_show"
-                      v-model="scope.row.employee_image"
-                    ></el-input>
-                    <div class="item" v-show="!personal_material_show">
-                      <label>员工照片：</label>
-                      <span>{{scope.row.employee_image}}</span>
+                    <div class="table-item">
+                      <el-upload
+                        class="avatar-uploader"
+                        action="https://jsonplaceholder.typicode.com/posts/"
+                        :show-file-list="false"
+                        :on-success="handleEmployeeImg"
+                        v-show="personal_material_show"
+                      >                        
+                        <img v-if="employeeImg" :src="employeeImg" class="avatar" />
+                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                      </el-upload>
+                      <div class="item" v-show="!personal_material_show">
+                        <label>员工照片：</label>
+                        <img v-if="employeeImg" :src="employeeImg" class="avatar" />
+                        <span v-else>未上传</span>
+                      </div>
                     </div>
-                  </div>
-                </template>
-              </el-table-column>
-            </el-table>
+                  </template>
+                </el-table-column>
+              </el-table>
+            </el-form>
 
             <!-- 历史薪资 -->
             <div class="salary_history">
@@ -1034,7 +1369,12 @@
 </template>
 
 <script>
-import { validName, validEmail, validMobile } from "@/utils/validate";
+import {
+  validName,
+  validEmail,
+  validMobile,
+  validIdcard
+} from "@/utils/validate";
 export default {
   data() {
     const validateName = (rule, value, callback) => {
@@ -1058,8 +1398,16 @@ export default {
         callback();
       }
     };
+    const validateIdcard = (rule, value, callback) => {
+      if (!validIdcard(value)) {
+        callback(new Error("请输入正确的身份证号码"));
+      } else {
+        callback();
+      }
+    };
     return {
-      formData: { // 基础信息
+      formData: {
+        // 基础信息
         tabledatas: [
           {
             name: "白白", // 姓名
@@ -1087,31 +1435,33 @@ export default {
           }
         ]
       },
-      rules: {  // 基础信息验证
+      rules: {
+        // 基础信息验证
         name: [{ required: true, trigger: "blur", validator: validateName }],
-        department: [
-          { required: true, trigger: "blur", message: "请选择部门" }
-        ],
         email: [{ required: true, trigger: "blur", validator: validateEmail }],
-        mainDepartment: [
-          { required: true, trigger: "blur", message: "请选择主部门" }
-        ],
-        position: [{ required: true, trigger: "blur", message: "请输入职位" }],
-        phone: [{ required: true, trigger: "blur", validator: validateMobile }],
-        job_num: [{ required: true, trigger: "blur", message: "请输入工号" }],
-        extension_num: [
-          { required: true, trigger: "blur", message: "请输入分机号" }
-        ],
-        office_location: [
-          { required: true, trigger: "blur", message: "请输入办公地点" }
-        ],
-        remarks: [{ required: true, trigger: "blur", message: "请输入备注" }],
-        hire_date: [
-          { required: true, trigger: "blur", message: "请选择入职日期" }
-        ],
-        job_year: [{ required: true, trigger: "blur", message: "请输入司龄" }]
+        phone: [{ required: true, trigger: "blur", validator: validateMobile }]
+        // department: [
+        //   { required: true, trigger: "change", message: "请选择部门" }
+        // ],
+        // mainDepartment: [
+        //   { required: true, trigger: "change", message: "请选择主部门" }
+        // ],
+        // position: [{ required: true, trigger: "blur", message: "请输入职位" }],
+        // job_num: [{ required: true, trigger: "blur", message: "请输入工号" }],
+        // extension_num: [
+        //   { required: true, trigger: "blur", message: "请输入分机号" }
+        // ],
+        // office_location: [
+        //   { required: true, trigger: "blur", message: "请输入办公地点" }
+        // ],
+        // remarks: [{ required: true, trigger: "blur", message: "请输入备注" }],
+        // hire_date: [
+        //   { required: true, trigger: "blur", message: "请选择入职日期" }
+        // ],
+        // job_year: [{ required: true, trigger: "blur", message: "请输入司龄" }]
       },
-      workData: { // 工作信息
+      workData: {
+        // 工作信息
         tabledatas: [
           {
             employee_types: [
@@ -1145,61 +1495,344 @@ export default {
           }
         ]
       },
-      workRules: {  // 工作信息验证
-        employeeType: [
-          { required: true, trigger: "blur", message: "请选择员工类型" }
-        ],
-        status: [
-          { required: true, trigger: "blur", message: "请选择员工状态" }
-        ],
-        periods: [{ required: true, trigger: "blur", message: "请选择试用期" }],
-        formal_date: [
-          { required: true, trigger: "blur", message: "请选择转正日期" }
-        ],
-        job_grade: [
-          { required: true, trigger: "blur", message: "请选择岗位职级别" }
-        ]
+      workRules: {
+        // 工作信息验证
+        // employeeType: [
+        //   { required: true, trigger: "change", message: "请选择员工类型" }
+        // ],
+        // status: [
+        //   { required: true, trigger: "change", message: "请选择员工状态" }
+        // ],
+        // periods: [
+        //   { required: true, trigger: "change", message: "请选择试用期" }
+        // ],
+        // formal_date: [
+        //   { required: true, trigger: "blur", message: "请选择转正日期" }
+        // ],
+        // job_grade: [
+        //   { required: true, trigger: "blur", message: "请输入岗位职级别" }
+        // ]
       },
-      personalData: { // 个人信息
+      personalData: {
+        // 个人信息
         tabledatas: [
           {
-            name_in_id: "白白", // 身份证姓名
-            id_card: "350582222202022022", // 证件号码
-            born_date: "2022-02-22", // 出生日期
-            age: 3, // 年龄
-            gender: "男", // 性别
+            name_in_id: "", // 身份证姓名
+            id_card: "350582200202022002", // 证件号码
+            born_date: "", // 出生日期
+            age: "", // 年龄
+            genderList: [
+              { id: 1, name: "男" },
+              { id: 2, name: "女" }
+            ],
+            gender: "", // 性别
             nation: "汉族", // 民族
-            id_card_address: "中国", // 身份证地址
+            nationList: [
+              { id: 1, name: "汉族" },
+              { id: 2, name: "满族" },
+              { id: 3, name: "蒙古族" },
+              { id: 4, name: "回族" },
+              { id: 5, name: "藏族" },
+              { id: 6, name: "维吾尔族" },
+              { id: 7, name: "苗族" },
+              { id: 8, name: "彝族" },
+              { id: 9, name: "壮族" },
+              { id: 10, name: "布依族" },
+              { id: 11, name: "侗族" },
+              { id: 12, name: "瑶族" },
+              { id: 13, name: "白族" },
+              { id: 14, name: "土家族" },
+              { id: 15, name: "哈尼族" },
+              { id: 16, name: "哈萨克族" },
+              { id: 17, name: "傣族" },
+              { id: 18, name: "黎族" },
+              { id: 19, name: "傈僳族" },
+              { id: 20, name: "佤族" },
+              { id: 21, name: "畲族" },
+              { id: 22, name: "高山族" },
+              { id: 23, name: "拉祜族" },
+              { id: 24, name: "水族" },
+              { id: 25, name: "东乡族" },
+              { id: 26, name: "纳西族" },
+              { id: 27, name: "景颇族" },
+              { id: 28, name: "柯尔克孜族" },
+              { id: 29, name: "土族" },
+              { id: 30, name: "达斡尔族" },
+              { id: 31, name: "仫佬族" },
+              { id: 32, name: "羌族" },
+              { id: 33, name: "布朗族" },
+              { id: 34, name: "撒拉族" },
+              { id: 35, name: "毛南族" },
+              { id: 36, name: "仡佬族" },
+              { id: 37, name: "锡伯族" },
+              { id: 38, name: "阿昌族" },
+              { id: 39, name: "普米族" },
+              { id: 40, name: "朝鲜族" },
+              { id: 41, name: "塔吉克族" },
+              { id: 42, name: "怒族" },
+              { id: 43, name: "乌孜别克族" },
+              { id: 44, name: "俄罗斯族" },
+              { id: 45, name: "鄂温克族" },
+              { id: 46, name: "德昂族" },
+              { id: 47, name: "保安族" },
+              { id: 48, name: "裕固族" },
+              { id: 49, name: "京族" },
+              { id: 50, name: "塔塔尔族" },
+              { id: 51, name: "独龙族" },
+              { id: 52, name: "鄂伦春族" },
+              { id: 53, name: "赫哲族" },
+              { id: 54, name: "门巴族" },
+              { id: 55, name: "珞巴族" },
+              { id: 56, name: "基诺族" }
+            ],
+            id_card_address: "", // 身份证地址
             valid_until: "2022-02-22", // 证件有效期
             marriage: "未婚", // 婚姻情况
-            first_working_time: "2022-02-22", // 首次参加工作时间
-            work_year: "5年", // 工龄
+            marriageList: [
+              { id: 1, name: "未婚" },
+              { id: 2, name: "已婚" },
+              { id: 3, name: "离异" },
+              { id: 4, name: "丧偶" },
+              { id: 5, name: "分居" }
+            ],
+            first_working_time: "", // 首次参加工作时间
+            work_year: "", // 工龄
             domicile_type: "农民", // 户籍类型
+            domicileList: [
+              { id: 1, name: "本地城镇" },
+              { id: 2, name: "本地农村" },
+              { id: 3, name: "外地城镇(省内)" },
+              { id: 4, name: "外地城镇(省外)" },
+              { id: 5, name: "外地农村(省内)" },
+              { id: 6, name: "外地农村(省外)" }
+            ],
             address: "泉州", // 地址
             political: "党员", // 政治面貌
-            social_insurance: "11111", // 个人社保账号
-            accumulation_fund: "22222", // 个人公积金账号
+            politicalList: [
+              { id: 1, name: "群众" },
+              { id: 2, name: "党员" },
+              { id: 3, name: "团员" },
+              { id: 4, name: "其他" }
+            ],
+            social_insurance: "", // 个人社保账号
+            accumulation_fund: "" // 个人公积金账号
+          }
+        ]
+      },
+      personalRules: {
+        // 个人信息验证
+        id_card: [
+          { required: true, trigger: "blur", validator: validateIdcard }
+        ],
+        // name_in_id: [
+        //   { required: true, trigger: "blur", message: "请输入身份证姓名" }
+        // ],
+        // born_date: [
+        //   { required: true, trigger: "change", message: "请选择出生日期" }
+        // ],
+        // age: [
+        //   {
+        //     required: true,
+        //     max: 150,
+        //     min: 1,
+        //     trigger: "blur",
+        //     message: "请输入正确年龄"
+        //   }
+        // ],
+        // gender: [{ required: true, trigger: "change", message: "请选择性别" }],
+        // nation: [{ required: true, trigger: "change", message: "请选择民族" }],
+        // id_card_address: [
+        //   { required: true, trigger: "blur", message: "请输入身份证地址" }
+        // ],
+        // valid_until: [
+        //   { required: true, trigger: "blur", message: "请输入证件有效期" }
+        // ],
+        // marriage: [
+        //   { required: true, trigger: "change", message: "请选择婚姻情况" }
+        // ],
+        // first_working_time: [
+        //   {
+        //     required: true,
+        //     trigger: "change",
+        //     message: "请选择首次参加工作时间"
+        //   }
+        // ],
+        // domicile_type: [
+        //   {
+        //     required: true,
+        //     trigger: "change",
+        //     message: "请选择户籍类型"
+        //   }
+        // ],
+        // address: [{ required: true, trigger: "blur", message: "请输入住址" }],
+        // political: [
+        //   {
+        //     required: true,
+        //     trigger: "change",
+        //     message: "请选择户籍类型"
+        //   }
+        // ],
+        // social_insurance: [
+        //   { required: true, trigger: "blur", message: "请输入个人社保账号" }
+        // ],
+        // accumulation_fund: [
+        //   { required: true, trigger: "blur", message: "请输入个人公积金账号" }
+        // ]
+      },
+      educationData: {
+        tabledatas: [
+          {
             education: "本科", // 学历
+            educationList: [
+              { id: 1, name: "小学" },
+              { id: 2, name: "初中" },
+              { id: 3, name: "高中" },
+              { id: 4, name: "中专" },
+              { id: 5, name: "大专" },
+              { id: 6, name: "本科" },
+              { id: 7, name: "硕士" },
+              { id: 8, name: "研究生" },
+              { id: 9, name: "博士" },
+              { id: 10, name: "其他" }
+            ],
             school: "泉州五中", // 毕业学校
             graduation_date: "2022-02-02", // 毕业时间
-            major: "计算机", // 专业
+            major: "计算机" // 专业
+          }
+        ]
+      },
+      educationRules: {
+        // education: [
+        //   { required: true, trigger: "change", message: "请选择学历" }
+        // ],
+        // school: [
+        //   { required: true, trigger: "blur", message: "请输入毕业院校" }
+        // ],
+        // graduation_date: [
+        //   { required: true, trigger: "change", message: "请选择毕业时间" }
+        // ],
+        // major: [{ required: true, trigger: "blur", message: "请输入所学专业" }]
+      },
+      bankData: {
+        tabledatas: [
+          {
             bank_card: "12345678910", // 银行卡号
-            bank: "农行", // 开户行
+            bank: "农行" // 开户行
+          }
+        ]
+      },
+      bankRules: {
+        // bank_card: [
+        //   { required: true, trigger: "blur", message: "请输入银行卡号" }
+        // ],
+        // bank: [{ required: true, trigger: "blur", message: "请输入开户行" }]
+      },
+      contractData: {
+        tabledatas: [
+          {
             contract_compony: "触享", // 合同公司
-            contract_type: "合同类型", // 合同类型
+            contract_type: "", // 合同类型
+            contractList: [
+              { id: 1, name: "固定期限劳动合同" },
+              { id: 2, name: "无固定期限劳动合同" },
+              { id: 3, name: "实习协议" },
+              { id: 4, name: "劳务协议" },
+              { id: 5, name: "劳务派遣合同" },
+              { id: 6, name: "返聘协议" },
+              { id: 7, name: "短期劳动合同" },
+              { id: 8, name: "其他" }
+            ],
             first_contract_start_date: "2022-02-02", // 首次合同起始日
             first_contract_end_date: "2022-02-22", // 首次合同结束日
             now_contract_start_date: "2022-02-02", // 现合同起始日
-            now_contract_end_date: "2022-02-22", // 现次合同结束日
+            now_contract_end_date: "2022-02-22", // 现合同结束日
             contract_period: "1年", // 合同期限
-            renewal_num: 1, // 续约次数
+            renewal_num: 1 // 续约次数
+          }
+        ]
+      },
+      contractRules: {
+        // contract_compony: [
+        //   { required: true, trigger: "blur", message: "请输入合同公司" }
+        // ],
+        // contract_type: [
+        //   { required: true, trigger: "change", message: "请选择合同类型" }
+        // ],
+        // first_contract_start_date: [
+        //   { required: true, trigger: "change", message: "请选择首次合同起始日" }
+        // ],
+        // first_contract_end_date: [
+        //   { required: true, trigger: "change", message: "请选择首次合同到期日" }
+        // ],
+        // now_contract_start_date: [
+        //   { required: true, trigger: "change", message: "请选择现合同起始日" }
+        // ],
+        // now_contract_end_date: [
+        //   { required: true, trigger: "change", message: "请选择现合同到期日" }
+        // ],
+        // contract_period: [
+        //   { required: true, trigger: "blur", message: "请输入合同期限" }
+        // ],
+        // renewal_num: [
+        //   { required: true, trigger: "blur", message: "请输入续约次数" }
+        // ]
+      },
+      emergencyData: {
+        tabledatas: [
+          {
             emergency_contact_person: "铁锤", // 紧急联系人
             contact_relationship: "同事", // 联系人关系
-            contact_phone: "13559422222", // 联系电话
-            has_child: "有", // 有无子女
+            contactRelationshipList: [
+              { id: 1, name: "父母" },
+              { id: 2, name: "配偶" },
+              { id: 3, name: "子女" },
+              { id: 4, name: "朋友" },
+              { id: 5, name: "其他" }
+            ],
+            contact_phone: "13559422222" // 联系电话
+          }
+        ]
+      },
+      emergencyRules: {
+        // emergency_contact_person: [
+        //   { required: true, trigger: "blur", message: "请输入紧急联系人" }
+        // ],
+        // contact_relationship: [
+        //   { required: true, trigger: "change", message: "请选择联系人关系" }
+        // ],
+        // contact_phone: [
+        //   { required: true, trigger: "blur", message: "请输入联系电话" }
+        // ]
+      },
+      familyData: {
+        tabledatas: [
+          {
+            has_child: "", // 有无子女
+            hasChildList: [
+              { id: 1, name: "有" },
+              { id: 2, name: "无" }
+            ],
             child_name: "铁锤妹妹", // 子女姓名
-            child_gender: "女", // 子女性别
-            child_born_date: "2022-02-22", // 子女出生日期
+            child_gender: "", // 子女性别
+            childGenderList: [
+              { id: 1, name: "男" },
+              { id: 2, name: "女" }
+            ],
+            child_born_date: "2022-02-22" // 子女出生日期
+          }
+        ]
+      },
+      familyRules: {
+        // has_child: [
+        //   { required: true, trigger: "change", message: "请选择有无子女" }
+        // ],
+        // child_name: [
+        //   { required: true, trigger: "blur", message: "请输入子女姓名" }
+        // ]
+      },
+      personalMaterialData: {
+        tablesdatas: [
+          {
             human_face_image: "未上传", // 身份证(人像面)
             national_emblem_image: "未上传", // 身份证(国徽面)
             education_certificate_image: "未上传", // 学历证书
@@ -1209,9 +1842,8 @@ export default {
           }
         ]
       },
-      personalRules: {  // 个人信息验证
-
-      },
+      personalMaterialRules: {},
+      // 各信息显示字段
       base_info_show: false,
       work_info_show: false,
       personal_info_show: false,
@@ -1286,10 +1918,34 @@ export default {
           first_salary: 6000,
           performance_salary: 0
         }
-      ]
+      ],
+      idFaceImg: "",
+      idBackImg: "",
+      educationImg: "",
+      certificateImg: "",
+      degreeImg: "",
+      employeeImg: ""
     };
   },
   methods: {
+    handleIdFaceImg(res, file) {
+      this.idFaceImg = URL.createObjectURL(file.raw);
+    },
+    handleEducationImg(res, file) {
+      this.educationImg = URL.createObjectURL(file.raw);
+    },
+    handleCertificateImg(res, file) {
+      this.certificateImg = URL.createObjectURL(file.raw);
+    },
+    handleIdbackImg(res, file) {
+      this.idBackImg = URL.createObjectURL(file.raw);
+    },
+    handleDegreeImg(res, file) {
+      this.degreeImg = URL.createObjectURL(file.raw);
+    },
+    handleEmployeeImg(res, file) {
+      this.employeeImg = URL.createObjectURL(file.raw);
+    },
     deleteRow(index, rows) {
       rows.splice(index, 1);
     },
@@ -1319,14 +1975,92 @@ export default {
     selectFormalDate(e) {
       console.log("选择转正日期", e);
     },
+    // 选择出生日期
+    selectBornDate(e) {
+      console.log("选择出生日期", e);
+    },
+    // 选择性别
+    selectGender(e) {
+      console.log("选择性别", e);
+    },
+    // 选择民族
+    selectNation(e) {
+      console.log("选择民族", e);
+    },
+    // 选择婚姻情况
+    selectMarriage(e) {
+      console.log("选择婚姻情况", e);
+    },
+    // 选择户籍类型
+    selectDomicileType(e) {
+      console.log("选择户籍类型", e);
+    },
+    // 选择政治面貌
+    selectPolitical(e) {
+      console.log("选择政治面貌", e);
+    },
+    // 选择学历
+    selectEducation(e) {
+      console.log("选择学历", e);
+    },
+    // 选择毕业时间
+    selectGraduationDate(e) {
+      console.log("选择毕业时间", e);
+    },
+    // 选择合同类型
+    selectContractType(e) {
+      console.log("选择合同类型", e);
+    },
+    // 选择首次合同起始日
+    selectFirstContractStartDate(e) {
+      console.log("选择首次合同起始日", e);
+    },
+    // 选择首次合同到期日
+    selectFirstContractEndDate(e) {
+      console.log("选择首次合同到期日", e);
+    },
+    // 选择现合同起始日
+    selectNowContractStartDate(e) {
+      console.log("选择现合同起始日", e);
+    },
+    // 选择首次合同到期日
+    selectNowContractEndDate(e) {
+      console.log("选择现合同到期日", e);
+    },
+    // 选择联系人关系
+    selectContactRelationship(e) {
+      console.log("选择联系人关系", e);
+    },
+    // 选择有无子女
+    selecthasChild(e) {
+      console.log("选择有无子女", e);
+    },
+    // 选择子女性别
+    selectChildGender(e) {
+      console.log("选择子女性别", e);
+    },
+    // 选择子女出生日期
+    selectChildBornDate(e) {
+      console.log("选择子女出生日期", e);
+    },
+    // 选择首次参加工作时间
+    selectFirstWorkingTime(date) {
+      console.log("选择首次参加工作时间", date);
+      this.personalData.tabledatas[0].hire_date = date;
+      const dateNow = new Date();
+      const data = this.dateDiff(date, dateNow);
+      this.personalData.tabledatas[0].work_year = `${Math.floor(
+        data / 12
+      )}年${data % 12}月`;
+    },
     // 选择入职时间
     selectHireDate(date) {
-      this.formData.tabledatas[0].hire_date = date;
+      this.formData.tabledatas[0].first_working_time = date;
       console.log("选择入职时间", date);
       const dateNow = new Date();
       const data = this.dateDiff(date, dateNow);
       this.formData.tabledatas[0].job_year = `${Math.floor(data / 12)}年${data %
-        12}个月`;
+        12}月`;
       console.log(this.formData.tabledatas[0].job_year);
     },
     // 计算相距日期
@@ -1371,6 +2105,72 @@ export default {
         console.log("valid", valid);
         if (valid) {
           this.work_info_show = false;
+        }
+      });
+    },
+
+    // 个人信息保存验证
+    personalBaseInfo() {
+      this.$refs.personalData.validate(valid => {
+        console.log("valid", valid);
+        if (valid) {
+          this.personal_info_show = false;
+        }
+      });
+    },
+
+    // 学历信息保存验证
+    educationBaseInfo() {
+      this.$refs.educationData.validate(valid => {
+        console.log("valid", valid);
+        if (valid) {
+          this.education_info_show = false;
+        }
+      });
+    },
+
+    // 银行信息保存验证
+    bankBaseInfo() {
+      this.$refs.bankData.validate(valid => {
+        console.log("valid", valid);
+        if (valid) {
+          this.bank_info_show = false;
+        }
+      });
+    },
+    // 合同信息保存验证
+    contractBaseInfo() {
+      this.$refs.contractData.validate(valid => {
+        console.log("valid", valid);
+        if (valid) {
+          this.contract_info_show = false;
+        }
+      });
+    },
+    // 紧急联系人信息保存验证
+    emergencyBaseInfo() {
+      this.$refs.emergencyData.validate(valid => {
+        console.log("valid", valid);
+        if (valid) {
+          this.emergency_info_show = false;
+        }
+      });
+    },
+    // 家庭信息保存验证
+    familyBaseInfo() {
+      this.$refs.familyData.validate(valid => {
+        console.log("valid", valid);
+        if (valid) {
+          this.family_info_show = false;
+        }
+      });
+    },
+    // 个人材料保存验证
+    personalMaterialBaseInfo() {
+      this.$refs.personalMaterialData.validate(valid => {
+        console.log("valid", valid);
+        if (valid) {
+          this.personal_material_show = false;
         }
       });
     }
@@ -1591,5 +2391,38 @@ export default {
 >>> .el-date-editor.el-input,
 .el-date-editor.el-input__inner {
   width: 100%;
+}
+
+// 处理input type = number的上下箭头
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.avatar-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.avatar-uploader .el-upload:hover {
+  border-color: #409eff;
+}
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  line-height: 178px;
+  text-align: center;
+}
+.avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
 }
 </style>

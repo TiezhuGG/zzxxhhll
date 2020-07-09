@@ -64,15 +64,14 @@ export default {
           this.$store.commit("user/setMobile", {
             mobile: this.formData.mobile
           });
-          this.$router.push("/user/verify-code");
-          // getVerifyCode({ type: "find_password", mobile: this.formData.mobile })
-          //   .then(() => {
-          //     this.loading = false;
-          //     this.$router.push("/user/verify-code");
-          //   })
-          //   .catch(() => {
-          //     this.loading = false;
-          //   });
+          getVerifyCode({ type: "find_password", mobile: this.formData.mobile })
+            .then(() => {
+              this.loading = false;
+              this.$router.push({path: "/user/verify-code", query: { find_password: true }});
+            })
+            .catch(() => {
+              this.loading = false;
+            });
         }
       });
     }

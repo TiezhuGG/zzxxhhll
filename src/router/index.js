@@ -119,6 +119,24 @@ export const constantRoutes = [
 
     // 审批
     {
+        path: '/message',
+        component: Layout,
+        children: [
+            {
+                path: 'message',
+                name: 'Message',
+                component: resolve => require(['@/views/message/index'],resolve),
+                meta: {
+                    title: '肖鑫',
+                    icon: 'approval',
+                    hiddenTag: true
+                }
+            }
+        ]
+    },
+
+    // 审批
+    {
         path: '/approval',
         component: Layout,
         children: [
@@ -128,7 +146,8 @@ export const constantRoutes = [
                 component: resolve => require(['@/views/approval/index'],resolve),
                 meta: {
                     title: '审批',
-                    icon: 'approval'
+                    icon: 'approval',
+                    hiddenTag: true
                 }
             }
         ]

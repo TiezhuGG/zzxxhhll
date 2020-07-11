@@ -1121,7 +1121,7 @@
             </div>
 
             <el-form :model="familyData" ref="familyData" :rules="familyRules">
-              <el-table :data="formData.tabledatas">
+              <el-table :data="familyData.tabledatas">
                 <el-table-column>
                   <template slot-scope="scope">
                     <div class="table-item">
@@ -1233,7 +1233,7 @@
               ref="personalMaterialData"
               :rules="personalMaterialRules"
             >
-              <el-table :data="formData.tabledatas">
+              <el-table :data="personalMaterialData.tabledatas">
                 <el-table-column>
                   <template slot-scope="scope">
                     <div class="table-item">
@@ -1248,9 +1248,9 @@
                         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                       </el-upload>
                       <div class="item" v-show="!personal_material_show">
-                        <label>身份证(人像面)：</label>
+                        <label :class="idFaceImg ? 'mt' : ''">身份证(人像面)：</label>
                         <img v-if="idFaceImg" :src="idFaceImg" class="avatar" />
-                        <span v-else>未上传</span>
+                        <span v-else>{{ scope.row.human_face_image}}</span>
                       </div>
                     </div>
                     <div class="table-item">
@@ -1265,7 +1265,7 @@
                         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                       </el-upload>
                       <div class="item" v-show="!personal_material_show">
-                        <label>学历证书：</label>
+                        <label :class="educationImg ? 'mt' : ''">学历证书：</label>
                         <img v-if="educationImg" :src="educationImg" class="avatar" />
                         <span v-else>未上传</span>
                       </div>
@@ -1282,7 +1282,7 @@
                         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                       </el-upload>
                       <div class="item" v-show="!personal_material_show">
-                        <label>离职证明：</label>
+                        <label :class="certificateImg ? 'mt' : ''">离职证明：</label>
                         <img v-if="certificateImg" :src="certificateImg" class="avatar" />
                         <span v-else>未上传</span>
                       </div>
@@ -1303,9 +1303,9 @@
                         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                       </el-upload>
                       <div class="item" v-show="!personal_material_show">
-                        <label>身份证(国徽面)：</label>
+                        <label :class="idBackImg ? 'mt' : ''">身份证(国徽面)：</label>
                         <img v-if="idBackImg" :src="idBackImg" class="avatar" />
-                        <span v-else>未上传</span>
+                        <span v-else>{{ scope.row.national_emblem_image }}</span>
                       </div>
                     </div>
 
@@ -1321,7 +1321,7 @@
                         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                       </el-upload>
                       <div class="item" v-show="!personal_material_show">
-                        <label>学位证书：</label>
+                        <label :class="degreeImg ? 'mt' : ''">学位证书：</label>
                         <img v-if="degreeImg" :src="degreeImg" class="avatar" />
                         <span v-else>未上传</span>
                       </div>
@@ -1338,7 +1338,7 @@
                         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                       </el-upload>
                       <div class="item" v-show="!personal_material_show">
-                        <label>员工照片：</label>
+                        <label :class="employeeImg ? 'mt' : ''">员工照片：</label>
                         <img v-if="employeeImg" :src="employeeImg" class="avatar" />
                         <span v-else>未上传</span>
                       </div>
@@ -1831,7 +1831,7 @@ export default {
         // ]
       },
       personalMaterialData: {
-        tablesdatas: [
+        tabledatas: [
           {
             human_face_image: "未上传", // 身份证(人像面)
             national_emblem_image: "未上传", // 身份证(国徽面)
@@ -2402,27 +2402,38 @@ input[type="number"] {
   -moz-appearance: textfield;
 }
 
-.avatar-uploader .el-upload {
+.avatar-uploader {
+  display: flex;
+  justify-content: center;
   border: 1px dashed #d9d9d9;
   border-radius: 6px;
+}
+>>> .el-upload {
+  width: 100%;
   cursor: pointer;
   position: relative;
   overflow: hidden;
 }
-.avatar-uploader .el-upload:hover {
+>>> .el-upload:hover {
   border-color: #409eff;
 }
 .avatar-uploader-icon {
   font-size: 28px;
   color: #8c939d;
-  width: 178px;
-  height: 178px;
-  line-height: 178px;
+  width: 100%;
+  height: 250px;
+  line-height: 250px;
   text-align: center;
 }
 .avatar {
-  width: 178px;
-  height: 178px;
+  width: 100%;
+  height: 250px;
   display: block;
+  border-radius: 6px;
+}
+.mt {
+  width: 100%!important;
+  display: inline-block;
+  margin-bottom: 40px;
 }
 </style>

@@ -37,7 +37,7 @@
       <div class="bottom-section">
         <span class="prompt" v-if="showTimer">{{ countDownTimer }} {{ promptMessage }}</span>
         <span class="re-prompt" v-else @click="getCode">重新获取验证码</span>
-        <el-button type="primary" @click.native.prevent="next" class="login-button">下一步</el-button>
+        <el-button :laoding=loading type="primary" @click.native.prevent="next" class="login-button">下一步</el-button>
       </div>
     </el-form>
   </div>
@@ -46,7 +46,7 @@
 <script>
 import { mapState } from "vuex";
 import { validNumber } from "@/utils/validate";
-import { getVerifyCode } from "@/api/user";
+import { getVerifyCode, checkCode } from "@/api/user";
 import { Message } from "element-ui";
 import Back from "../components/Back";
 
@@ -69,11 +69,16 @@ export default {
       showTimer: false,
       interval: null, // 定时任务对象
       countDownTimer: null,
-      verify_code: ""
+      verify_code: "",
+      loading: false,
+      find_password: false
     };
   },
   computed: {
     ...mapState(["user"])
+  },
+  created() {
+    this.find_password = this.$route.query.find_password
   },
   watch: {
     "codeForm.codes": {
@@ -88,7 +93,7 @@ export default {
   },
   beforeRouteEnter(to, from, next) {
     next(vm => {
-      if (from.path === "/user/register") {
+      if (from.path === "/user/register" || from.path === "/user/forget-password") {
         vm.countDown();
       }
     });
@@ -99,24 +104,25 @@ export default {
   methods: {
     // 下一步
     next() {
-      if (this.verify_code.length !== 6) {
-        Message({
-          message: this.message,
-          type: "error",
-          duration: 5000
-        });
-      } else {
-        // 验证码长度为6时存入vuex
+      this.loading = true
+      checkCode({
+        type: this.find_password ? "find_password" : "register",
+        mobile: this.user.info.mobile.mobile,
+        code: this.verify_code
+      }).then(() => {
+        this.loading = false
         this.$store.commit("user/setCode", {
           code: this.verify_code
         });
-        this.$router.push("/user/set-password");
-      }
+        this.$router.push({path: "/user/set-password", query: { find_password: this.find_password }});
+      }).catch(() => {
+        this.loading = false
+      })
     },
     // 重新获取验证码
     getCode() {
       this.countDown();
-      getVerifyCode({ type: "register", mobile: this.user.info.mobile.mobile });
+      getVerifyCode({ type: this.find_password ? "find_password" : "register", mobile: this.user.info.mobile.mobile });
     },
     // 创建定时任务
     countDown() {

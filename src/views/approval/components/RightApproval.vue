@@ -16,8 +16,8 @@
             <svg-icon class="svg" icon-class="approval-icon"></svg-icon>
             <div class="message">
               <span>成员加入申请</span>
-              <span>申请人: {{ applicant }}</span>
-              <span>手机号: {{ mobile }}</span>
+              <span>申请人: {{ form.name }}</span>
+              <span>手机号: {{ form.mobile }}</span>
               <el-button v-if="pass" class="button" plain>已通过</el-button>
               <div class="btn-group" v-else>
                 <el-button class="btn" plain @click="agree">通过</el-button>
@@ -27,7 +27,7 @@
           </div>
         </div>
         <!-- 弹窗 -->
-        <el-dialog :visible.sync="dialogVisible" width="533px">
+        <el-dialog :visible.sync="dialogVisible" width="28%">
           <img class="avatar" src="@/assets/imgs/test.jpg" />
           <el-form :model="form" :rules="rules" ref="form" auto-complete="on">
             <el-form-item label="姓名" prop="name">
@@ -45,7 +45,7 @@
                     :label="item.label"
                     :value="item.label"
                   ></el-option>
-                </el-select>
+                </el-select> 
               </el-form-item>
               <el-form-item class="position-input" label="职位" prop="position">
                 <el-input v-model="form.position" placeholder="请输入职位"></el-input>
@@ -91,13 +91,11 @@ export default {
       }
     };
     return {
-      applicant: "罗志祥",
-      mobile: "18305982627",
       pass: false,
       dialogVisible: false,
       form: {
-        name: "",
-        mobile: "",
+        name: "罗志祥",
+        mobile: "18305982627",
         department: "",
         position: "",
         email: ""

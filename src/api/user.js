@@ -18,6 +18,15 @@ export function getVerifyCode(data) {
     })
 }
 
+// 验证码验证
+export function checkCode(data) {
+    return request({
+        url: 'check_code',
+        method: 'post',
+        data
+    })
+}
+
 // 登录
 export function login(data) {
     return request({
@@ -93,10 +102,28 @@ export function changePassword(data) {
     })
 }
 
+// 找回重置密码
+export function findPassword(data) {
+    return request({
+        url: 'find_password',
+        method: 'post',
+        data
+    })
+}
+
 // 修改手机
 export function changeMoblie(data) {
     return request({
         url: 'mobile',
+        method: 'post',
+        data
+    })
+}
+
+// 验证密码
+export function checkPassword(data) {
+    return request({
+        url: 'check_password',
         method: 'post',
         data
     })

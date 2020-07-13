@@ -8,7 +8,7 @@
     <el-form :model="form" :rules="rules" ref="form">
       <el-form-item prop="scaleValue" label="企业规模">
         <el-radio-group v-model="scaleName" v-for="item in companyScale" :key="item.id" @change="selectScale">
-          <el-radio-button :label="item.label"></el-radio-button>
+          <el-radio-button class=" .el-radio-button__inner:first-child" :label="item.label"></el-radio-button>
         </el-radio-group>
       </el-form-item>
 
@@ -195,6 +195,7 @@ export default {
   .el-form-item__label {
     width: 104px;
     padding-right: 16px;
+    font-weight: 400;
   }
   .el-radio-group {
     font-size: 0;
@@ -202,12 +203,17 @@ export default {
   .el-radio-button__inner {
     padding-left: 23.5px;
     padding-right: 23.5px;
+    font-weight: 300;
   }
   .el-form-item__content {
     width:100%;
     margin:0;
     font-size: 0;
   }
+}
+
+.el-radio-button:first-child .el-radio-button__inner{
+  border-radius: 0!important;
 }
 
 
@@ -223,4 +229,5 @@ export default {
   width: 320px;
   margin-left: 27px;
 }
+
 </style>

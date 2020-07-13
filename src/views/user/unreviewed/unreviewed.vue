@@ -74,6 +74,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '@/styles/user.scss';
 $h-color: #333;
 $s-color: #999;
 $h-fs: 27px;
@@ -81,7 +82,6 @@ $s-fs: 17px;
 $i-fs: 19px;
 
 .unreviewed-container {
-  justify-content: center;
   .login-form {
     .wrap {
       height: 520px;

@@ -1,7 +1,7 @@
 <template>
   <div class="left-status">
     <span class="title">今天</span>
-    <div class="today" @click="action">
+    <div class="today" v-for="(item, index) in 2" :key="'index'+index" @click="action">
       <div class="left">
         <svg-icon class="svg" icon-class="approval-icon"></svg-icon>
         <div class="middle">

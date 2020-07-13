@@ -170,6 +170,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '@/styles/user.scss';
 >>> .el-form-item__content {
   margin: 0;
 }

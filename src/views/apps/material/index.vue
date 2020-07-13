@@ -13,7 +13,7 @@
         </div>
         <div class="input-item">
           <div>材料类型</div>
-          <el-select v-model="value" placeholder="请选择类型" style="margin-left:10px;width:18.3125rem">
+          <el-select v-model="value" placeholder="请选择类型" style="margin-left:10px;">
             <el-option
               v-for="item in meta_type"
               :key="item.value"
@@ -47,10 +47,9 @@
           <el-table-column prop="approval_by" label="采购单位" />
           <el-table-column prop="approval_by" label="入库单位" />
           <el-table-column prop="approval_by" label="用量倍率" />
-           <el-table-column prop="approval_by" label="采购倍率" />
+          <el-table-column prop="approval_by" label="采购倍率" />
           <el-table-column prop="date" label="操作" align="center" width="160">
             <template>
-             
               <el-tooltip
                 class="button"
                 effect="dark"
@@ -182,18 +181,6 @@ export default {
 };
 </script>
 
-<style lang="scss">
-.el-input {
-  width: 0;
-}
-
-.input-item {
-  .el-input__inner {
-    width: 293px;
-    height: 53px;
-  }
-}
-</style>
 <style lang="scss" scoped>
 .order {
   display: flex;
@@ -232,9 +219,9 @@ export default {
         display: flex;
         align-items: center;
 
-        &:first-child {
-          margin-right: 53px;
-        }
+        // &:first-child {
+        //   margin-right: 53px;
+        // }
 
         span {
           display: inline-block;
@@ -284,5 +271,32 @@ export default {
       border-radius: 5px;
     }
   }
+}
+>>> .el-input {
+  width: 0;
+}
+>>> .input-item {
+  .el-input__inner {
+    width: 293px;
+    height: 53px;
+  }
+}
+>>>.el-select {
+  line-height: 0;
+}
+>>>.el-pagination {
+  margin-top: 10px;
+}
+>>>.el-pagination .el-select .el-input{
+  width: 120px;
+}
+>>>.el-input .el-pagination__editor .is-in-pagination{
+  width: 90px;
+}
+>>>.el-pagination__editor.el-input {
+  width: 60px;
+}
+>>>.el-pagination__editor.el-input .el-input__inner {
+  width: 50px;
 }
 </style>

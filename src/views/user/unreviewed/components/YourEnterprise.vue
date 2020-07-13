@@ -62,6 +62,7 @@ export default {
       justify-content: space-between;
 
       span {
+        height: 20px;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
@@ -75,7 +76,7 @@ export default {
         }
         span:last-child {
           display: inline-block;
-          width: 53px;
+          width: 65px;
           height: 24px;
           line-height: 24px;
           text-align: center;

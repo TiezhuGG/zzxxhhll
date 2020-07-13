@@ -83,6 +83,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '@/styles/user.scss';
 @media screen and (max-width: 1150px) {
   .forget-container {
     justify-content: center;
@@ -130,4 +131,5 @@ export default {
 >>> .el-form-item__content {
   margin-left: 30px;
 }
+
 </style>

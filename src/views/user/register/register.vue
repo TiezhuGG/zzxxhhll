@@ -129,6 +129,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '@/styles/user.scss';
 $h-color: #333;
 $s-color: #999;
 $h-fs: 27px;
@@ -159,4 +160,5 @@ $i-fs: 19px;
     margin-top: 231px;
   }
 }
+
 </style>

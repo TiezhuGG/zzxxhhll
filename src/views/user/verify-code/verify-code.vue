@@ -11,8 +11,7 @@
       <div class="title-container">
         <h3 class="title">验证手机号</h3>
         <p class="warning">
-          <span>请输入发送至 +86 {{ user.info.mobile.mobile }} 的 6 位验证码，有效</span>
-          <span>期十分钟。如未收到，请尝试重新获取验证码。</span>
+          <span>请输入发送至 +86 {{ user.info.mobile.mobile }} 的 6 位验证码，有效期十分钟。如未收到，请尝试重新获取验证码。</span>
         </p>
       </div>
 
@@ -151,6 +150,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '@/styles/user.scss';
 $h-color: #333;
 $s-color: #999;
 $h-fs: 27px;

@@ -28,10 +28,12 @@ export default {
     display: flex;
     justify-content: space-around;
     align-items: center;
+    padding: 10px;
     background-color: #e3f1ff;
     border-radius: 8px;
     .svg {
       font-size: 71px;
+      margin-right: 6px;
     }
     @media screen and (max-width: 1700px) {
       .svg {
@@ -53,6 +55,7 @@ export default {
       .add-txt-top {
         color: #333;
         font-size: 21px;
+        margin-bottom:5px;
       }
       .add-txt-bottom {
         color: #999;

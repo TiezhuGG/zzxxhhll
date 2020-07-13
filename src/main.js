@@ -14,7 +14,6 @@ import router from './router'
 
 import '@/icons' // icon
 import '@/permission' // permission control
-import '@/utils/rem'
 
 import ComboBox from '@/components/Comb0box'
 import ZxSearch from '@/components/ZxSearch'

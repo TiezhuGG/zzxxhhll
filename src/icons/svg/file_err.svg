@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="15px" viewBox="0 0 16 15" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 61.2 (89653) - https://sketch.com -->
+    <title>路径备份 2@2x</title>
+    <desc>Created with Sketch.</desc>
+    <g id="针线互联应用" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="订单管理_录入" transform="translate(-100.000000, -509.000000)">
+            <g id="编组-4" transform="translate(100.000000, 509.000000)">
+                <path d="M6.79650001,0 C7.49974905,0 8.10862937,0.488456179 8.261,1.17499999 L8.33349999,1.5 L14.5,1.5 C15.3284271,1.5 16,2.17157288 16,3 L16,13.5 C16,14.3284271 15.3284271,15 14.5,15 L1.5,15 C0.671572876,15 0,14.3284271 0,13.5 L0,1.5 C0,0.671572875 0.671572876,0 1.5,0 L6.79650001,0 Z" id="路径备份-2" fill="#409EFF" fill-rule="nonzero"></path>
+                <rect id="矩形" fill="#FFFFFF" x="7" y="4" width="2" height="5" rx="1"></rect>
+                <rect id="矩形备份-8" fill="#FFFFFF" x="7" y="10" width="2" height="2" rx="1"></rect>
+            </g>
+        </g>
+    </g>
+</svg>

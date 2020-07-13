@@ -65,7 +65,7 @@
   text-align: right;
 }
 
-.el-table {
+.el-table:not(.el-table--border) {
   &:before,.el-table__fixed-right:before {
     height: 0;
   }
@@ -73,5 +73,22 @@
     td {
       border: 0;
     }
+  }
+}
+
+.el-checkbox {
+  &__inner {
+    width: 19px;
+    height: 19px;
+    &::after {
+      top: 3px;
+      left: 6px;
+    }
+    &::before {
+      top: 7px;
+    }
+  }
+  &__label {
+    font-size: 19px;
   }
 }

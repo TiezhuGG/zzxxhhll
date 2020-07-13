@@ -45,6 +45,11 @@ export default {
           url: "/material",
           icon: "namematerial",
           name: "材料名称表"
+        },
+        {
+          url: "/apps/order_admin",
+          icon: "collect",
+          name: "订单管理"
         }
       ],
       company_id: null,

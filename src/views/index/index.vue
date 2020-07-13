@@ -53,7 +53,7 @@ export default {
         }
       ],
       company_id: null,
-      dialogFormVisible: true
+      dialogFormVisible: false
     };
   },
 

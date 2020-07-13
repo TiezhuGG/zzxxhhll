@@ -48,7 +48,7 @@ export default {
         }
       ],
       company_id: null,
-      dialogFormVisible: false
+      dialogFormVisible: true
     };
   },
 

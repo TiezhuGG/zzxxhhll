@@ -8,11 +8,6 @@
     <el-form :model="form" :rules="rules" ref="form">
       <el-form-item prop="scaleValue" label="企业规模">
         <el-radio-group v-model="scaleName" v-for="item in companyScale" :key="item.id" @change="selectScale">
-          <!-- <el-radio-button label="1-25人"></el-radio-button>
-          <el-radio-button label="26-100人"></el-radio-button>
-          <el-radio-button label="101-300人"></el-radio-button>
-          <el-radio-button label="301-1000人"></el-radio-button>
-          <el-radio-button label="1000人以上"></el-radio-button> -->
           <el-radio-button :label="item.label"></el-radio-button>
         </el-radio-group>
       </el-form-item>
@@ -93,10 +88,13 @@ export default {
       businesses: [], // 行业列表
       provinceList: [], // 省份列表
       cityList: [], // 城市列表
+      company_id: "",
+      company_name: ""
     };
   },
   created() {
     this.company_name = this.$store.state.user.info.enterpriseName.enterpriseName
+    this.company_id = localStorage.getItem('company_id')
     this.showDialog = this.dialogFormVisible
     if(this.showDialog) {
       this.getArea();
@@ -154,7 +152,8 @@ export default {
       this.$refs.form.validate(valid => {
         if(valid) {
           completeInfo({
-            company_id: "29", // 测试用
+            // company_id: "29", // 测试用
+            company_id: this.company_id,
             business_id: this.form.businessValue.toString(),
             scale_id: this.form.scaleValue.toString(),
             province_id: this.form.provinceValue.toString(),

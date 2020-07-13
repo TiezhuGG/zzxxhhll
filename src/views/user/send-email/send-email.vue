@@ -23,6 +23,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '@/styles/user.scss';
 .send-email {
   width: 100%;
   height: 100vh;

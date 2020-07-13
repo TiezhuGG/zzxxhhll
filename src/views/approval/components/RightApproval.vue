@@ -178,14 +178,14 @@ export default {
   margin-bottom: 45px;
 }
 .line {
-  width: calc(100% - 120px);
+  width: calc(100% - 150px);
   height: 1px;
   display: inline-block;
   background: #409eff;
 }
 .txt {
   display: inline-block;
-  width: 100px;
+  width: 130px;
   font-size: 16px;
   color: #409eff;
 }

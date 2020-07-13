@@ -40,13 +40,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.user-container {
+}
 .swiper-container {
   width: 100%;
 
   .img {
     width: 587px;
     height: 373px;
-    margin: 0 156px 0 267px;
+    margin: 0 156px 0 270px;
   }
 }
 </style>

@@ -146,6 +146,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '@/styles/user.scss';
 $h-color: #333;
 $s-color: #999;
 $h-fs: 27px;
@@ -184,6 +185,6 @@ $i-fs: 19px;
 }
 
 >>> .el-checkbox__label {
-  margin-right: 160px;
+  margin-right: 90px;
 }
 </style>

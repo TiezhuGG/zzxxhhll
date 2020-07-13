@@ -46,7 +46,7 @@
         type="primary"
         @click.native.prevent="next"
         class="login-button"
-      >注册</el-button>
+      >{{ this.find_password ? '确定' : '注册'}}</el-button>
     </el-form>
   </div>
 </template>
@@ -151,6 +151,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '@/styles/user.scss';
 $h-color: #333;
 $s-color: #999;
 $h-fs: 27px;

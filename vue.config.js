@@ -34,16 +34,16 @@ module.exports = {
             css: {
                 // options here will be passed to css-loader
             },
-            postcss: {
-                // options here will be passed to postcss-loader
-                plugins: [require('postcss-px2rem')({
-                    remUnit: 16
-                    // ,remPrecision: 2
-                    // exclude: false,
-                    // mediaQuery: false,
-                    // minPixelValue: 3
-                })]
-            }
+            // postcss: {
+            //     // options here will be passed to postcss-loader
+            //     plugins: [require('postcss-px2rem')({
+            //         remUnit: 16
+            //         // ,remPrecision: 2
+            //         // exclude: false,
+            //         // mediaQuery: false,
+            //         // minPixelValue: 3
+            //     })]
+            // }
         }
     },
     devServer: {

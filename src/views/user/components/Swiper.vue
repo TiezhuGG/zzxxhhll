@@ -43,12 +43,10 @@ export default {
 .user-container {
 }
 .swiper-container {
-  width: 100%;
+    width: 587px;
 
   .img {
-    width: 587px;
-    height: 373px;
-    margin: 0 156px 0 270px;
+    width: 100%;
   }
 }
 </style>

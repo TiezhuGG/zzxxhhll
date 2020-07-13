@@ -51,6 +51,15 @@ const apps = {
       icon: 'namematerial',
       activeMenu: '/index'
     }
+  }, {
+    path: 'order_admin',
+    name: 'OrderAdmin',
+    component: resolve => require(['@/views/apps/orderAdmin/index'], resolve),
+    meta: {
+      title: '订单管理',
+      icon: 'collect',
+      activeMenu: '/index'
+    }
   }]
 }
 

@@ -1,5 +1,5 @@
 <template>
-  <section class="app-main">
+  <section class="app-main" :style="style">
     <transition name="fade-transform" mode="out-in">
 <!--      <router-view :key="key" />-->
       <keep-alive :include="cachedViews">
@@ -15,10 +15,14 @@ export default {
   computed: {
     cachedViews() {
       return this.$store.state.tagsView.cachedViews
+    },
+    style() {
+      /*50 = navbar  */
+      /*95 = navbar + tagsview  */
+      return {
+        'min-height': 'calc(100vh - ' + (this.$route.path.includes('apps') ? 95 : 50) + 'px)'
+      }
     }
-    // key() {
-    //   return this.$route.path
-    // }
   }
 }
 </script>
@@ -26,7 +30,7 @@ export default {
 <style lang="scss" scoped>
 .app-main {
   /*50 = navbar  */
-  min-height: calc(100vh - 50px);
+  /*95 = navbar + tagsview  */
   width: 100%;
   position: relative;
   overflow: hidden;

@@ -157,7 +157,7 @@ $i-fs: 19px;
   }
 
   >>> .el-checkbox {
-    margin-top: 231px;
+    margin-top: 224px;
   }
 }
 

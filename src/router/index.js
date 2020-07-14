@@ -125,7 +125,7 @@ export const constantRoutes = [
             {
                 path: 'message',
                 name: 'Message',
-                component: resolve => require(['@/views/approval/index'],resolve),
+                component: resolve => require(['@/views/message/index'],resolve),
                 meta: {
                     title: '消息',
                     icon: 'approval'

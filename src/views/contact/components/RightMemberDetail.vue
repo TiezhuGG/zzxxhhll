@@ -816,7 +816,7 @@
             <!-- 银行卡信息 -->
             <div class="education_info">
               <span class="txt">银行卡信息</span>
-              <span class="line"></span>
+              <span class="line" style="width:824px;"></span>
               <span class="edit" @click="bank_info_show = true">编辑</span>
               <span class="save" @click="bankBaseInfo" v-show="bank_info_show">保存</span>
             </div>
@@ -2152,7 +2152,7 @@ export default {
       this.$refs.emergencyData.validate(valid => {
         console.log("valid", valid);
         if (valid) {
-          this.emergency_info_show = false;
+          this.emergency_contact_show = false;
         }
       });
     },

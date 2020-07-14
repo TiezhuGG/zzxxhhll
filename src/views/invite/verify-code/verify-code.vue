@@ -186,6 +186,7 @@ $i-fs: 19px;
 
 .code-container {
   width: calc(100% - 827px);
+  display: flex;
   justify-content: center;
   .login-form {
     .code {

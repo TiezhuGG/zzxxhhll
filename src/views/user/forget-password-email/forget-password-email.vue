@@ -127,7 +127,7 @@ export default {
 .button {
   width: 430px;
   height: 60px;
-  margin-top: 160px !important;
+  margin-top: 127px !important;
   margin-left: 30px;
   font-size: 19px;
 }

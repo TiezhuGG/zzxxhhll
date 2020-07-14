@@ -196,7 +196,7 @@ $i-fs: 19px;
     }
 
     .bottom-section {
-      height: 310px;
+      height: 300px;
       display: flex;
       flex-direction: column;
       align-items: center;

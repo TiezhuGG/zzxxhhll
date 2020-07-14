@@ -130,36 +130,31 @@ export default {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true;
-          login({ mobile: mobile, password: password })
-            .then(res => {
+          login({ mobile: mobile, password: password }).then(res => {
+              this.loading = false;
               const token = res.data.token;
               const id = res.data.id;
+              const default_company = res.data.default_company;
               setToken(token); // 将token存入本地Cookie
+              localStorage.setItem("user_id", id);
               this.$store.commit("user/setPassword", {
                 password: password
               });
-              localStorage.setItem("user_id", id);
-              getEnterpriseList().then(res => {
-                this.loading = false;
-                const company_list = res.data;
-                console.log("company_list", company_list);
-                if (company_list.length !== 0) {
-                  for (let item of company_list) {
-                    if (item.is_default === 1) {// 有默认企业直接登录，否则去选择企业
-                      localStorage.setItem("company_id", item.company_id);
-                      this.$router.push("/");
-                      break;
-                    } else {
-                      this.$router.push("has-enterprise");
-                    }
+              if(default_company) { // 有默认企业直接登录
+                localStorage.setItem("company_id", default_company.id);
+                localStorage.setItem("company_name", default_company.company_name);
+                this.$router.push("/");
+              } else {  // 没有默认企业判断是否有注册过企业
+                getEnterpriseList().then(response => {
+                  const company_list = response.data;
+                  if (company_list.length !== 0) {  // 选择企业登录
+                    this.$router.push("has-enterprise");
+                  } else {  // 没有注册企业直接去创建企业
+                    this.$router.push("enterprise");
                   }
-                } else {// 没有注册企业直接去创建企业
-                  this.$router.push("enterprise");
-                }
-              });
-              // this.$router.push({ path: this.redirect || "/" });
-            })
-            .catch(err => {
+                })
+              }
+            }).catch(err => {
               this.loading = false;
             });
         }

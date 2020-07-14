@@ -175,12 +175,14 @@ $i-fs: 19px;
     }
 
     .login-button {
-      margin-top: 160px;
+      margin-top: 132px;
     }
   }
 }
 
 >>> .el-checkbox {
+  display: flex;
+  margin-left: 30px;
   margin-top: 10px;
 }
 

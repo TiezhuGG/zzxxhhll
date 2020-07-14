@@ -97,7 +97,6 @@ export default {
 
     getInviteCode() {
       this.$refs.formData.validate(valid => {
-        console.log("valid", valid);
         if (valid) {
           this.loading = true;
           getInviteCode({

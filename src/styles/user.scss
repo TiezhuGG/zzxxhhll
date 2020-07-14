@@ -138,7 +138,7 @@ $i-fs: 19px;
 }
 
 >>>.el-checkbox {
-  margin-top: 118px;
+  margin-top: 91px;
   margin-bottom: 21px;
   color: #999;
   font-size: 19px;
@@ -155,4 +155,6 @@ $i-fs: 19px;
 >>>input[type="number"] {
   -moz-appearance: textfield;
 }
-
+.el-form-item {
+  margin-bottom: 37px;
+}

@@ -182,7 +182,7 @@ export default {
 
   .login-form {
     .login-button {
-      margin-top: 121px;
+      margin-top: 71px;
     }
   }
 }

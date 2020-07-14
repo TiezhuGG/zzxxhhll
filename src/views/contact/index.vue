@@ -36,12 +36,10 @@ import RightMemberDetail from "./components/RightMemberDetail";
 export default {
   data() {
     return {
-      // index: 2,
-      // memberIndex: null
+      index: 2,
       member: true,
       organize: false,
-      // 测试用
-      index: 3
+      // index: 3 // test
     };
   },
   mounted() {},

@@ -1,5 +1,5 @@
 <template>
-  <div class="order_admin">
+  <div v-if="$route.name === 'OrderAdmin'" class="order_admin">
     <div class="container">
       <div class="filter block">
         <el-form inline label-width="107px">
@@ -92,21 +92,28 @@
             </div>
           </div>
           <div class="checkbox_condition">
-            <div class="checkbox_header">
+            <div class="checkbox_header" :class="checkboxShow ? '' : 'on'">
               <el-checkbox
                 :indeterminate="isIndeterminate"
                 v-model="checkAll"
                 @change="handleCheckAllChange"
               >全选</el-checkbox>
-              <div>
-                <svg-icon icon-class="arrow-top" />收起
+              <div @click="checkboxShow = !checkboxShow">
+                <svg-icon icon-class="arrow-top" />
+                {{ checkboxShow ? '收起' : '展开' }}
               </div>
             </div>
-            <div class="checkbox_content">
-              <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange">
-                <el-checkbox v-for="city in cities" :label="city" :key="city">{{city}}</el-checkbox>
-              </el-checkbox-group>
-            </div>
+            <el-collapse-transition>
+              <div v-show="checkboxShow" class="checkbox_content">
+                <el-checkbox-group v-model="checkedRows" @change="handleCheckedRowChange">
+                  <el-checkbox
+                    v-for="(row, index) in tableRwos"
+                    :label="row.name"
+                    :key="index"
+                  >{{row.name}}</el-checkbox>
+                </el-checkbox-group>
+              </div>
+            </el-collapse-transition>
           </div>
           <div class="table_container">
             <el-table
@@ -121,18 +128,18 @@
               <el-table-column label="ID">
                 <template slot-scope="scope">{{ scope.row.date }}</template>
               </el-table-column>
-              <el-table-column prop="name" label="订单状态" width="200"></el-table-column>
-              <el-table-column prop="address" label="客户订单号码" width="200"></el-table-column>
-              <el-table-column prop="address" label="客户订单号码" width="200"></el-table-column>
-              <el-table-column prop="address" label="客户订单号码" width="200"></el-table-column>
-              <el-table-column prop="address" label="客户订单号码" width="200"></el-table-column>
-              <el-table-column prop="address" label="客户订单号码" width="200"></el-table-column>
-              <el-table-column prop="address" label="客户订单号码" width="200"></el-table-column>
-              <el-table-column prop="address" label="客户订单号码" width="200"></el-table-column>
-              <el-table-column prop="address" label="客户订单号码" width="200"></el-table-column>
+              <template v-for="(row, index) of tableRwos">
+                <el-table-column
+                  v-if="isCheckbox(row.name)"
+                  :key="index"
+                  :prop="row.data_key"
+                  :label="row.name"
+                  width="200"
+                />
+              </template>
               <el-table-column fixed="right" label="操作" width="165">
-                <el-link type="primary">编辑</el-link>
-                <el-link type="primary">删除</el-link>
+                <el-link type="primary" @click="$router.push({ path: 'order_admin/detail' })">编辑</el-link>
+                <el-link type="primary" @click="deleteById">删除</el-link>
                 <el-link type="primary">打印</el-link>
               </el-table-column>
             </el-table>
@@ -141,6 +148,7 @@
       </div>
     </div>
   </div>
+  <router-view v-else />
 </template>
 
 <script>
@@ -150,36 +158,114 @@ export default {
   data() {
     return {
       value: '',
+      checkboxShow: false,
       checkAll: false,
-      checkedCities: ['上海', '北京'],
-      cities: [
-        '订单状态',
-        '客户订单号码',
-        '业务来源',
-        '客户代码',
-        '客户名称',
-        '工厂订单号码',
-        '交货日期',
-        '交货地点',
-        '业务部门',
-        '业务人员',
-        '建档人员',
-        '建档日期',
-        '修改日期'
+      checkedRows: ['订单状态', '客户订单号码'],
+      tableRwos: [
+        {
+          name: '订单状态',
+          data_key: 'name'
+        },
+        {
+          name: '客户订单号码',
+          data_key: 'date'
+        },
+        {
+          name: '业务来源',
+          data_key: 'name'
+        },
+        {
+          name: '客户代码',
+          data_key: 'name'
+        },
+        {
+          name: '客户名称',
+          data_key: 'name'
+        },
+        {
+          name: '工厂订单号码',
+          data_key: 'name'
+        },
+        {
+          name: '交货日期',
+          data_key: 'name'
+        },
+        {
+          name: '交货地点',
+          data_key: 'name'
+        },
+        {
+          name: '业务部门',
+          data_key: 'name'
+        },
+        {
+          name: '业务人员',
+          data_key: 'name'
+        },
+        {
+          name: '建档人员',
+          data_key: 'name'
+        },
+        {
+          name: '建档日期',
+          data_key: 'name'
+        },
+        {
+          name: '修改日期',
+          data_key: 'name'
+        }
       ],
       isIndeterminate: true,
       tableData: [
         {
           date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
+          name: '王小虎'
         },
         {
           date: '2016-05-02',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
+          name: '王小虎'
         }
       ]
+    }
+  },
+  methods: {
+    isCheckbox(name) {
+      return this.checkedRows.includes(name)
+    },
+    handleCheckAllChange(val) {
+      this.checkedRows = val ? this.tableRwos.map(item => item.name) : []
+      this.isIndeterminate = false
+    },
+    handleCheckedRowChange(value) {
+      let checkedCount = value.length
+      this.checkAll = checkedCount === this.tableRwos.length
+      this.isIndeterminate =
+        checkedCount > 0 && checkedCount < this.tableRwos.length
+    },
+    handleSelectionChange(value) {
+      console.log(value)
+    },
+    deleteById(id) {
+      const h = this.$createElement
+      this.$msgbox({
+        title: '提示',
+        message: h('div', null, [
+          h('svg-icon', {
+            style: {
+              'margin-right': '12px',
+              'font-size': '22px',
+              'vertical-align': 'middle'
+            },
+            attrs: {
+              iconClass: 'stop'
+            }
+          }),
+          h('span', null, '此操作将永久删除该文件，是否继续？')
+        ]),
+        showCancelButton: true,
+        confirmButtonText: '确定',
+        cancelButtonText: '取消'
+      })
     }
   }
 }

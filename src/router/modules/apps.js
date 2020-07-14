@@ -59,7 +59,17 @@ const apps = {
       title: '订单管理',
       icon: 'collect',
       activeMenu: '/index'
-    }
+    },
+    children: [{
+      path: 'detail',
+      name: 'Detail',
+      component: resovle => require(['@/views/apps/orderAdmin/detail'], resovle),
+      meta: {
+        title: '订单详情',
+        icon: 'collect',
+        activeMenu: '/index'
+      }
+    }]
   }]
 }
 

@@ -40,10 +40,8 @@ Vue.component('combo-box', ComboBox)
 Vue.component('zx-search', ZxSearch)
 
 Vue.config.productionTip = false
-
 import utils from '@/utils/utils.js'
 Vue.prototype.$api = utils
-
 new Vue({
   el: '#app',
   router,

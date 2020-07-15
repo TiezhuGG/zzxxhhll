@@ -205,6 +205,7 @@
                       >
                         <el-input
                           placeholder="请输入手机号"
+                          type="number"
                           v-show="base_info_show"
                           v-model="scope.row.phone"
                         ></el-input>
@@ -1257,6 +1258,7 @@
                       <el-upload
                         class="avatar-uploader"
                         action="https://jsonplaceholder.typicode.com/posts/"
+                        :before-upload="beforeUpload"
                         :show-file-list="false"
                         :on-success="handleEducationImg"
                         v-show="personal_material_show"
@@ -1800,9 +1802,9 @@ export default {
         // contact_relationship: [
         //   { required: true, trigger: "change", message: "请选择联系人关系" }
         // ],
-        // contact_phone: [
-        //   { required: true, trigger: "blur", message: "请输入联系电话" }
-        // ]
+        contact_phone: [
+          { required: true, trigger: "blur", validator: validateMobile }
+        ]
       },
       familyData: {
         tabledatas: [
@@ -1929,6 +1931,7 @@ export default {
   },
   methods: {
     handleIdFaceImg(res, file) {
+      console.log(res,file)
       this.idFaceImg = URL.createObjectURL(file.raw);
     },
     handleEducationImg(res, file) {
@@ -1948,6 +1951,9 @@ export default {
     },
     deleteRow(index, rows) {
       rows.splice(index, 1);
+    },
+    beforeUpload(file) {
+      console.log('file', file)
     },
     // 选择部门
     selectDepartment(e) {

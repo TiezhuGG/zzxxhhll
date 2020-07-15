@@ -219,3 +219,12 @@ export function inviteRegister(data) {
         data
     })
 }
+
+// 上传图片
+export function imageUpload(data) {
+    return request({
+        url: 'image_upload',
+        method: 'post',
+        data
+    })
+}

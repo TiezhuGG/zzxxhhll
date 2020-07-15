@@ -27,7 +27,7 @@
           </div>
         </div>
         <!-- 弹窗 -->
-        <el-dialog :visible.sync="dialogVisible" width="533px">
+        <el-dialog :visible.sync="dialogVisible" width="400px">
           <img class="avatar" src="@/assets/imgs/test.jpg" />
           <el-form :model="form" :rules="rules" ref="form" auto-complete="on">
             <el-form-item label="姓名" prop="name">
@@ -140,7 +140,7 @@ export default {
       console.log("e", e);
       this.form.department = e
     }
-  }
+  },
 };
 </script>
 

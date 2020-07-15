@@ -37,7 +37,7 @@
               </el-form-item>
             </el-col>
           </div>
-          <div class="add" @click="addInput">
+          <div class="add-item" @click="addInput">
             <svg-icon icon-class="add"></svg-icon>继续添加
           </div>
         </el-form>
@@ -171,10 +171,10 @@ export default {
             top: 29%!important;
           }
         }
-        .add {
-          width: 115px;
-          display: flex;
-          align-items: center;
+        .add-item {
+          // width: 115px;
+          // display: flex;
+          // align-items: center;
           svg {
             font-size: 27px;
             margin-right: 11px;
@@ -213,7 +213,7 @@ export default {
 }
 
 >>> .input-with-select .el-input-group__prepend {
-  width: 89px;
+  width: 98px;
   color: #333;
   background-color: #fff;
 }

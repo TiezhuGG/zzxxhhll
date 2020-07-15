@@ -2,7 +2,7 @@ module.exports = {
   plugins: {
     autoprefixer: {},
     "postcss-px2rem-exclude": {
-      "remUnit": 16,
+      "remUnit": 19.2,
       "exclude": /reset.css|element-ui/
     }
   }

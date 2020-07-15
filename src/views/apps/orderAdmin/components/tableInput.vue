@@ -24,7 +24,6 @@ export default {
     isInput(val) {
       if (val) {
         this.$nextTick(() => {
-          console.log(this.$refs.input)
           this.$refs.input.focus()
         })
       }

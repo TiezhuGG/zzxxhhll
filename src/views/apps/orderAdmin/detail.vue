@@ -105,11 +105,17 @@
               </el-table-column>
             </el-table>
           </div>
+          <div v-if="isApprover" class="buttons">
+            <el-button type="primary" @click="handlePass">通过</el-button>
+            <el-button type="plain">驳回</el-button>
+          </div>
           <el-dialog title="产品详情" width="848px" :visible.sync="detailShow">
             <product-detail />
           </el-dialog>
         </el-tab-pane>
-        <el-tab-pane label="审批信息">配置管理</el-tab-pane>
+        <el-tab-pane label="审批信息">
+          <approver />
+        </el-tab-pane>
       </el-tabs>
     </div>
   </div>
@@ -119,11 +125,14 @@
 import ProductImg from './components/productImg'
 import ProductDetail from './components/productDetail'
 import TableInput from './components/tableInput'
+import Approver from './components/approver'
 export default {
   name: 'Detail',
-  components: { ProductImg, ProductDetail, TableInput },
+  components: { ProductImg, ProductDetail, TableInput, Approver },
   data() {
     return {
+      msgInput: '',
+      isApprover: true,
       value: '',
       detailShow: false,
       tableData: [
@@ -135,13 +144,62 @@ export default {
     }
   },
   methods: {
-    deleteById() {}
+    deleteById() {},
+    handlePass() {
+      this.$msgbox({
+        title: '提示',
+        message: (
+          <div>
+            <div>
+              <svg-icon
+                icon-class="stop"
+                style="margin-right: 12px; font-size: 22px;vertical-align: middle"
+              />
+              <span>确认通过该文件的审批，是否继续？</span>
+            </div>
+            <div>
+              <p style="margin-top: 20px;margin-bottom: 7px">审批意见</p>
+              <textarea
+                autofocus
+                class="msg_input"
+                vModel={ this.msgInput }
+              ></textarea>
+            </div>
+          </div>
+        ),
+        showCancelButton: true,
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        beforeClose: (action, instance, done) => {
+          if (action === 'confirm') {
+            console.log(this.msgInput)
+            this.msgInput = ''
+            done()
+          } else {
+            this.msgInput = ''
+            done()
+          }
+        }
+      })
+    }
   }
 }
 </script>
 
 <style lang="scss" scoped>
 @import './static.scss';
+.msg_input {
+  width: 100%;
+  height:133px;
+  padding: 10px;
+  border-radius:5px;
+  border:1px solid #DCDFE6;
+  resize: none;
+  transition: all .2s;
+  &:focus {
+    border-color: rgba(25,137,250,1);
+  }
+}
 .container {
   display: flex;
   flex-wrap: wrap;
@@ -155,6 +213,10 @@ export default {
     &:nth-child(n + 2) {
       margin-top: 15px;
     }
+    >>> .el-tabs {
+      box-shadow: none;
+      border: none;
+    }
     .product {
       &-title {
         line-height: 80px;
@@ -165,9 +227,17 @@ export default {
           margin-left: 28px;
         }
       }
-      >>> .el-tabs {
-        box-shadow: none;
-        border: none;
+      .buttons {
+        display: flex;
+        justify-content: center;
+        margin-top: 68px;
+        padding-bottom: 25px;
+        >>> .el-button {
+          width: 120px;
+          & + .el-button {
+            margin-left: 40px;
+          }
+        }
       }
     }
     .table-input {

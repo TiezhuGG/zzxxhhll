@@ -27,6 +27,7 @@ module.exports = {
     publicPath: '/',
     outputDir: 'dist',
     assetsDir: 'static',
+    runtimeCompiler: true,
     lintOnSave: process.env.NODE_ENV === 'development',
     productionSourceMap: false,
     css: {
@@ -58,6 +59,7 @@ module.exports = {
     chainWebpack(config) {
         config.plugins.delete('preload') // TODO: need test
         config.plugins.delete('prefetch') // TODO: need test
+        
         // set svg-sprite-loader
         config.module
             .rule('svg')
@@ -74,7 +76,6 @@ module.exports = {
                 symbolId: 'icon-[name]'
             })
             .end()
-
         // set preserveWhitespace
         config.module
             .rule('vue')
@@ -91,7 +92,6 @@ module.exports = {
             .when(process.env.NODE_ENV === 'development',
                 config => config.devtool('cheap-source-map')
             )
-
         config
             .when(process.env.NODE_ENV !== 'development',
                 config => {

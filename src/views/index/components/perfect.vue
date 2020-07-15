@@ -199,11 +199,22 @@ export default {
   }
   .el-radio-group {
     font-size: 0;
+    &:first-child .el-radio-button__inner {
+      border-radius: 4px 0 0 4px!important;
+    }
+    &:last-child .el-radio-button__inner {
+      border-right: 1px solid #DCDFE6;
+      border-radius: 0 4px 4px 0!important;
+    }
+    .el-radio-button__inner {
+      border-right: 0;
+    }
   }
   .el-radio-button__inner {
     padding-left: 23.5px;
     padding-right: 23.5px;
-    font-weight: 300;
+    font-weight: 400;
+    border-radius: 0!important;
   }
   .el-form-item__content {
     width:100%;
@@ -211,11 +222,6 @@ export default {
     font-size: 0;
   }
 }
-
-.el-radio-button:first-child .el-radio-button__inner{
-  border-radius: 0!important;
-}
-
 
 .enterprise {
   width: 667px;

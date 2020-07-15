@@ -156,9 +156,9 @@ export default {
           display: flex;
         }
         .input-item {
-          // display: flex;
-          // align-items: center;
-          // margin-bottom: 27px;
+          display: flex;
+          align-items: center;
+          margin-bottom: 27px;
 
           .input-with-select {
             width: 430px;
@@ -169,10 +169,11 @@ export default {
             font-size: 27px;
             position: absolute!important;
             top: 29%!important;
+            right: -5%;
           }
         }
         .add-item {
-          // width: 115px;
+          width: 200px;
           // display: flex;
           // align-items: center;
           svg {
@@ -213,7 +214,7 @@ export default {
 }
 
 >>> .input-with-select .el-input-group__prepend {
-  width: 98px;
+  width: 110px;
   color: #333;
   background-color: #fff;
 }
@@ -226,4 +227,5 @@ export default {
 >>> input[type="number"] {
   -moz-appearance: textfield;
 }
+
 </style>

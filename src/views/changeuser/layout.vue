@@ -83,7 +83,7 @@ export default {
 >>> .el-input-group__prepend {
   background-color: transparent;
   .el-select .el-input {
-    width: 98px !important;
+    width: 110px !important;
   }
 }
 >>> .el-input-group__append {

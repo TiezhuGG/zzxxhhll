@@ -109,7 +109,7 @@
             <el-button type="primary" @click="handlePass">通过</el-button>
             <el-button type="plain">驳回</el-button>
           </div>
-          <el-dialog title="产品详情" width="848px" :visible.sync="detailShow">
+          <el-dialog title="产品详情" :visible.sync="detailShow">
             <product-detail />
           </el-dialog>
         </el-tab-pane>
@@ -242,9 +242,9 @@ export default {
     }
     .table-input {
       height: 73px;
-      line-height: 73px;
     }
     >>> .el-dialog {
+      width: 848px;
       &__header {
         padding: 0 27px;
         line-height: 67px;

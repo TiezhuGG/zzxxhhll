@@ -17,6 +17,7 @@ import '@/permission' // permission control
 
 import ComboBox from '@/components/Comb0box'
 import ZxSearch from '@/components/ZxSearch'
+import ZxName from '@/components/ZxName'
 
 /**
  * If you don't want to use mock-server
@@ -38,6 +39,7 @@ Vue.use(ElementUI)
 
 Vue.component('combo-box', ComboBox)
 Vue.component('zx-search', ZxSearch)
+Vue.component('zx-name', ZxName)
 
 Vue.config.productionTip = false
 import utils from '@/utils/utils.js'

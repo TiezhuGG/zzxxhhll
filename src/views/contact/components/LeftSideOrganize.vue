@@ -32,7 +32,8 @@ export default {
     return {
       // departments: ["按组织架构选择", "技术部"],
       departments: [],
-      currentIndex: 0
+      currentIndex: 0,
+      departmentName: ''
     };
   },
   created() {
@@ -41,13 +42,15 @@ export default {
   methods: {
     focus(index) {
       this.currentIndex = index;
+      this.departmentName = this.departments[index].name
+      localStorage.setItem('departmentName', this.departmentName)
       this.$emit("currentIndex", { currentIndex: this.currentIndex });
     },
     switchMember() {
       this.$emit("memberTab", {
         memberTab: true,
         organizeTab: false,
-        currentIndex: 2
+        currentIndex: 3
       });
     },
     switchOrganize() {
@@ -57,7 +60,8 @@ export default {
     async getDeparments() {
       const res = await getDeparments({ company_id: 6 });
       this.departments = res.data
-      console.log("获取一级部门列表", res.data);
+      this.departmentName = this.departments[0].name
+      localStorage.setItem('departmentName', this.departmentName)
     }
   },
   components: {
@@ -107,5 +111,6 @@ export default {
 
 .border-color {
   border-left: 4px solid #409eff;
+  background-color: #F2F6FC;
 }
 </style>

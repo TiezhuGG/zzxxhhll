@@ -228,3 +228,10 @@ export function imageUpload(data) {
         data
     })
 }
+
+// 获取公司成员列表
+export function getMemberList(id) {
+    return request({
+        url: `company_member_list?company_id=${id}`,
+    })
+}

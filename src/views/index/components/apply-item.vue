@@ -38,6 +38,7 @@ export default {
     border-radius:7px;
     display: flex;
     align-items: center;
+    font-size: 19px;
     &:nth-child(n+7) {
        margin-top: 21px;
     }

@@ -73,7 +73,9 @@ export default {
       loading: false
     };
   },
-
+  // created() {
+  //   this.formData.mobile = this.$store.state.user.userinfo.userinfo.mobile
+  // },
   methods: {
     changePassword() {
       this.$refs.formData.validate(valid => {

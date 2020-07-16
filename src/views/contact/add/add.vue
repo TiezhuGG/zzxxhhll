@@ -16,8 +16,13 @@
                 :key="index"
                 :rules="rules.mobile"
               >
-                <el-input placeholder="请输入手机号码" v-model="item.mobile" type="number" class="input-with-select">
-                  <el-select v-model="select" slot="prepend" placeholder="+86" class="select">
+                <el-input
+                  placeholder="请输入手机号码"
+                  v-model="item.mobile"
+                  type="number"
+                  class="input-with-select"
+                >
+                  <el-select v-model="select" slot="prepend" placeholder="+86" class="select" @change="change" >
                     <el-option label="+86" value="1"></el-option>
                   </el-select>
                 </el-input>
@@ -74,7 +79,15 @@ export default {
       select: ""
     };
   },
+  watch: {
+    select(newVal,oldVal) {
+      console.log('newVal',newVal,'oldVal',oldVal)
+    }
+  },
   methods: {
+    change(e) {
+      console.log('e',e)
+    },
     addInput() {
       this.form.mobiles.push({ mobile: "" });
       this.form.names.push({ name: "" });
@@ -167,15 +180,17 @@ export default {
 
           svg {
             font-size: 27px;
-            position: absolute!important;
-            top: 29%!important;
+            position: absolute !important;
+            top: 29% !important;
             right: -5%;
           }
         }
         .add-item {
           width: 200px;
-          // display: flex;
-          // align-items: center;
+          display: flex;
+          align-items: center;
+          font-size: 19px;
+
           svg {
             font-size: 27px;
             margin-right: 11px;
@@ -227,5 +242,4 @@ export default {
 >>> input[type="number"] {
   -moz-appearance: textfield;
 }
-
 </style>

@@ -3,6 +3,12 @@
     <el-container>
       <el-header style="text-align: left; font-size: 24px; color: #303133">个人档案</el-header>
       <el-main>
+        <Steps
+          class="steps"
+          @change="handleStep"
+          :step-active="stepActive"
+          :steps-list="stepsList"
+        />
         <div class="member">
           <!-- 头部信息 -->
           <div class="member-header">
@@ -22,7 +28,7 @@
 
           <div class="member-detail-infos">
             <!-- 系统信息 -->
-            <div class="system-info">
+            <div class="system-info" id="system-info">
               <div class="system-info-top">
                 <span class="txt">系统信息</span>
                 <span class="line"></span>
@@ -35,7 +41,7 @@
             </div>
 
             <!-- 基础信息 -->
-            <div class="base_info">
+            <div class="base_info" id="base_info">
               <span class="txt">基础信息</span>
               <span class="line"></span>
               <span class="edit" @click="base_info_show = true">编辑</span>
@@ -269,7 +275,7 @@
             </el-form>
 
             <!-- 工作信息 -->
-            <div class="work_info">
+            <div class="work_info" id="work_info">
               <span class="txt">工作信息</span>
               <span class="line"></span>
               <span class="edit" @click="work_info_show = true">编辑</span>
@@ -392,7 +398,7 @@
             </el-form>
 
             <!-- 个人信息 -->
-            <div class="personal_info">
+            <div class="personal_info" id="personal_info">
               <span class="txt">个人信息</span>
               <span class="line"></span>
               <span class="edit" @click="personal_info_show = true">编辑</span>
@@ -719,7 +725,7 @@
             </el-form>
 
             <!-- 学历信息 -->
-            <div class="education_info">
+            <div class="education_info" id="education_info">
               <span class="txt">学历信息</span>
               <span class="line"></span>
               <span class="edit" @click="education_info_show = true">编辑</span>
@@ -815,9 +821,9 @@
             </el-form>
 
             <!-- 银行卡信息 -->
-            <div class="education_info">
+            <div class="education_info" id="bank_info">
               <span class="txt">银行卡信息</span>
-              <span class="line" style="width:824px;"></span>
+              <span class="line" style="width:618px;"></span>
               <span class="edit" @click="bank_info_show = true">编辑</span>
               <span class="save" @click="bankBaseInfo" v-show="bank_info_show">保存</span>
             </div>
@@ -868,7 +874,7 @@
             </el-form>
 
             <!-- 合同信息 -->
-            <div class="contract_info">
+            <div class="contract_info" id="contract_info">
               <span class="txt">合同信息</span>
               <span class="line"></span>
               <span class="edit" @click="contract_info_show = true">编辑</span>
@@ -1037,9 +1043,9 @@
             </el-form>
 
             <!-- 紧急联系人 -->
-            <div class="emergency_contact">
+            <div class="emergency_contact" id="emergency_contact">
               <span class="txt">紧急联系人</span>
-              <span class="line" style="width:824px;"></span>
+              <span class="line" style="width:618px;">></span>
               <span class="edit" @click="emergency_contact_show = true">编辑</span>
               <span class="save" @click="emergencyBaseInfo" v-show="emergency_contact_show">保存</span>
             </div>
@@ -1114,7 +1120,7 @@
             </el-form>
 
             <!-- 家庭信息 -->
-            <div class="education_info">
+            <div class="education_info" id="family_info">
               <span class="txt">家庭信息</span>
               <span class="line"></span>
               <span class="edit" @click="family_info_show = true">编辑</span>
@@ -1218,7 +1224,7 @@
             </el-form>
 
             <!-- 个人材料 -->
-            <div class="personal_material">
+            <div class="personal_material" id="personal_material">
               <span class="txt">个人材料</span>
               <span class="line"></span>
               <span class="edit" @click="personal_material_show = true">编辑</span>
@@ -1300,7 +1306,7 @@
                         :show-file-list="false"
                         :on-success="handleIdbackImg"
                         v-show="personal_material_show"
-                      >                        
+                      >
                         <img v-if="idBackImg" :src="idBackImg" class="avatar" />
                         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                       </el-upload>
@@ -1318,7 +1324,7 @@
                         :show-file-list="false"
                         :on-success="handleDegreeImg"
                         v-show="personal_material_show"
-                      >                        
+                      >
                         <img v-if="degreeImg" :src="degreeImg" class="avatar" />
                         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                       </el-upload>
@@ -1335,7 +1341,7 @@
                         :show-file-list="false"
                         :on-success="handleEmployeeImg"
                         v-show="personal_material_show"
-                      >                        
+                      >
                         <img v-if="employeeImg" :src="employeeImg" class="avatar" />
                         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                       </el-upload>
@@ -1351,9 +1357,9 @@
             </el-form>
 
             <!-- 历史薪资 -->
-            <div class="salary_history">
+            <div class="salary_history" id="salary_history">
               <span class="txt">历史薪资</span>
-              <span class="line" style="width: 892px;"></span>
+              <span class="line"></span>
             </div>
 
             <el-table :data="tableData" style="width: 100%">
@@ -1377,6 +1383,7 @@ import {
   validMobile,
   validIdcard
 } from "@/utils/validate";
+import Steps from "./Steps";
 export default {
   data() {
     const validateName = (rule, value, callback) => {
@@ -1408,6 +1415,42 @@ export default {
       }
     };
     return {
+      userinfo: null,
+      stepsList: [
+        {
+          name: "系统信息"
+        },
+        {
+          name: "基础信息"
+        },
+        {
+          name: "工作信息"
+        },
+        {
+          name: "个人信息"
+        },
+        {
+          name: "学历信息"
+        },
+        {
+          name: "银行卡信息"
+        },
+        {
+          name: "合同信息"
+        },
+        {
+          name: "紧急联系人"
+        },
+        {
+          name: "家庭信息"
+        },
+        {
+          name: "个人材料"
+        },
+        {
+          name: "历史薪资"
+        }
+      ],
       formData: {
         // 基础信息
         tabledatas: [
@@ -1625,7 +1668,7 @@ export default {
         // 个人信息验证
         id_card: [
           { required: true, trigger: "blur", validator: validateIdcard }
-        ],
+        ]
         // name_in_id: [
         //   { required: true, trigger: "blur", message: "请输入身份证姓名" }
         // ],
@@ -1926,12 +1969,23 @@ export default {
       educationImg: "",
       certificateImg: "",
       degreeImg: "",
-      employeeImg: ""
+      employeeImg: "",
+      stepActive: 0
     };
   },
+  created() {
+    this.userinfo = this.$store.state.user.userinfo
+    console.log('userinfo', this.userinfo)
+  },
   methods: {
+    jump() {
+      document.getElementById("personal_info").scrollIntoView();
+    },
+    handleStep({ index, name }) {
+      this.stepActive = index;
+    },
     handleIdFaceImg(res, file) {
-      console.log(res,file)
+      console.log(res, file);
       this.idFaceImg = URL.createObjectURL(file.raw);
     },
     handleEducationImg(res, file) {
@@ -1953,7 +2007,7 @@ export default {
       rows.splice(index, 1);
     },
     beforeUpload(file) {
-      console.log('file', file)
+      console.log("file", file);
     },
     // 选择部门
     selectDepartment(e) {
@@ -2180,6 +2234,9 @@ export default {
         }
       });
     }
+  },
+  components: {
+    Steps
   }
 };
 </script>
@@ -2212,6 +2269,9 @@ export default {
     }
 
     .el-main {
+      display: flex;
+      justify-content: center;
+
       .member {
         display: flex;
         flex-direction: column;
@@ -2438,8 +2498,14 @@ input[type="number"] {
   border-radius: 6px;
 }
 .mt {
-  width: 100%!important;
+  width: 100% !important;
   display: inline-block;
   margin-bottom: 40px;
+}
+.steps {
+  width: 154px;
+  margin-top: 395px;
+  margin-right: 98px;
+  font-size: 19px;
 }
 </style>

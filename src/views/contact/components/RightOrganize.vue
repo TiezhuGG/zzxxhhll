@@ -1,10 +1,10 @@
 <template>
   <div class="right-main">
     <el-container>
-      <el-header style="text-align: left; font-size: 24px; color: #303133">组织架构</el-header>
+      <el-header style="text-align: left; font-size: 24px; color: #303133">{{ departmentName }}</el-header>
       <el-header style="text-align: left; font-size: 27px; color: #303133">
         <img class="logo" src="../../../assets/imgs/test.jpg" />
-        <span>触享网络科技有限公司</span>
+        <span>{{ company_name }}</span>
       </el-header>
       <el-main>
         <div
@@ -50,10 +50,14 @@ export default {
     return {
       showIt: true,
       EmployeeIndex: null,
-      departments: []
+      departments: [],
+      company_name: null,
+      departmentName: null
     };
   },
   created() {
+    this.company_name = localStorage.getItem('company_name', this.company_name) ? localStorage.getItem('company_name', this.company_name) : ""
+    this.departmentName = localStorage.getItem('departmentName', this.departmentName) ? localStorage.getItem('departmentName', this.departmentName) : ""
     this.getDeparmentMember()
   },
   watch: {

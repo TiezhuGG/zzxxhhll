@@ -70,7 +70,59 @@ const apps = {
         activeMenu: '/index'
       }
     }]
-  }]
+  },
+  {
+    path: 'customer_index',
+    name: 'customerIndex',
+    component: resolve => require(['@/views/apps/customer/index.vue'], resolve),
+    meta: {
+      title: '客户管理',
+      icon: 'collect',
+      activeMenu: '/index'
+    },
+    children: [{
+      path: 'customer_detail',
+      name: 'customerDetail',
+      component: resovle => require(['@/views/apps/customer/detail'], resovle),
+      meta: {
+        title: '客户详情',
+        icon: 'collect',
+        activeMenu: '/index'
+      }
+    }]
+  },
+  {
+    path: 'material_admin',
+    name: 'materialAdmin',
+    component: resolve => require(['@/views/apps/materialAdmin/index.vue'], resolve),
+    meta: {
+      title: '材料管理',
+      icon: 'collect',
+      activeMenu: '/index'
+    }
+  },
+  {
+    path: 'consumption_index',
+    name: 'customerIndex',
+    component: resolve => require(['@/views/apps/consumption/index.vue'], resolve),
+    meta: {
+      title: '单耗管理',
+      icon: 'collect',
+      activeMenu: '/index'
+    },
+    children: [{
+      path: 'consumption_detail',
+      name: 'consumptionDetail',
+      component: resovle => require(['@/views/apps/consumption/detail'], resovle),
+      meta: {
+        title: '单耗详情',
+        icon: 'collect',
+        activeMenu: '/index'
+      }
+    }]
+  },
+
+]
 }
 
 export default apps

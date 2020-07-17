@@ -50,6 +50,21 @@ export default {
           url: "/apps/order_admin",
           icon: "collect",
           name: "订单管理"
+        },
+         {
+          url: "/apps/customer_index",
+          icon: "collect",
+          name: "客户管理"
+        },
+         {
+          url: "/apps/material_admin",
+          icon: "collect",
+          name: "材料管理"
+        },
+         {
+          url: "/apps/consumption_index",
+          icon: "collect",
+          name: "单耗管理"
         }
       ],
       company_id: null,

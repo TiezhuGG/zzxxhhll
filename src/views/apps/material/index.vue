@@ -12,7 +12,7 @@
           <el-input v-model="meta_norms" placeholder="请输入材料规格"></el-input>
         </div>
         <div class="input-item">
-          <div>材料类型</div>
+          <span>材料类型</span>
           <el-select v-model="value" placeholder="请选择类型" style="margin-left:10px;">
             <el-option
               v-for="item in meta_type"

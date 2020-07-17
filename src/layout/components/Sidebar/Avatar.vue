@@ -81,7 +81,7 @@ export default {
       removeToken();
       this.$api.topage("/user/login");
     },
-        // 获取用户信息
+    // 获取用户信息
     async fetchUserInfo() {
       const uesr_id = localStorage.getItem('user_id')
       const res = await getUserinfo(uesr_id);

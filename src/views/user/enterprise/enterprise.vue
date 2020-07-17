@@ -182,6 +182,7 @@ $i-fs: 19px;
 
 >>> .el-checkbox {
   display: flex;
+  align-items: center;
   margin-left: 30px;
   margin-top: 10px;
 }

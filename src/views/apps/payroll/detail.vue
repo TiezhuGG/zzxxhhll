@@ -243,7 +243,8 @@ export default {
           url: 'http://www.baidu.com',
           button: '显示'
         }]
-      }, {
+      }, 
+      {
         name: '基本信息',
         isEdit: true,
         children: [{
@@ -255,7 +256,60 @@ export default {
           name: 'code',
           value: '3006425234@qq.com'
         }]
-      }]
+      },
+      {
+        name: '基本信息',
+        isEdit: true,
+        children: [{
+          title: '姓名',
+          name: 'name',
+          value: '林青霞'
+        }, {
+          title: '邮箱',
+          name: 'code',
+          value: '3006425234@qq.com'
+        }]
+      },
+      {
+        name: '基本信息',
+        isEdit: true,
+        children: [{
+          title: '姓名',
+          name: 'name',
+          value: '林青霞'
+        }, {
+          title: '邮箱',
+          name: 'code',
+          value: '3006425234@qq.com'
+        }]
+      },
+      {
+        name: '罗志祥',
+        isEdit: true,
+        children: [{
+          title: '姓名',
+          name: 'name',
+          value: '林青霞'
+        }, {
+          title: '邮箱',
+          name: 'code',
+          value: '3006425234@qq.com'
+        }]
+      },
+      {
+        name: '林青霞',
+        isEdit: true,
+        children: [{
+          title: '姓名',
+          name: 'name',
+          value: '林青霞'
+        }, {
+          title: '邮箱',
+          name: 'code',
+          value: '3006425234@qq.com'
+        }]
+      },
+      ]
     }
   },
   components: {

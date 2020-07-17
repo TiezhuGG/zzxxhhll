@@ -6,16 +6,13 @@
       <svg-icon class="svg" icon-class="contact" @click="switchMember" />
       <svg-icon class="svg" icon-class="no-organization" @click="switchOrganize" />
     </div>
-    <div class="item" @click="focus">
-      <svg-icon icon-class="new-member"></svg-icon>
-      <span>新的联系人</span>
-    </div>
-    <div class="member" v-for="(item, index) in memberList" :key="index">
+
+    <div class="member" v-for="(item, index) in memberList" :key="index" :class="memberIndex === index ? 'border-color' : ''">
       <span class="letter">{{ item.letter }}</span>
       <div
         class="member-item"
-        v-for="(member, memberIndex) in item.list"
-        :key="memberIndex"
+        v-for="(member, mIndex) in item.list"
+        :key="mIndex"
         @click="choiceMember(member)"
       >
         <img class="logo" src="../../../assets/imgs/test.jpg" />
@@ -28,6 +25,7 @@
 <script>
 import AddMember from "./AddMember";
 import Search from "./Search";
+import { getMemberList } from '@/api/user';
 
 export default {
   name: "LeftSideMember",
@@ -82,9 +80,12 @@ export default {
           ]
         }
       ],
-      currentIndex: 2,
+      currentIndex: null,
       memberIndex: null
     };
+  },
+  created() {
+    this.getMemberList()
   },
   methods: {
     choiceMember(member) {
@@ -93,9 +94,6 @@ export default {
         this.memberIndex = 3;
         this.$emit("memberDetail", { member: this.memberIndex });
       }
-    },
-    focus() {
-      this.$emit("currentIndex", { currentIndex: this.currentIndex });
     },
     switchMember() {
       this.$emit("memberTab", { memberTab: true, organizeTab: false });
@@ -106,7 +104,10 @@ export default {
         memberTab: false,
         currentIndex: 0
       });
-    }
+    },
+    async getMemberList() {
+      const res = await getMemberList(42)
+    },
   },
   components: {
     AddMember,
@@ -126,29 +127,12 @@ export default {
     width: 100%;
     display: flex;
     margin-top: 37px;
+    margin-bottom: 40px;
     padding-bottom: 20px;
     border-bottom: 1px solid rgb(241, 241, 241);
     .svg {
       flex: 1;
       font-size: 31px;
-    }
-  }
-
-  .item {
-    width: 100%;
-    height: 67px;
-    display: flex;
-    align-items: center;
-    margin-bottom: 26px;
-
-    svg {
-      font-size: 21px;
-      margin: 0 17px 0 23px;
-    }
-
-    span {
-      font-size: 19px;
-      color: #333;
     }
   }
 
@@ -168,6 +152,7 @@ export default {
 
     .member-item {
       margin-bottom: 27px;
+      font-size: 19px;
     }
   }
 }
@@ -177,5 +162,9 @@ export default {
   height: 53px;
   margin-right: 20px;
   border-radius: 50%;
+}
+.border-color {
+  border-left: 4px solid #409eff;
+  background-color: #F2F6FC;
 }
 </style>

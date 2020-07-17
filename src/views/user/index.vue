@@ -25,7 +25,7 @@ export default {
 <style lang="scss">
 @import '@/styles/user.scss';
 .user-container {
-  width: 1131px;
+  width: 1300px;
   margin: 0 auto;
   display: flex;
   align-items: center;

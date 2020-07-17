@@ -13,7 +13,7 @@
         </div>
         <div class="input-item">
           <span>材料类型</span>
-          <el-select v-model="value" placeholder="请选择类型" style="margin-left:10px;">
+          <el-select v-model="value" placeholder="请选择类型">
             <el-option
               v-for="item in meta_type"
               :key="item.value"
@@ -299,4 +299,8 @@ export default {
 >>>.el-pagination__editor.el-input .el-input__inner {
   width: 50px;
 }
+>>>.el-input__suffix {
+  right: -15rem;
+}
+
 </style>

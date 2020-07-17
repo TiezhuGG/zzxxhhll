@@ -80,7 +80,7 @@ export default {
       this.company_id = company_id;
     }
     console.log("id", this.company_id);
-    
+
     const registerEnterprise = this.$route.query.registerEnterprise;
     if (registerEnterprise) {
       // 从创建企业页面进来会有
@@ -91,10 +91,12 @@ export default {
     // 获取用户信息
     // async fetchUserInfo() {
     //   const uesr_id = localStorage.getItem("user_id");
-    //   const res = await getUserinfo(uesr_id);
+    //   // const res = await getUserinfo(uesr_id);
+    //   const res = await getUserinfo(14);  // test
     //   this.$store.commit("user/setUserinfo", {
     //     userinfo: res.data
     //   });
+    //   localStorage.setItem('userinfo', JSON.stringify(res.data))
     //   console.log("getUserInfo", res);
     // }
   },

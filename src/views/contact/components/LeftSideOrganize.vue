@@ -33,7 +33,8 @@ export default {
       // departments: ["按组织架构选择", "技术部"],
       departments: [],
       currentIndex: 0,
-      departmentName: ''
+      departmentName: '',
+      company_id: localStorage.getItem('company_id')
     };
   },
   created() {
@@ -58,7 +59,8 @@ export default {
     },
     // 获取一级部门列表
     async getDeparments() {
-      const res = await getDeparments({ company_id: 6 });
+      // const res = await getDeparments({ company_id: this.company_id });
+      const res = await getDeparments({ company_id: 6 }); // test
       this.departments = res.data
       this.departmentName = this.departments[0].name
       localStorage.setItem('departmentName', this.departmentName)

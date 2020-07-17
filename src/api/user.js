@@ -225,6 +225,7 @@ export function imageUpload(data) {
     return request({
         url: 'image_upload',
         method: 'post',
+        headers: {"Content-Type": 'multipart/form-data'},
         data
     })
 }

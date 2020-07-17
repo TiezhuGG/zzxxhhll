@@ -18,6 +18,25 @@ import '@/permission' // permission control
 import ComboBox from '@/components/Comb0box'
 import ZxSearch from '@/components/ZxSearch'
 
+// 获得token加入请求头
+// element-ui文件上传用的是自带的请求库,axios拦截器无法拦截
+import { getToken } from '@/utils/auth'
+
+const token = getToken()
+Vue.mixin({
+  computed: {
+    uploadUrl() {
+      return 'http://www.bagorders.com/api/admin/image_upload'
+    }
+  },
+  methods: {
+    getAuthHeaders() {
+      return {
+        Authorization: `Bearer ` + token
+      }
+    }
+  }
+})
 /**
  * If you don't want to use mock-server
  * you want to use MockJs for mock api

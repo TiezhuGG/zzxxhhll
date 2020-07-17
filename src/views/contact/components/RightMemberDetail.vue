@@ -12,34 +12,28 @@
         <div class="member">
           <!-- 头部信息 -->
           <div class="member-header">
-            <img class="logo" src="../../../assets/imgs/test.jpg" />
+            <img
+              v-if="userinfo.avatar"
+              class="logo"
+              :src="userinfo.avatar ? userinfo.avatar : 'https://zhenxianhulian.oss-cn-shenzhen.aliyuncs.com/160f9136-bc2e-11ea-b0e7-00163e0cc406/2020-07-17/FoyH7owW5HNxLoYJ1mZWrBIsb48kpBvJAWHh0oN0.jpeg'"
+            />
+            <div class="logo no-avatar" v-else>{{ userinfo.real_name.substr(-2) }}</div>
             <div class="member-name">
-              <span class="name">白</span>
+              <span class="name">{{ userinfo.real_name }}</span>
               <span class="regular">正式</span>
-              <span class="auth">未授权实人认证</span>
+              <span
+                :class="userinfo.is_auth === 1 ? 'auth-yes' : 'auth-no'"
+              >{{ userinfo.is_auth === 1 ? "已授权实人认证" : "未授权实人认证" }}</span>
             </div>
             <div class="member-department">
-              <span class="department-name">技术部</span>
+              <span class="department-name">{{ userinfo.department.name }}</span>
               <span class="main-department">主部门</span>
             </div>
-            <span class="test">测试</span>
-            <span class="introduce">在触享网络科技有限公司工作了5年</span>
+            <span class="position">{{ userinfo.post.name }}</span>
+            <span class="introduce">在{{ company_name }}工作了{{ userinfo.profile.company_age }}年</span>
           </div>
 
           <div class="member-detail-infos">
-            <!-- 系统信息 -->
-            <div class="system-info" id="system-info">
-              <div class="system-info-top">
-                <span class="txt">系统信息</span>
-                <span class="line"></span>
-              </div>
-              <div class="system-info-bottom">
-                <span class="txt">实人认证:</span>
-                <span class="auth">未授权</span>
-                <span class="detail">详情</span>
-              </div>
-            </div>
-
             <!-- 基础信息 -->
             <div class="base_info" id="base_info">
               <span class="txt">基础信息</span>
@@ -1045,7 +1039,7 @@
             <!-- 紧急联系人 -->
             <div class="emergency_contact" id="emergency_contact">
               <span class="txt">紧急联系人</span>
-              <span class="line" style="width:618px;">></span>
+              <span class="line" style="width:618px;"></span>
               <span class="edit" @click="emergency_contact_show = true">编辑</span>
               <span class="save" @click="emergencyBaseInfo" v-show="emergency_contact_show">保存</span>
             </div>
@@ -1102,7 +1096,7 @@
                           placeholder="请选择联系人关系"
                         >
                           <el-option
-                            v-for="item in contractData.tabledatas[0].contactRelationshipList"
+                            v-for="item in emergencyData.tabledatas[0].relationship"
                             :key="item.id"
                             :label="item.name"
                             :value="item.name"
@@ -1246,7 +1240,9 @@
                     <div class="table-item">
                       <el-upload
                         class="avatar-uploader"
-                        action="https://jsonplaceholder.typicode.com/posts/"
+                        :action="uploadUrl"
+                        :headers="getAuthHeaders()"
+                        :data="imageData"
                         :show-file-list="false"
                         :on-success="handleIdFaceImg"
                         v-show="personal_material_show"
@@ -1263,8 +1259,9 @@
                     <div class="table-item">
                       <el-upload
                         class="avatar-uploader"
-                        action="https://jsonplaceholder.typicode.com/posts/"
-                        :before-upload="beforeUpload"
+                        :action="uploadUrl"
+                        :headers="getAuthHeaders()"
+                        :data="imageData"
                         :show-file-list="false"
                         :on-success="handleEducationImg"
                         v-show="personal_material_show"
@@ -1281,7 +1278,9 @@
                     <div class="table-item">
                       <el-upload
                         class="avatar-uploader"
-                        action="https://jsonplaceholder.typicode.com/posts/"
+                        :action="uploadUrl"
+                        :headers="getAuthHeaders()"
+                        :data="imageData"
                         :show-file-list="false"
                         :on-success="handleCertificateImg"
                         v-show="personal_material_show"
@@ -1302,7 +1301,9 @@
                     <div class="table-item">
                       <el-upload
                         class="avatar-uploader"
-                        action="https://jsonplaceholder.typicode.com/posts/"
+                        :action="uploadUrl"
+                        :headers="getAuthHeaders()"
+                        :data="imageData"
                         :show-file-list="false"
                         :on-success="handleIdbackImg"
                         v-show="personal_material_show"
@@ -1320,7 +1321,9 @@
                     <div class="table-item">
                       <el-upload
                         class="avatar-uploader"
-                        action="https://jsonplaceholder.typicode.com/posts/"
+                        :action="uploadUrl"
+                        :headers="getAuthHeaders()"
+                        :data="imageData"
                         :show-file-list="false"
                         :on-success="handleDegreeImg"
                         v-show="personal_material_show"
@@ -1337,7 +1340,9 @@
                     <div class="table-item">
                       <el-upload
                         class="avatar-uploader"
-                        action="https://jsonplaceholder.typicode.com/posts/"
+                        :action="uploadUrl"
+                        :headers="getAuthHeaders()"
+                        :data="imageData"
                         :show-file-list="false"
                         :on-success="handleEmployeeImg"
                         v-show="personal_material_show"
@@ -1384,6 +1389,8 @@ import {
   validIdcard
 } from "@/utils/validate";
 import Steps from "./Steps";
+import { getDeparments } from "@/api/user";
+
 export default {
   data() {
     const validateName = (rule, value, callback) => {
@@ -1416,10 +1423,11 @@ export default {
     };
     return {
       userinfo: null,
+      imageData: {
+        company_id: null
+      },
+      company_name: null,
       stepsList: [
-        {
-          name: "系统信息"
-        },
         {
           name: "基础信息"
         },
@@ -1826,8 +1834,8 @@ export default {
         tabledatas: [
           {
             emergency_contact_person: "铁锤", // 紧急联系人
-            contact_relationship: "同事", // 联系人关系
-            contactRelationshipList: [
+            contact_relationship: "", // 联系人关系
+            relationship: [
               { id: 1, name: "父母" },
               { id: 2, name: "配偶" },
               { id: 3, name: "子女" },
@@ -1974,12 +1982,14 @@ export default {
     };
   },
   created() {
-    this.userinfo = this.$store.state.user.userinfo
-    console.log('userinfo', this.userinfo)
+    this.imageData.company_id = localStorage.getItem("company_id");
+    this.company_name = localStorage.getItem("company_name");
+    this.userinfo = JSON.parse(localStorage.getItem("userinfo"));
   },
+
   methods: {
-    jump() {
-      document.getElementById("personal_info").scrollIntoView();
+    getDeparments() {
+      getDeparments()
     },
     handleStep({ index, name }) {
       this.stepActive = index;
@@ -2306,10 +2316,22 @@ export default {
               background-color: #d9ecff;
               color: #409eff;
             }
-            .auth {
+            .auth-no {
               width: 128px;
               background-color: #ffdede;
               color: #ff5a5a;
+            }
+            .auth-yes {
+              display: inline-block;
+              width: 128px;
+              height: 27px;
+              line-height: 27px;
+              text-align: center;
+              margin-right: 7px;
+              border-radius: 5px;
+              font-size: 16px;
+              background-color: #d9ecff;
+              color: #409eff;
             }
           }
 
@@ -2334,7 +2356,7 @@ export default {
               border-radius: 5px;
             }
           }
-          .test {
+          .position {
             display: inline-block;
             margin-bottom: 17px;
           }
@@ -2460,11 +2482,11 @@ export default {
 }
 
 // 处理input type = number的上下箭头
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
+>>>input::-webkit-outer-spin-button,
+>>>input::-webkit-inner-spin-button {
   -webkit-appearance: none;
 }
-input[type="number"] {
+>>>input[type="number"] {
   -moz-appearance: textfield;
 }
 
@@ -2507,5 +2529,13 @@ input[type="number"] {
   margin-top: 395px;
   margin-right: 98px;
   font-size: 19px;
+}
+
+.no-avatar {
+  background-color: #409eff;
+  line-height: 4.84375rem;
+  text-align: center;
+  font-size: 1.71875rem;
+  color: #fff;
 }
 </style>

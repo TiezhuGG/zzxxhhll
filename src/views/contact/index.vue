@@ -19,7 +19,7 @@
       </el-aside>
       <RightOrganize v-show="index===0" />
       <RightDepartment v-show="index===1" />
-      <RightMemberDetail v-show="index===3" />
+      <RightMemberDetail  v-show="index===3" />
     </el-container>
   </div>
 </template>

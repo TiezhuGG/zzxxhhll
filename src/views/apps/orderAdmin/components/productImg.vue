@@ -1,7 +1,7 @@
 <template>
   <div class="product-img" :style="style" @click.self="dialogTableVisible = true">
     <el-image src="/img/timg.jpg" fit="cover" />
-    <el-dialog width="1059px" title="产品大图" :visible.sync="dialogTableVisible">
+    <el-dialog title="产品大图" :visible.sync="dialogTableVisible">
       <div class="img_box">
         <img src="/img/timg.jpg" />
         <div class="right">
@@ -106,6 +106,7 @@ export default {
     }
   }
   >>> .el-dialog {
+    width: 1059px!important;
     &__header {
       padding: 0 27px;
       line-height: 67px;

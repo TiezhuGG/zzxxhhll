@@ -17,6 +17,7 @@ import '@/permission' // permission control
 
 import ComboBox from '@/components/Comb0box'
 import ZxSearch from '@/components/ZxSearch'
+import ZxName from '@/components/ZxName'
 
 // 获得token加入请求头
 // element-ui文件上传用的是自带的请求库,axios拦截器无法拦截
@@ -57,6 +58,7 @@ Vue.use(ElementUI)
 
 Vue.component('combo-box', ComboBox)
 Vue.component('zx-search', ZxSearch)
+Vue.component('zx-name', ZxName)
 
 Vue.config.productionTip = false
 import utils from '@/utils/utils.js'

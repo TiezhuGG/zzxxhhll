@@ -36,15 +36,15 @@ export default {
 .table-input {
   > * {
     width: 100%;
+    height: 100%;
     padding: 0 10px;
   }
-  input {
-    height: 100%;
-    &:focus {
-      border: 1px solid rgba(64,158,255,1);
-    }
+  input:focus {
+    border: 1px solid rgba(64, 158, 255, 1);
   }
   div {
+    display: flex;
+    align-items: center;
     cursor: pointer;
   }
 }

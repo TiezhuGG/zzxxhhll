@@ -2,7 +2,7 @@
   <div class="right-new-member">
     <el-container>
       <el-header style="text-align: left; font-size: 24px; color: #303133">个人档案</el-header>
-      <el-main>
+      <el-main v-if="userinfo">
         <Steps
           class="steps"
           @change="handleStep"
@@ -20,17 +20,25 @@
             <div class="logo no-avatar" v-else>{{ userinfo.real_name.substr(-2) }}</div>
             <div class="member-name">
               <span class="name">{{ userinfo.real_name }}</span>
-              <span class="regular">正式</span>
+              <span
+                class="regular"
+                :class="userinfo.profile && userinfo.profile.work_status === 3 ? 'quit' : ''"
+              >{{ userinfo.profile && userinfo.profile.work_status === 1 ? '正式' : (userinfo.profile && userinfo.profile.work_status === 2 ? '试用' : '离职') }}</span>
+              <!-- <span class="regular">{{ userinfo.profile.work_status === 1 ? '正式' : (userinfo.profile.work_status === 2 ? '试用' : '离职') }}</span> -->
               <span
                 :class="userinfo.is_auth === 1 ? 'auth-yes' : 'auth-no'"
               >{{ userinfo.is_auth === 1 ? "已授权实人认证" : "未授权实人认证" }}</span>
             </div>
             <div class="member-department">
-              <span class="department-name">{{ userinfo.department.name }}</span>
+              <span
+                class="department-name"
+              >{{ userinfo.department ? userinfo.department.name : '' }}</span>
               <span class="main-department">主部门</span>
             </div>
-            <span class="position">{{ userinfo.post.name }}</span>
-            <span class="introduce">在{{ company_name }}工作了{{ userinfo.profile.company_age }}年</span>
+            <span class="position">{{ userinfo.post ? userinfo.post.name : '' }}</span>
+            <span
+              class="introduce"
+            >在{{ company_name }}工作了{{ userinfo.profile ? userinfo.profile.company_age : ''}}年</span>
           </div>
 
           <div class="member-detail-infos">
@@ -60,7 +68,7 @@
                       </el-form-item>
                       <div class="item" v-show="!base_info_show">
                         <label>姓名：</label>
-                        <span>{{scope.row.name}}</span>
+                        <span>{{ scope.row.name }}</span>
                       </div>
                     </div>
                     <div class="table-item">
@@ -367,7 +375,7 @@
                         <span>{{scope.row.status}}</span>
                       </div>
                     </div>
-                    <div class="table-item">
+                    <div class="table-item mb-space">
                       <el-form-item
                         :prop="'tabledatas.' + scope.$index + '.formal_date'"
                         :rules="rules.formal_date"
@@ -1084,7 +1092,7 @@
                 </el-table-column>
                 <el-table-column>
                   <template slot-scope="scope">
-                    <div class="table-item">
+                    <div class="table-item mb-space">
                       <el-form-item
                         :prop="'tabledatas.' + scope.$index + '.contact_relationship'"
                         :rules="emergencyRules.contact_relationship"
@@ -1389,9 +1397,10 @@ import {
   validIdcard
 } from "@/utils/validate";
 import Steps from "./Steps";
-import { getDeparments } from "@/api/user";
+import { getDeparments, getUserinfo, changeInfo } from "@/api/user";
 
 export default {
+  props: ["memberId"],
   data() {
     const validateName = (rule, value, callback) => {
       if (!validName(value)) {
@@ -1463,8 +1472,8 @@ export default {
         // 基础信息
         tabledatas: [
           {
-            name: "白白", // 姓名
-            email: "bai@bai.com", // 邮箱
+            name: "", // 姓名
+            email: "", // 邮箱
             departments: [
               { id: 1, name: "技术部" },
               { id: 2, name: "业务部" },
@@ -1477,12 +1486,12 @@ export default {
               { id: 3, name: "游泳部" }
             ], // 主部门
             mainDepartment: "", // 主部门value
-            position: "前端", // 职位
-            phone: "13559411110", // 手机号
-            job_num: "11号", // 工号
-            extension_num: "110", // 分机号
-            office_location: "泉州", // 办公地点
-            remarks: "备注", // 备注
+            position: "", // 职位
+            phone: "", // 手机号
+            job_num: "", // 工号
+            extension_num: "", // 分机号
+            office_location: "", // 办公地点
+            remarks: "", // 备注
             hire_date: "", // 入职时间
             job_year: "" // 司龄
           }
@@ -1490,9 +1499,9 @@ export default {
       },
       rules: {
         // 基础信息验证
-        name: [{ required: true, trigger: "blur", validator: validateName }],
-        email: [{ required: true, trigger: "blur", validator: validateEmail }],
-        phone: [{ required: true, trigger: "blur", validator: validateMobile }]
+        name: [{ trigger: "blur", validator: validateName }],
+        email: [{ trigger: "blur", validator: validateEmail }],
+        phone: [{ trigger: "blur", validator: validateMobile }]
         // department: [
         //   { required: true, trigger: "change", message: "请选择部门" }
         // ],
@@ -1984,12 +1993,56 @@ export default {
   created() {
     this.imageData.company_id = localStorage.getItem("company_id");
     this.company_name = localStorage.getItem("company_name");
-    this.userinfo = JSON.parse(localStorage.getItem("userinfo"));
+    const id = this.memberId ? this.memberId : localStorage.getItem("user_id");
+    this.getUser(id);
   },
-
+  watch: {
+    memberId(newVal, oldVal) {
+      console.log("newVal", newVal, oldVal);
+      // this.userinfo = JSON.parse(localStorage.getItem("userinfo"));
+      this.getUser(newVal);
+    },
+    deep: true
+  },
   methods: {
-    getDeparments() {
-      getDeparments()
+    // 获取缓存中自己的个人信息
+    // getMyInfo() {
+    //   this.userinfo = JSON.parse(localStorage.getItem("userinfo"));
+    //   console.log("avatar", this.userinfo.avatar);
+    //   this.userinfo.avatar = this.userinfo.avatar ? this.userinfo.avatar : "";
+    //   console.log("avatar2", this.userinfo.avatar);
+    //   console.log("a", this.formData.tabledatas[0].name);
+    //   this.formData.tabledatas[0].name = this.userinfo.real_name;
+    //   this.formData.tabledatas[0].email = this.userinfo.email;
+    //   console.log("b", this.formData.tabledatas[0].name);
+    // },
+
+    // 获取个人信息
+    // async fetchUserInfo() {
+    //   const uesr_id = localStorage.getItem('user_id')
+    //   // const res = await getUserinfo(uesr_id);
+    //   const res = await getUserinfo(14);  // test
+    //   this.userinfo = res.data
+    //   this.userinfo.avatar = this.userinfo.avatar ? this.userinfo.avatar : "";
+    //   this.formData.tabledatas[0].name = this.userinfo.real_name;
+    //   this.formData.tabledatas[0].email = this.userinfo.email;
+    //   console.log("my info", this.userinfo);
+    // },
+
+    // 获取其他用户信息
+    getUser(id) {
+      getUserinfo(id).then(res => {
+        // console.log("用户信息", res.data);
+        this.userinfo = res.data;
+        this.userinfo.avatar = this.userinfo.avatar ? this.userinfo.avatar : "";
+        this.formData.tabledatas[0].name = this.userinfo.real_name;
+        this.formData.tabledatas[0].email = this.userinfo.email;
+        console.log("watch", this.userinfo);
+        // localStorage.setItem("userinfo", JSON.stringify(res.data));
+      });
+    },
+    async getDeparments() {
+      const res = getDeparments();
     },
     handleStep({ index, name }) {
       this.stepActive = index;
@@ -2165,6 +2218,22 @@ export default {
         console.log("valid", valid);
         if (valid) {
           this.base_info_show = false;
+          const id = this.memberId
+            ? this.memberId
+            : localStorage.getItem("user_id");
+          const name = this.formData.tabledatas[0].name;
+          const email = this.formData.tabledatas[0].email;
+          const position = this.formData.tabledatas[0].position;
+          console.log("name", name);
+          changeInfo(id, { real_name: name, email: email })
+            .then(res => {
+              console.log("change info", res);
+              this.getUser(id);
+              this.$emit("infoChanged", { changed: id });
+            })
+            .catch(err => {
+              console.log("err", err);
+            });
         }
       });
     },
@@ -2333,6 +2402,11 @@ export default {
               background-color: #d9ecff;
               color: #409eff;
             }
+            .quit {
+              width: 51px;
+              background-color: #ffdede;
+              color: #ff5a5a;
+            }
           }
 
           .member-department {
@@ -2482,11 +2556,11 @@ export default {
 }
 
 // 处理input type = number的上下箭头
->>>input::-webkit-outer-spin-button,
->>>input::-webkit-inner-spin-button {
+>>> input::-webkit-outer-spin-button,
+>>> input::-webkit-inner-spin-button {
   -webkit-appearance: none;
 }
->>>input[type="number"] {
+>>> input[type="number"] {
   -moz-appearance: textfield;
 }
 
@@ -2537,5 +2611,9 @@ export default {
   text-align: center;
   font-size: 1.71875rem;
   color: #fff;
+}
+
+.mb-space {
+  margin-bottom: 6.6rem !important;
 }
 </style>

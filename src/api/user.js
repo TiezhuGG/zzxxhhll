@@ -236,3 +236,12 @@ export function getMemberList(id) {
         url: `company_member_list?company_id=${id}`,
     })
 }
+
+// 修改个人基础信息
+export function changeInfo(id, data) {
+    return request({
+        url: `info/${id}`,
+        method: 'put',
+        data
+    })
+}

@@ -1,6 +1,6 @@
 <template>
   <div class="left-side-member">
-    <Search />
+    <Search placeholder="搜索联系人" @search="getSearch" />
     <AddMember />
     <div class="nav">
       <svg-icon class="svg" icon-class="contact" @click="switchMember" />
@@ -32,11 +32,12 @@
 <script>
 import AddMember from "./AddMember";
 import Search from "./Search";
-import { getMemberList } from "@/api/user";
+import { getMemberList, getUserinfo } from "@/api/user";
 import pinyin from "pinyin";
 
 export default {
   name: "LeftSideMember",
+  props: ["changeId"],
   data() {
     return {
       letterList: [
@@ -96,21 +97,44 @@ export default {
         { letter: "Z", list: [] }
       ],
       currentIndex: null,
-      memberIndex: null
+      memberIndex: null,
+      searchData: [],
+      searchVal: "",
     };
   },
   created() {
     this.getMemberList();
   },
-  methods: {
-    choiceMember(member) {
-      console.log('member', member)
-      this.$emit('memberDetail', { member: member.admin_id })
-      // 测试用
-      if (member.name === "白") {
-        this.memberIndex = 3;
-        this.$emit("memberDetail", { member: this.memberIndex });
+  watch: {
+    changeId(newVal, oldVal) {
+      console.log("changeId", newVal);
+      this.getMemberList();
+    },
+    searchVal(newVal, oldVal) {
+      this.searchData = [];
+      if (newVal) {
+        this.memberList.forEach(item => {
+          for (let member of item.list) {
+            if (member.admin.real_name.toLowerCase().indexOf(newVal) > -1) {
+              this.searchData.push(member);
+              this.makeMemberList(this.searchData);
+            }
+          }
+        });
+        // console.log('this.memberList',this.memberList)
+      } else {
+        this.getMemberList();
       }
+    },
+    deep: true
+  },
+  methods: {
+    getSearch(event) {
+      this.searchVal = event;
+    },
+    choiceMember(member) {
+      console.log("member", member);
+      this.$emit("memberDetail", { member: member.admin_id });
     },
     switchMember() {
       this.$emit("memberTab", { memberTab: true, organizeTab: false });
@@ -122,9 +146,41 @@ export default {
         currentIndex: 0
       });
     },
+    // 获取公司成员列表
     async getMemberList() {
       const res = await getMemberList(42); // test
-      const list = res.data;
+      this.makeMemberList(res.data);
+    },
+    // 构造联系人列表
+    makeMemberList(list) {
+      this.memberList = [
+        { letter: "A", list: [] },
+        { letter: "B", list: [] },
+        { letter: "C", list: [] },
+        { letter: "D", list: [] },
+        { letter: "E", list: [] },
+        { letter: "F", list: [] },
+        { letter: "G", list: [] },
+        { letter: "H", list: [] },
+        { letter: "I", list: [] },
+        { letter: "J", list: [] },
+        { letter: "K", list: [] },
+        { letter: "L", list: [] },
+        { letter: "M", list: [] },
+        { letter: "N", list: [] },
+        { letter: "O", list: [] },
+        { letter: "P", list: [] },
+        { letter: "Q", list: [] },
+        { letter: "R", list: [] },
+        { letter: "S", list: [] },
+        { letter: "T", list: [] },
+        { letter: "U", list: [] },
+        { letter: "V", list: [] },
+        { letter: "W", list: [] },
+        { letter: "X", list: [] },
+        { letter: "Y", list: [] },
+        { letter: "Z", list: [] }
+      ];
       list.forEach(item => {
         const first_letter = pinyin(item.admin.real_name)[0][0]
           .substr(0, 1)

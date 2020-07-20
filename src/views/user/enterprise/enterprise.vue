@@ -14,7 +14,7 @@
         <span class="warning">填写基本信息，完成创建。</span>
       </div>
 
-      <el-form-item prop="username">
+      <!-- <el-form-item prop="username">
         <el-input
           placeholder="请输入你的姓名"
           ref="username"
@@ -25,7 +25,7 @@
           auto-complete="on"
           class="input-with-select"
         ></el-input>
-      </el-form-item>
+      </el-form-item> -->
 
       <el-form-item prop="enterpriseName">
         <el-input
@@ -78,7 +78,7 @@ export default {
         enterpriseName: ""
       },
       enterpriseRules: {
-        username: [{ required: true, trigger: "blur", validator: validname }]
+        // username: [{ required: true, trigger: "blur", validator: validname }]
       },
       loading: false,
       checked: false
@@ -90,26 +90,27 @@ export default {
       this.checked = e;
     },
     enterpriseRegister() {
-      const username = this.enterpriseForm.username;
+      // const username = this.enterpriseForm.username;
       const enterpriseName = this.enterpriseForm.enterpriseName;
 
-      if (username && enterpriseName) {
+      if (enterpriseName) {
         if (this.checked) {
           this.loading = true;
           // 企业信息存入vuex
-          this.$store.commit("user/setUsername", {
-            username: username
-          });
+          // this.$store.commit("user/setUsername", {
+          //   username: username
+          // });
           this.$store.commit("user/setEnterpriseName", {
             enterpriseName: enterpriseName
           });
 
           let userInfo = this.$store.state.user.info;
           enterpriseRegister({
-            real_name: userInfo.username.username,
-            password: userInfo.password.password,
-            password_confirmation: userInfo.password.password,
-            company_name: userInfo.enterpriseName.enterpriseName
+            // real_name: userInfo.username.username,
+            // password: userInfo.password.password,
+            // password_confirmation: userInfo.password.password,
+            // company_name: userInfo.enterpriseName.enterpriseName
+            company_name: this.enterpriseForm.enterpriseName
           }).then(res => {
             console.log("注册企业", res);
             const company_id = res.data.id
@@ -132,7 +133,7 @@ export default {
         }
       } else {
         Message({
-          message: "用户名或企业名称未输入",
+          message: "企业名称未输入",
           type: "error",
           duration: 5000
         });
@@ -175,7 +176,7 @@ $i-fs: 19px;
     }
 
     .login-button {
-      margin-top: 132px;
+      margin-top: 222px;
     }
   }
 }

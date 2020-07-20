@@ -83,8 +83,8 @@ export default {
     // 获取用户信息
     async fetchUserInfo() {
       const uesr_id = localStorage.getItem('user_id')
-      // const res = await getUserinfo(uesr_id);
-      const res = await getUserinfo(14);  // test
+      const res = await getUserinfo(uesr_id);
+      // const res = await getUserinfo(14);  // test
       this.$store.commit("user/setUserinfo", {
         userinfo: res.data
       });

@@ -245,3 +245,12 @@ export function changeInfo(id, data) {
         data
     })
 }
+
+// 修改个人详情信息
+export function changeProfileInfo(id, data) {
+    return request({
+        url: `admin_profiles/${id}`,    // id是用户详情id,在字段profile里面. 不是admin_id 
+        method: 'put',
+        data
+    })
+}

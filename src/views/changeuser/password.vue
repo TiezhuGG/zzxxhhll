@@ -73,9 +73,10 @@ export default {
       loading: false
     };
   },
-  // created() {
-  //   this.formData.mobile = this.$store.state.user.userinfo.userinfo.mobile
-  // },
+  created() {
+    const userinfo = localStorage.getItem('userinfo')
+    this.formData.mobile = JSON.parse(userinfo).mobile
+  },
   methods: {
     changePassword() {
       this.$refs.formData.validate(valid => {

@@ -14,6 +14,19 @@
         <span class="warning">请输入8-20位密码，且同时包含数字与字母。</span>
       </div>
 
+       <el-form-item prop="username">
+        <el-input
+          placeholder="请输入你的姓名"
+          ref="username"
+          v-model="passwordForm.username"
+          name="username"
+          type="text"
+          tabindex="1"
+          auto-complete="on"
+          class="input-with-select"
+        ></el-input>
+      </el-form-item>
+
       <el-form-item prop="password">
         <el-input
           key="password"
@@ -54,6 +67,7 @@
 <script>
 import Back from "../components/Back";
 import { register, findPassword } from "@/api/user";
+import { setToken } from "@/utils/auth";
 import { Message } from "element-ui";
 
 export default {
@@ -72,10 +86,14 @@ export default {
     };
     return {
       passwordForm: {
+        username: "",
         password: "",
         confirmPassword: ""
       },
       passwordRules: {
+        username: [
+          { required: true, trigger: "blur", message: "请输入姓名" }
+        ],
         password: [
           { required: true, trigger: "blur", validator: validatePassword }
         ],
@@ -118,12 +136,15 @@ export default {
                 });
             } else {
               register({  // 注册
+                real_name: this.passwordForm.username,
                 mobile: userInfo.mobile.mobile,
                 password: userInfo.password.password,
                 password_confirmation: userInfo.password.password,
                 code: userInfo.code.code
               })
-                .then(() => {
+                .then(res => {
+                  const token = res.data.token
+                  setToken(token)
                   this.loading = false;
                   // this.$router.push("/user/login");
                   this.$router.push("/user/enterprise");
@@ -180,7 +201,7 @@ $i-fs: 19px;
     }
 
     .login-button {
-      margin-top: 157px;
+      margin-top: 57px;
     }
   }
 }

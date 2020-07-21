@@ -15,6 +15,7 @@
             <el-upload
               :action="uploadUrl"
               :headers="getAuthHeaders()"
+              :before-upload="beforeUpload"
               :data="imageData"
               :show-file-list="false"
               :on-success="handleAvatar"
@@ -267,7 +268,7 @@
                         <span>{{scope.row.remarks}}</span>
                       </div>
                     </div>
-                    <div class="table-item" :class="base_info_show ? 'mb-space-1-1' : 'mb-space-1-2'" >
+                    <div class="table-item" :class="base_info_show ? 'mb-space-1-2' : 'mb-space-1-1'" >
                       <el-form-item
                         :prop="'tabledatas.' + scope.$index + '.job_year'"
                         :rules="rules.job_year"
@@ -388,7 +389,7 @@
                         <span>{{scope.row.status}}</span>
                       </div>
                     </div>
-                    <div class="table-item mb-space-1">
+                    <div class="table-item" :class="work_info_show ? 'mb-space-1' : 'mb-space-0'">
                       <el-form-item
                         :prop="'tabledatas.' + scope.$index + '.formal_date'"
                         :rules="rules.formal_date"
@@ -527,13 +528,18 @@
                       </div>
                     </div>
                     <div class="table-item">
-                      <el-input
-                        placeholder="请输入工龄(系统计算)"
-                        v-show="personal_info_show"
-                        v-model="scope.row.work_year"
-                      ></el-input>
+                      <el-form-item
+                        :prop="'tabledatas.' + scope.$index + '.work_year'"
+                        :rules="personalRules.work_year"
+                      >
+                        <el-input
+                          placeholder="请输入工龄"
+                          v-show="personal_info_show"
+                          v-model="scope.row.work_year"
+                        ></el-input>
+                      </el-form-item>
                       <div class="item" v-show="!personal_info_show">
-                        <label>工龄(系统计算)：</label>
+                        <label>工龄：</label>
                         <span>{{scope.row.work_year}}</span>
                       </div>
                     </div>
@@ -1132,7 +1138,7 @@
                 </el-table-column>
                 <el-table-column>
                   <template slot-scope="scope">
-                    <div class="table-item mb-space-1-3">
+                    <div class="table-item" :class="emergency_contact_show ? 'mb-space-1-3' : 'mb-space-1-1'">
                       <el-form-item
                         :prop="'tabledatas.' + scope.$index + '.contact_relationship'"
                         :rules="emergencyRules.contact_relationship"
@@ -1282,7 +1288,7 @@
               ref="personalMaterialData"
               :rules="personalMaterialRules"
             >
-              <el-table :data="personalMaterialData.tabledatas">
+              <el-table class="image-upload" :data="personalMaterialData.tabledatas">
                 <el-table-column>
                   <template slot-scope="scope">
                     <div class="table-item">
@@ -1291,6 +1297,7 @@
                         :action="uploadUrl"
                         :headers="getAuthHeaders()"
                         :data="imageData"
+                        :before-upload="beforeUpload"
                         :show-file-list="false"
                         :on-success="handleIdFaceImg"
                         v-show="personal_material_show"
@@ -1309,6 +1316,7 @@
                         class="avatar-uploader"
                         :action="uploadUrl"
                         :headers="getAuthHeaders()"
+                        :before-upload="beforeUpload"
                         :data="imageData"
                         :show-file-list="false"
                         :on-success="handleEducationImg"
@@ -1328,6 +1336,7 @@
                         class="avatar-uploader"
                         :action="uploadUrl"
                         :headers="getAuthHeaders()"
+                        :before-upload="beforeUpload"
                         :data="imageData"
                         :show-file-list="false"
                         :on-success="handleCertificateImg"
@@ -1351,6 +1360,7 @@
                         class="avatar-uploader"
                         :action="uploadUrl"
                         :headers="getAuthHeaders()"
+                        :before-upload="beforeUpload"
                         :data="imageData"
                         :show-file-list="false"
                         :on-success="handleIdbackImg"
@@ -1371,6 +1381,7 @@
                         class="avatar-uploader"
                         :action="uploadUrl"
                         :headers="getAuthHeaders()"
+                        :before-upload="beforeUpload"
                         :data="imageData"
                         :show-file-list="false"
                         :on-success="handleDegreeImg"
@@ -1390,6 +1401,7 @@
                         class="avatar-uploader"
                         :action="uploadUrl"
                         :headers="getAuthHeaders()"
+                        :before-upload="beforeUpload"
                         :data="imageData"
                         :show-file-list="false"
                         :on-success="handleEmployeeImg"
@@ -1473,7 +1485,8 @@ export default {
     return {
       userinfo: null,
       imageData: {
-        company_id: null
+        company_id: null,
+        image: null
       },
       company_name: null,
       stepsList: [
@@ -2134,7 +2147,8 @@ export default {
       this.stepActive = index;
     },
     handleAvatar(res, file) {
-      this.userinfo.avatar = URL.createObjectURL(file.raw);
+      // this.userinfo.avatar = URL.createObjectURL(file.raw);
+      this.userinfo.avatar = res.message
       const id = this.memberId ? this.memberId : localStorage.getItem("user_id");
       changeInfo(id, {
         avatar: this.userinfo.avatar ? this.userinfo.avatar : '',
@@ -2146,26 +2160,34 @@ export default {
         console.log("err", err);
       });
     },
+    beforeUpload(file) {
+      this.imageData.image = file
+    },
     handleIdFaceImg(res, file) {
-      // console.log('上传图片',res, file)
-      // this.idFaceImg = res.message
-      this.idFaceImg = URL.createObjectURL(file.raw);
+      console.log('上传图片',res, file)
+      this.idFaceImg = res.message
+      // this.idFaceImg = URL.createObjectURL(file.raw);
       console.log(this.idFaceImg)
     },
     handleEducationImg(res, file) {
-      this.educationImg = URL.createObjectURL(file.raw);
+      this.educationImg = res.message
+      // this.educationImg = URL.createObjectURL(file.raw);
     },
     handleCertificateImg(res, file) {
-      this.certificateImg = URL.createObjectURL(file.raw);
+      this.certificateImg = res.message
+      // this.certificateImg = URL.createObjectURL(file.raw);
     },
     handleIdbackImg(res, file) {
-      this.idBackImg = URL.createObjectURL(file.raw);
+      this.idBackImg = res.message
+      // this.idBackImg = URL.createObjectURL(file.raw);
     },
     handleDegreeImg(res, file) {
-      this.degreeImg = URL.createObjectURL(file.raw);
+      this.degreeImg = res.message
+      // this.degreeImg = URL.createObjectURL(file.raw);
     },
     handleEmployeeImg(res, file) {
-      this.employeeImg = URL.createObjectURL(file.raw);
+      this.employeeImg = res.message
+      // this.employeeImg = URL.createObjectURL(file.raw);
     },
     deleteRow(index, rows) {
       rows.splice(index, 1);
@@ -2920,19 +2942,22 @@ export default {
   font-size: 1.71875rem;
   color: #fff;
 }
-.mb-space {
-  margin-bottom: 1rem !important;
+.mb-space-0 {
+  margin-bottom: 5.6rem !important;
 }
 .mb-space-1 {
   margin-bottom: 6.6rem !important;
 }
 .mb-space-1-1 {
-  margin-bottom: 8.3rem !important;
+  margin-bottom: 7rem !important;
 }
 .mb-space-1-2 {
-  margin-bottom: 6.3rem !important;
+  margin-bottom: 8.3rem !important;
 }
 .mb-space-1-3 {
   margin-bottom: 8.6rem !important;
+}
+.image-upload .item span {
+  color: #409eff;
 }
 </style>

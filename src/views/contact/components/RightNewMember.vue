@@ -6,7 +6,7 @@
         <span class="notify">好友通知</span>
         <div class="member-item" v-for="(member, index) in employees" :key="index">
           <div class="item">
-            <img class="logo" src="../../../assets/imgs/test.jpg" />
+            <!-- <img class="logo" src="../../../assets/imgs/test.jpg" /> -->
             <div class="employee-info">
               <span class="name">{{ member.name }}</span>
               <span class="position">{{ member.position }}</span>

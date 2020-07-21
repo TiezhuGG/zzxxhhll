@@ -25,12 +25,23 @@ export default {
   data() {
     return {
       swiperOptions: {
+        autoplay: {
+          delay: 2000
+        },
         pagination: {
-          el: ".swiper-pagination",
-          autoplay: true
+          el: ".swiper-pagination"
         }
       }
     };
+  },
+  computed: {
+    swiper() {
+      return this.$refs.mySwiper.$swiper;
+    }
+  },
+  mounted() {
+    console.log("Current Swiper instance object", this.swiper);
+    // this.swiper.slideTo(1, 1000, false);
   },
   components: {
     Swiper,
@@ -40,13 +51,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.user-container {
-}
 .swiper-container {
-    width: 587px;
+  width: 587px;
+  height: 22rem;
 
   .img {
     width: 100%;
+  }
+  .swiper-pagination-bullets {
+    bottom: 0;
   }
 }
 </style>

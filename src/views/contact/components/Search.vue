@@ -2,14 +2,26 @@
   <div class="sear-container">
       <div class="sear-box">
           <svg-icon icon-class="search"/>
-          <input type="text" name="" id="" placeholder="搜索应用">
+          <!-- <input type="text" name="" id="" :placeholder="placeholder" @keyup.enter="$emit('search', $event.target.value)"> -->
+          <input type="text" name="" id="" :placeholder="placeholder" @input="$emit('search', $event.target.value)">
       </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'Search'
+  name: 'Search',
+  props: {
+    placeholder: {
+      type: String,
+      default: '搜索应用'
+    }
+  },
+  data() {
+    return {
+
+    }
+  }
 }
 </script>
 

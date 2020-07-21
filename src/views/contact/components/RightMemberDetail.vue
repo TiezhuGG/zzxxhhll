@@ -2,7 +2,7 @@
   <div class="right-new-member">
     <el-container>
       <el-header style="text-align: left; font-size: 24px; color: #303133">个人档案</el-header>
-      <el-main>
+      <el-main v-if="userinfo">
         <Steps
           class="steps"
           @change="handleStep"
@@ -12,34 +12,45 @@
         <div class="member">
           <!-- 头部信息 -->
           <div class="member-header">
-            <img class="logo" src="../../../assets/imgs/test.jpg" />
+            <el-upload
+              :action="uploadUrl"
+              :headers="getAuthHeaders()"
+              :before-upload="beforeUpload"
+              :data="imageData"
+              :show-file-list="false"
+              :on-success="handleAvatar"
+            >
+              <img
+                v-if="userinfo.avatar"
+                class="logo"
+                :src="userinfo.avatar ? userinfo.avatar : ''"
+              />
+              <div class="logo no-avatar" v-else>{{ userinfo.real_name.substr(-2) }}</div>
+            </el-upload>
             <div class="member-name">
-              <span class="name">白</span>
-              <span class="regular">正式</span>
-              <span class="auth">未授权实人认证</span>
+              <span class="name">{{ userinfo.real_name }}</span>
+              <span
+                class="regular"
+                :class="userinfo.profile && userinfo.profile.work_status === '离职' ? 'quit' : ''"
+              >{{ userinfo.profile ? userinfo.profile.work_status : ''}}</span>
+              <!-- <span class="regular">{{ userinfo.profile.work_status === 1 ? '正式' : (userinfo.profile.work_status === 2 ? '试用' : '离职') }}</span> -->
+              <span
+                :class="userinfo.is_auth === 1 ? 'auth-yes' : 'auth-no'"
+              >{{ userinfo.is_auth === 1 ? "已授权实人认证" : "未授权实人认证" }}</span>
             </div>
             <div class="member-department">
-              <span class="department-name">技术部</span>
+              <span
+                class="department-name"
+              >{{ userinfo.department ? userinfo.department.name : '' }}</span>
               <span class="main-department">主部门</span>
             </div>
-            <span class="test">测试</span>
-            <span class="introduce">在触享网络科技有限公司工作了5年</span>
+            <span class="position">{{ userinfo.post ? userinfo.post.name : '' }}</span>
+            <span
+              class="introduce"
+            >在{{ company_name }}工作了{{ userinfo ? userinfo.company_age : ''}}年</span>
           </div>
 
           <div class="member-detail-infos">
-            <!-- 系统信息 -->
-            <div class="system-info" id="system-info">
-              <div class="system-info-top">
-                <span class="txt">系统信息</span>
-                <span class="line"></span>
-              </div>
-              <div class="system-info-bottom">
-                <span class="txt">实人认证:</span>
-                <span class="auth">未授权</span>
-                <span class="detail">详情</span>
-              </div>
-            </div>
-
             <!-- 基础信息 -->
             <div class="base_info" id="base_info">
               <span class="txt">基础信息</span>
@@ -62,11 +73,12 @@
                           placeholder="请输入姓名"
                           v-show="base_info_show"
                           v-model="scope.row.name"
+                          disabled
                         ></el-input>
                       </el-form-item>
                       <div class="item" v-show="!base_info_show">
                         <label>姓名：</label>
-                        <span>{{scope.row.name}}</span>
+                        <span>{{ scope.row.name }}</span>
                       </div>
                     </div>
                     <div class="table-item">
@@ -79,6 +91,7 @@
                           v-model="scope.row.department"
                           @change="selectDepartment"
                           placeholder="请选择部门"
+                          disabled
                         >
                           <el-option
                             v-for="item in formData.tabledatas[0].departments"
@@ -173,6 +186,7 @@
                           placeholder="请输入邮箱"
                           v-show="base_info_show"
                           v-model="scope.row.email"
+                          :disabled="userinfo.email ? true: false"
                         ></el-input>
                       </el-form-item>
                       <div class="item" v-show="!base_info_show">
@@ -180,7 +194,7 @@
                         <span>{{scope.row.email}}</span>
                       </div>
                     </div>
-                    <div class="table-item">
+                    <!-- <div class="table-item">
                       <el-form-item
                         :prop="'tabledatas.' + scope.$index + '.mainDepartment'"
                         :rules="rules.mainDepartment"
@@ -203,7 +217,7 @@
                         <label>主部门：</label>
                         <span>{{scope.row.mainDepartment}}</span>
                       </div>
-                    </div>
+                    </div>-->
                     <div class="table-item">
                       <el-form-item
                         :prop="'tabledatas.' + scope.$index + '.phone'"
@@ -214,6 +228,7 @@
                           type="number"
                           v-show="base_info_show"
                           v-model="scope.row.phone"
+                          disabled
                         ></el-input>
                       </el-form-item>
                       <div class="item" v-show="!base_info_show">
@@ -253,7 +268,7 @@
                         <span>{{scope.row.remarks}}</span>
                       </div>
                     </div>
-                    <div class="table-item">
+                    <div class="table-item" :class="base_info_show ? 'mb-space-1-2' : 'mb-space-1-1'" >
                       <el-form-item
                         :prop="'tabledatas.' + scope.$index + '.job_year'"
                         :rules="rules.job_year"
@@ -262,6 +277,7 @@
                           placeholder="请输入司龄"
                           v-show="base_info_show"
                           v-model="scope.row.job_year"
+                          disabled
                         ></el-input>
                       </el-form-item>
                       <div class="item" v-show="!base_info_show">
@@ -336,7 +352,7 @@
                     </div>
                     <div class="table-item">
                       <el-input
-                        placeholder="请输入岗位职责"
+                        placeholder="请输入岗位职级"
                         v-show="work_info_show"
                         v-model="scope.row.job_grade"
                       ></el-input>
@@ -373,7 +389,7 @@
                         <span>{{scope.row.status}}</span>
                       </div>
                     </div>
-                    <div class="table-item">
+                    <div class="table-item" :class="work_info_show ? 'mb-space-1' : 'mb-space-0'">
                       <el-form-item
                         :prop="'tabledatas.' + scope.$index + '.formal_date'"
                         :rules="rules.formal_date"
@@ -418,6 +434,7 @@
                           placeholder="请输入身份证姓名"
                           v-show="personal_info_show"
                           v-model="scope.row.name_in_id"
+                          disabled
                         ></el-input>
                       </el-form-item>
                       <div class="item" v-show="!personal_info_show">
@@ -511,30 +528,43 @@
                       </div>
                     </div>
                     <div class="table-item">
-                      <el-input
-                        placeholder="请输入工龄(系统计算)"
-                        v-show="personal_info_show"
-                        v-model="scope.row.work_year"
-                      ></el-input>
+                      <el-form-item
+                        :prop="'tabledatas.' + scope.$index + '.work_year'"
+                        :rules="personalRules.work_year"
+                      >
+                        <el-input
+                          placeholder="请输入工龄"
+                          v-show="personal_info_show"
+                          v-model="scope.row.work_year"
+                        ></el-input>
+                      </el-form-item>
                       <div class="item" v-show="!personal_info_show">
-                        <label>工龄(系统计算)：</label>
+                        <label>工龄：</label>
                         <span>{{scope.row.work_year}}</span>
                       </div>
                     </div>
                     <div class="table-item">
                       <el-form-item
-                        :prop="'tabledatas.' + scope.$index + '.address'"
-                        :rules="personalRules.address"
+                        :prop="'tabledatas.' + scope.$index + '.political'"
+                        :rules="personalRules.political"
                       >
-                        <el-input
-                          placeholder="请输入住址"
+                        <el-select
                           v-show="personal_info_show"
-                          v-model="scope.row.address"
-                        ></el-input>
+                          v-model="scope.row.political"
+                          @change="selectPolitical"
+                          placeholder="请选择政治面貌"
+                        >
+                          <el-option
+                            v-for="item in personalData.tabledatas[0].politicalList"
+                            :key="item.id"
+                            :label="item.name"
+                            :value="item.name"
+                          ></el-option>
+                        </el-select>
                       </el-form-item>
                       <div class="item" v-show="!personal_info_show">
-                        <label>住址：</label>
-                        <span>{{scope.row.address}}</span>
+                        <label>政治面貌：</label>
+                        <span>{{scope.row.political}}</span>
                       </div>
                     </div>
                     <div class="table-item">
@@ -617,7 +647,7 @@
                     </div>
 
                     <div class="table-item">
-                      <el-form-item
+                      <!-- <el-form-item
                         :prop="'tabledatas.' + scope.$index + '.valid_until'"
                         :personalRules="rules.valid_until"
                       >
@@ -626,6 +656,22 @@
                           v-show="personal_info_show"
                           v-model="scope.row.valid_until"
                         ></el-input>
+                      </el-form-item>
+                      <div class="item" v-show="!personal_info_show">
+                        <label>证件有效期：</label>
+                        <span>{{scope.row.valid_until}}</span>
+                      </div> -->
+                      <el-form-item
+                        :prop="'tabledatas.' + scope.$index + '.valid_until'"
+                        :rules="personalRules.valid_until"
+                      >
+                        <el-date-picker
+                          v-model="scope.row.valid_until"
+                          v-show="personal_info_show"
+                          type="date"
+                          placeholder="请选择证件有效期"
+                          value-format="yyyy-MM-dd"
+                        ></el-date-picker>
                       </el-form-item>
                       <div class="item" v-show="!personal_info_show">
                         <label>证件有效期：</label>
@@ -677,32 +723,22 @@
                         <span>{{scope.row.domicile_type}}</span>
                       </div>
                     </div>
-
                     <div class="table-item">
                       <el-form-item
-                        :prop="'tabledatas.' + scope.$index + '.political'"
-                        :rules="personalRules.political"
+                        :prop="'tabledatas.' + scope.$index + '.address'"
+                        :rules="personalRules.address"
                       >
-                        <el-select
+                        <el-input
+                          placeholder="请输入住址"
                           v-show="personal_info_show"
-                          v-model="scope.row.political"
-                          @change="selectPolitical"
-                          placeholder="请选择政治面貌"
-                        >
-                          <el-option
-                            v-for="item in personalData.tabledatas[0].politicalList"
-                            :key="item.id"
-                            :label="item.name"
-                            :value="item.name"
-                          ></el-option>
-                        </el-select>
+                          v-model="scope.row.address"
+                        ></el-input>
                       </el-form-item>
                       <div class="item" v-show="!personal_info_show">
-                        <label>政治面貌：</label>
-                        <span>{{scope.row.political}}</span>
+                        <label>住址：</label>
+                        <span>{{scope.row.address}}</span>
                       </div>
                     </div>
-
                     <div class="table-item">
                       <el-form-item
                         :prop="'tabledatas.' + scope.$index + '.accumulation_fund'"
@@ -940,7 +976,7 @@
                       </div>
                     </div>
                     <div class="table-item">
-                      <el-form-item
+                      <!-- <el-form-item
                         :prop="'tabledatas.' + scope.$index + '.contract_period'"
                         :rules="contractRules.contract_period"
                       >
@@ -949,6 +985,18 @@
                           v-show="contract_info_show"
                           v-model="scope.row.contract_period"
                         ></el-input>
+                      </el-form-item> -->
+                      <el-form-item
+                        :prop="'tabledatas.' + scope.$index + '.contract_period'"
+                        :rules="contractRules.contract_period"
+                      >
+                        <el-date-picker
+                          v-model="scope.row.contract_period"
+                          v-show="contract_info_show"
+                          type="date"
+                          placeholder="请选择合同期限"
+                          value-format="yyyy-MM-dd"
+                        ></el-date-picker>
                       </el-form-item>
                       <div class="item" v-show="!contract_info_show">
                         <label>合同期限：</label>
@@ -965,7 +1013,7 @@
                         :rules="contractRules.contract_type"
                       >
                         <el-select
-                          v-show="education_info_show"
+                          v-show="contract_info_show"
                           v-model="scope.row.contract_type"
                           @change="selectContractType"
                           placeholder="请选择合同类型"
@@ -1045,7 +1093,7 @@
             <!-- 紧急联系人 -->
             <div class="emergency_contact" id="emergency_contact">
               <span class="txt">紧急联系人</span>
-              <span class="line" style="width:618px;">></span>
+              <span class="line" style="width:618px;"></span>
               <span class="edit" @click="emergency_contact_show = true">编辑</span>
               <span class="save" @click="emergencyBaseInfo" v-show="emergency_contact_show">保存</span>
             </div>
@@ -1090,7 +1138,7 @@
                 </el-table-column>
                 <el-table-column>
                   <template slot-scope="scope">
-                    <div class="table-item">
+                    <div class="table-item" :class="emergency_contact_show ? 'mb-space-1-3' : 'mb-space-1-1'">
                       <el-form-item
                         :prop="'tabledatas.' + scope.$index + '.contact_relationship'"
                         :rules="emergencyRules.contact_relationship"
@@ -1102,7 +1150,7 @@
                           placeholder="请选择联系人关系"
                         >
                           <el-option
-                            v-for="item in contractData.tabledatas[0].contactRelationshipList"
+                            v-for="item in emergencyData.tabledatas[0].relationship"
                             :key="item.id"
                             :label="item.name"
                             :value="item.name"
@@ -1240,13 +1288,16 @@
               ref="personalMaterialData"
               :rules="personalMaterialRules"
             >
-              <el-table :data="personalMaterialData.tabledatas">
+              <el-table class="image-upload" :data="personalMaterialData.tabledatas">
                 <el-table-column>
                   <template slot-scope="scope">
                     <div class="table-item">
                       <el-upload
                         class="avatar-uploader"
-                        action="https://jsonplaceholder.typicode.com/posts/"
+                        :action="uploadUrl"
+                        :headers="getAuthHeaders()"
+                        :data="imageData"
+                        :before-upload="beforeUpload"
                         :show-file-list="false"
                         :on-success="handleIdFaceImg"
                         v-show="personal_material_show"
@@ -1263,8 +1314,10 @@
                     <div class="table-item">
                       <el-upload
                         class="avatar-uploader"
-                        action="https://jsonplaceholder.typicode.com/posts/"
+                        :action="uploadUrl"
+                        :headers="getAuthHeaders()"
                         :before-upload="beforeUpload"
+                        :data="imageData"
                         :show-file-list="false"
                         :on-success="handleEducationImg"
                         v-show="personal_material_show"
@@ -1281,7 +1334,10 @@
                     <div class="table-item">
                       <el-upload
                         class="avatar-uploader"
-                        action="https://jsonplaceholder.typicode.com/posts/"
+                        :action="uploadUrl"
+                        :headers="getAuthHeaders()"
+                        :before-upload="beforeUpload"
+                        :data="imageData"
                         :show-file-list="false"
                         :on-success="handleCertificateImg"
                         v-show="personal_material_show"
@@ -1302,7 +1358,10 @@
                     <div class="table-item">
                       <el-upload
                         class="avatar-uploader"
-                        action="https://jsonplaceholder.typicode.com/posts/"
+                        :action="uploadUrl"
+                        :headers="getAuthHeaders()"
+                        :before-upload="beforeUpload"
+                        :data="imageData"
                         :show-file-list="false"
                         :on-success="handleIdbackImg"
                         v-show="personal_material_show"
@@ -1320,7 +1379,10 @@
                     <div class="table-item">
                       <el-upload
                         class="avatar-uploader"
-                        action="https://jsonplaceholder.typicode.com/posts/"
+                        :action="uploadUrl"
+                        :headers="getAuthHeaders()"
+                        :before-upload="beforeUpload"
+                        :data="imageData"
                         :show-file-list="false"
                         :on-success="handleDegreeImg"
                         v-show="personal_material_show"
@@ -1337,7 +1399,10 @@
                     <div class="table-item">
                       <el-upload
                         class="avatar-uploader"
-                        action="https://jsonplaceholder.typicode.com/posts/"
+                        :action="uploadUrl"
+                        :headers="getAuthHeaders()"
+                        :before-upload="beforeUpload"
+                        :data="imageData"
                         :show-file-list="false"
                         :on-success="handleEmployeeImg"
                         v-show="personal_material_show"
@@ -1384,7 +1449,10 @@ import {
   validIdcard
 } from "@/utils/validate";
 import Steps from "./Steps";
+import { getDeparments, getUserinfo, changeInfo, changeProfileInfo, imageUpload} from "@/api/user";
+
 export default {
+  props: ["memberId"],
   data() {
     const validateName = (rule, value, callback) => {
       if (!validName(value)) {
@@ -1416,10 +1484,12 @@ export default {
     };
     return {
       userinfo: null,
+      imageData: {
+        company_id: null,
+        image: null
+      },
+      company_name: null,
       stepsList: [
-        {
-          name: "系统信息"
-        },
         {
           name: "基础信息"
         },
@@ -1455,26 +1525,26 @@ export default {
         // 基础信息
         tabledatas: [
           {
-            name: "白白", // 姓名
-            email: "bai@bai.com", // 邮箱
+            name: "", // 姓名
+            email: "", // 邮箱
             departments: [
-              { id: 1, name: "技术部" },
-              { id: 2, name: "业务部" },
-              { id: 3, name: "运营部" }
+              // { id: 1, name: "技术部" },
+              // { id: 2, name: "业务部" },
+              // { id: 3, name: "运营部" }
             ], // 部门
             department: "", // 部门value
             main_departments: [
-              { id: 1, name: "篮球部" },
-              { id: 2, name: "足球部" },
-              { id: 3, name: "游泳部" }
+              // { id: 1, name: "篮球部" },
+              // { id: 2, name: "足球部" },
+              // { id: 3, name: "游泳部" }
             ], // 主部门
             mainDepartment: "", // 主部门value
-            position: "前端", // 职位
-            phone: "13559411110", // 手机号
-            job_num: "11号", // 工号
-            extension_num: "110", // 分机号
-            office_location: "泉州", // 办公地点
-            remarks: "备注", // 备注
+            position: "", // 职位
+            phone: "", // 手机号
+            job_num: "", // 工号
+            extension_num: "", // 分机号
+            office_location: "", // 办公地点
+            remarks: "", // 备注
             hire_date: "", // 入职时间
             job_year: "" // 司龄
           }
@@ -1482,9 +1552,9 @@ export default {
       },
       rules: {
         // 基础信息验证
-        name: [{ required: true, trigger: "blur", validator: validateName }],
-        email: [{ required: true, trigger: "blur", validator: validateEmail }],
-        phone: [{ required: true, trigger: "blur", validator: validateMobile }]
+        name: [{ trigger: "blur", validator: validateName }]
+        // email: [{ trigger: "blur", validator: validateEmail }],
+        // phone: [{ trigger: "blur", validator: validateMobile }]
         // department: [
         //   { required: true, trigger: "change", message: "请选择部门" }
         // ],
@@ -1521,7 +1591,7 @@ export default {
             employeeType: "",
             employee_status: [
               { id: 1, name: "试用" },
-              { id: 2, name: "正式" }
+              { id: 2, name: "正式" },
             ], // 员工状态
             status: "",
             probation_periods: [
@@ -1535,8 +1605,8 @@ export default {
               { id: 8, name: "其他" }
             ], // 试用期
             periods: "",
-            formal_date: "2015-11-25", // 转正日期
-            job_grade: "初级" // 岗位职级
+            formal_date: "", // 转正日期
+            job_grade: "" // 岗位职级
           }
         ]
       },
@@ -1563,7 +1633,7 @@ export default {
         tabledatas: [
           {
             name_in_id: "", // 身份证姓名
-            id_card: "350582200202022002", // 证件号码
+            id_card: "", // 证件号码
             born_date: "", // 出生日期
             age: "", // 年龄
             genderList: [
@@ -1571,7 +1641,7 @@ export default {
               { id: 2, name: "女" }
             ],
             gender: "", // 性别
-            nation: "汉族", // 民族
+            nation: "", // 民族
             nationList: [
               { id: 1, name: "汉族" },
               { id: 2, name: "满族" },
@@ -1631,8 +1701,8 @@ export default {
               { id: 56, name: "基诺族" }
             ],
             id_card_address: "", // 身份证地址
-            valid_until: "2022-02-22", // 证件有效期
-            marriage: "未婚", // 婚姻情况
+            valid_until: "", // 证件有效期
+            marriage: "", // 婚姻情况
             marriageList: [
               { id: 1, name: "未婚" },
               { id: 2, name: "已婚" },
@@ -1642,7 +1712,7 @@ export default {
             ],
             first_working_time: "", // 首次参加工作时间
             work_year: "", // 工龄
-            domicile_type: "农民", // 户籍类型
+            domicile_type: "", // 户籍类型
             domicileList: [
               { id: 1, name: "本地城镇" },
               { id: 2, name: "本地农村" },
@@ -1651,8 +1721,8 @@ export default {
               { id: 5, name: "外地农村(省内)" },
               { id: 6, name: "外地农村(省外)" }
             ],
-            address: "泉州", // 地址
-            political: "党员", // 政治面貌
+            address: "", // 地址
+            political: "", // 政治面貌
             politicalList: [
               { id: 1, name: "群众" },
               { id: 2, name: "党员" },
@@ -1727,7 +1797,7 @@ export default {
       educationData: {
         tabledatas: [
           {
-            education: "本科", // 学历
+            education: "", // 学历
             educationList: [
               { id: 1, name: "小学" },
               { id: 2, name: "初中" },
@@ -1740,9 +1810,9 @@ export default {
               { id: 9, name: "博士" },
               { id: 10, name: "其他" }
             ],
-            school: "泉州五中", // 毕业学校
-            graduation_date: "2022-02-02", // 毕业时间
-            major: "计算机" // 专业
+            school: "", // 毕业学校
+            graduation_date: "", // 毕业时间
+            major: "" // 专业
           }
         ]
       },
@@ -1761,8 +1831,8 @@ export default {
       bankData: {
         tabledatas: [
           {
-            bank_card: "12345678910", // 银行卡号
-            bank: "农行" // 开户行
+            bank_card: "", // 银行卡号
+            bank: "" // 开户行
           }
         ]
       },
@@ -1775,7 +1845,7 @@ export default {
       contractData: {
         tabledatas: [
           {
-            contract_compony: "触享", // 合同公司
+            contract_compony: "", // 合同公司
             contract_type: "", // 合同类型
             contractList: [
               { id: 1, name: "固定期限劳动合同" },
@@ -1787,12 +1857,12 @@ export default {
               { id: 7, name: "短期劳动合同" },
               { id: 8, name: "其他" }
             ],
-            first_contract_start_date: "2022-02-02", // 首次合同起始日
-            first_contract_end_date: "2022-02-22", // 首次合同结束日
-            now_contract_start_date: "2022-02-02", // 现合同起始日
-            now_contract_end_date: "2022-02-22", // 现合同结束日
-            contract_period: "1年", // 合同期限
-            renewal_num: 1 // 续约次数
+            first_contract_start_date: "", // 首次合同起始日
+            first_contract_end_date: "", // 首次合同结束日
+            now_contract_start_date: "", // 现合同起始日
+            now_contract_end_date: "", // 现合同结束日
+            contract_period: "", // 合同期限
+            renewal_num: "" // 续约次数
           }
         ]
       },
@@ -1825,16 +1895,16 @@ export default {
       emergencyData: {
         tabledatas: [
           {
-            emergency_contact_person: "铁锤", // 紧急联系人
-            contact_relationship: "同事", // 联系人关系
-            contactRelationshipList: [
+            emergency_contact_person: "", // 紧急联系人
+            contact_relationship: "", // 联系人关系
+            relationship: [
               { id: 1, name: "父母" },
               { id: 2, name: "配偶" },
               { id: 3, name: "子女" },
               { id: 4, name: "朋友" },
               { id: 5, name: "其他" }
             ],
-            contact_phone: "13559422222" // 联系电话
+            contact_phone: "" // 联系电话
           }
         ]
       },
@@ -1857,13 +1927,13 @@ export default {
               { id: 1, name: "有" },
               { id: 2, name: "无" }
             ],
-            child_name: "铁锤妹妹", // 子女姓名
+            child_name: "", // 子女姓名
             child_gender: "", // 子女性别
             childGenderList: [
               { id: 1, name: "男" },
               { id: 2, name: "女" }
             ],
-            child_born_date: "2022-02-22" // 子女出生日期
+            child_born_date: "" // 子女出生日期
           }
         ]
       },
@@ -1974,40 +2044,153 @@ export default {
     };
   },
   created() {
-    this.userinfo = this.$store.state.user.userinfo
-    console.log('userinfo', this.userinfo)
+    this.imageData.company_id = localStorage.getItem("company_id");
+    this.company_name = localStorage.getItem("company_name");
+    const id = this.memberId ? this.memberId : localStorage.getItem("user_id"); // 登录用户id
+    this.getUser(id);
+    this.getDeparments();
+  },
+  watch: {
+    memberId(newVal, oldVal) {
+      // console.log("newVal", newVal, oldVal);
+      this.getUser(newVal);
+      console.log("watch", this.userinfo);
+    },
+    deep: true
   },
   methods: {
-    jump() {
-      document.getElementById("personal_info").scrollIntoView();
+    // 获取用户信息
+    getUser(id) {
+      getUserinfo(id).then(res => {
+        this.userinfo = res.data;
+        // 基础信息
+        this.userinfo.avatar = this.userinfo.avatar ? this.userinfo.avatar : "";
+        this.formData.tabledatas[0].name = this.userinfo.real_name ? this.userinfo.real_name : '';
+        this.formData.tabledatas[0].email = this.userinfo.email ? this.userinfo.email : '';
+        this.formData.tabledatas[0].department = this.userinfo.department ? this.userinfo.department.name : '';
+        this.formData.tabledatas[0].position = this.userinfo.post ? this.userinfo.post.name : '';
+        // this.formData.tabledatas[0].department = this.userinfo.department.name ? this.userinfo.department.name : '';
+        // this.formData.tabledatas[0].position = this.userinfo.post.name ? this.userinfo.post.name : '';
+        this.formData.tabledatas[0].phone = this.userinfo.mobile ? this.userinfo.mobile : '';
+        this.formData.tabledatas[0].job_num = this.userinfo.job_number ? this.userinfo.job_number : '';
+        this.formData.tabledatas[0].extension_num = this.userinfo.ext_number ? this.userinfo.ext_number : '';
+        this.formData.tabledatas[0].office_location = this.userinfo.work_address ? this.userinfo.work_address : '';
+        this.formData.tabledatas[0].remarks = this.userinfo.remark ? this.userinfo.remark : '';
+        this.formData.tabledatas[0].hire_date = this.userinfo.login_company_date ? this.userinfo.login_company_date.substr(0, 11) : this.userinfo.login_company_date;
+        this.formData.tabledatas[0].job_year = this.userinfo.company_age ? this.userinfo.company_age : '';
+        // 工作信息
+        this.workData.tabledatas[0].employeeType = this.userinfo.profile.job_type ? this.userinfo.profile.job_type : '';
+        this.workData.tabledatas[0].status = this.userinfo.profile.work_status ? this.userinfo.profile.work_status : '';
+        this.workData.tabledatas[0].periods = this.userinfo.profile.try_date ? this.userinfo.profile.try_date : '';
+        this.workData.tabledatas[0].formal_date = this.userinfo.profile.to_worker_date ? this.userinfo.profile.to_worker_date.substr(0, 11) : this.userinfo.profile.to_worker_date;
+        this.workData.tabledatas[0].job_grade = this.userinfo.profile.job_level ? this.userinfo.profile.job_level : '';
+        // 个人信息
+        this.personalData.tabledatas[0].name_in_id = this.userinfo.real_name ? this.userinfo.real_name : '';
+        this.personalData.tabledatas[0].id_card = this.userinfo.id_card ? this.userinfo.id_card : '';
+        this.personalData.tabledatas[0].born_date = this.userinfo.birthday ? this.userinfo.birthday.substr(0, 11) : this.userinfo.birthday;
+        this.personalData.tabledatas[0].age = this.userinfo.age ? this.userinfo.age : '';
+        this.personalData.tabledatas[0].gender = this.userinfo.sex ? this.userinfo.sex : '';
+        this.personalData.tabledatas[0].nation = this.userinfo.nation_id ? this.userinfo.nation_id : '';
+        this.personalData.tabledatas[0].id_card_address = this.userinfo.idcard_address ? this.userinfo.idcard_address : '';
+        this.personalData.tabledatas[0].valid_until = this.userinfo.idcard_expire ? this.userinfo.idcard_expire.substr(0, 11) : this.userinfo.idcard_expire;
+        this.personalData.tabledatas[0].marriage = this.userinfo.marry_status ? this.userinfo.marry_status : '';
+        this.personalData.tabledatas[0].first_working_time = this.userinfo.first_work_time ? this.userinfo.first_work_time.substr(0, 11) : this.userinfo.first_work_time;
+        this.personalData.tabledatas[0].work_year = this.userinfo.job_age ? this.userinfo.job_age : '';
+        this.personalData.tabledatas[0].domicile_type = this.userinfo.census_type ? this.userinfo.census_type : '';
+        this.personalData.tabledatas[0].address = this.userinfo.address ? this.userinfo.address : '';
+        this.personalData.tabledatas[0].political = this.userinfo.politics_face_id ? this.userinfo.politics_face_id : '';
+        this.personalData.tabledatas[0].social_insurance = this.userinfo.social_account ? this.userinfo.social_account : '';
+        this.personalData.tabledatas[0].accumulation_fund = this.userinfo.provident_fund_account ? this.userinfo.provident_fund_account : '';
+        // 学历信息
+        this.educationData.tabledatas[0].education = this.userinfo.profile.academic_certificate ? this.userinfo.profile.academic_certificate : '';
+        this.educationData.tabledatas[0].school = this.userinfo.profile.graduate_school ? this.userinfo.profile.graduate_school : '';
+        this.educationData.tabledatas[0].graduation_date = this.userinfo.profile.graduate_date ? this.userinfo.profile.graduate_date.substr(0, 11) : this.userinfo.profile.graduate_date;
+        this.educationData.tabledatas[0].major = this.userinfo.profile.major ? this.userinfo.profile.major : '';
+        // 银行卡信息
+        this.bankData.tabledatas[0].bank_card = this.userinfo.profile.bank_num ? this.userinfo.profile.bank_num : '';
+        this.bankData.tabledatas[0].bank = this.userinfo.profile.bank_name ? this.userinfo.profile.bank_name : '';
+        // 合同信息
+        this.contractData.tabledatas[0].contract_compony = this.userinfo.profile.contract_company_name ? this.userinfo.profile.contract_company_name : '';
+        this.contractData.tabledatas[0].contract_type = this.userinfo.profile.contract_type_id ? this.userinfo.profile.contract_type_id : '';
+        this.contractData.tabledatas[0].first_contract_start_date = this.userinfo.profile.first_contract_begin_date ? this.userinfo.profile.first_contract_begin_date.substr(0, 11) : this.userinfo.profile.first_contract_begin_date;
+        this.contractData.tabledatas[0].first_contract_end_date = this.userinfo.profile.first_contract_end_date ? this.userinfo.profile.first_contract_end_date.substr(0, 11) : this.userinfo.profile.first_contract_end_date;
+        this.contractData.tabledatas[0].now_contract_start_date = this.userinfo.profile.current_contract_begin_date ? this.userinfo.profile.current_contract_begin_date.substr(0, 11) : this.userinfo.profile.current_contract_begin_date;
+        this.contractData.tabledatas[0].now_contract_end_date = this.userinfo.profile.current_contract_end_date ? this.userinfo.profile.current_contract_end_date.substr(0, 11) : this.userinfo.profile.current_contract_end_date;
+        this.contractData.tabledatas[0].contract_period = this.userinfo.profile.contract_finally ? this.userinfo.profile.contract_finally.substr(0, 11) : this.userinfo.profile.contract_finally;
+        this.contractData.tabledatas[0].renewal_num = this.userinfo.profile.contract_times ? this.userinfo.profile.contract_times : '';
+        // 紧急联系人
+        this.emergencyData.tabledatas[0].emergency_contact_person = this.userinfo.profile.instancy_people ? this.userinfo.profile.instancy_people : '';
+        this.emergencyData.tabledatas[0].contact_relationship = this.userinfo.profile.instancy_relation ? this.userinfo.profile.instancy_relation : '';
+        this.emergencyData.tabledatas[0].contact_phone = this.userinfo.profile.instancy_phone ? this.userinfo.profile.instancy_phone : '';
+        // 家庭信息
+        this.familyData.tabledatas[0].has_child = this.userinfo.profile.has_child ? this.userinfo.profile.has_child : '';
+        this.familyData.tabledatas[0].child_name = this.userinfo.profile.has_child ? this.userinfo.profile.child_name : '';
+        this.familyData.tabledatas[0].child_gender = this.userinfo.profile.has_child ? this.userinfo.profile.child_grade : '';
+        this.familyData.tabledatas[0].child_born_date = this.userinfo.profile.has_child ? this.userinfo.profile.child_birthday : '';
+        // 个人材料
+        this.idFaceImg = this.userinfo.profile.id_card_front ? this.userinfo.profile.id_card_front : '';
+        this.idBackImg = this.userinfo.profile.id_card_behind ? this.userinfo.profile.id_card_behind : '';
+        this.educationImg = this.userinfo.profile.academic_front ? this.userinfo.profile.academic_front : '';
+        this.certificateImg = this.userinfo.profile.academic_behind ? this.userinfo.profile.academic_behind : '';
+        this.degreeImg = this.userinfo.profile.leave_picture ? this.userinfo.profile.leave_picture : '';
+        this.employeeImg = this.userinfo.profile.identification_photo ? this.userinfo.profile.identification_photo : '';
+        
+        // localStorage.setItem("userinfo", JSON.stringify(res.data));
+      });
+    },
+    async getDeparments() {
+      const res = await getDeparments({ company_id: 6 }); //test
+      console.log("企业列表", res);
+      this.formData.tabledatas[0].departments = res.data;
     },
     handleStep({ index, name }) {
       this.stepActive = index;
     },
+    handleAvatar(res, file) {
+      // this.userinfo.avatar = URL.createObjectURL(file.raw);
+      this.userinfo.avatar = res.message
+      const id = this.memberId ? this.memberId : localStorage.getItem("user_id");
+      changeInfo(id, {
+        avatar: this.userinfo.avatar ? this.userinfo.avatar : '',
+      }).then(res => {
+        console.log("change info", res);
+        this.getUser(id);
+        this.$emit("infoChanged", { changed: id }); // 用来通知用户信息已更新
+      }).catch(err => {
+        console.log("err", err);
+      });
+    },
+    beforeUpload(file) {
+      this.imageData.image = file
+    },
     handleIdFaceImg(res, file) {
-      console.log(res, file);
-      this.idFaceImg = URL.createObjectURL(file.raw);
+      console.log('上传图片',res, file)
+      this.idFaceImg = res.message
+      // this.idFaceImg = URL.createObjectURL(file.raw);
+      console.log(this.idFaceImg)
     },
     handleEducationImg(res, file) {
-      this.educationImg = URL.createObjectURL(file.raw);
+      this.educationImg = res.message
+      // this.educationImg = URL.createObjectURL(file.raw);
     },
     handleCertificateImg(res, file) {
-      this.certificateImg = URL.createObjectURL(file.raw);
+      this.certificateImg = res.message
+      // this.certificateImg = URL.createObjectURL(file.raw);
     },
     handleIdbackImg(res, file) {
-      this.idBackImg = URL.createObjectURL(file.raw);
+      this.idBackImg = res.message
+      // this.idBackImg = URL.createObjectURL(file.raw);
     },
     handleDegreeImg(res, file) {
-      this.degreeImg = URL.createObjectURL(file.raw);
+      this.degreeImg = res.message
+      // this.degreeImg = URL.createObjectURL(file.raw);
     },
     handleEmployeeImg(res, file) {
-      this.employeeImg = URL.createObjectURL(file.raw);
+      this.employeeImg = res.message
+      // this.employeeImg = URL.createObjectURL(file.raw);
     },
     deleteRow(index, rows) {
       rows.splice(index, 1);
-    },
-    beforeUpload(file) {
-      console.log("file", file);
     },
     // 选择部门
     selectDepartment(e) {
@@ -2022,86 +2205,107 @@ export default {
     // 选择员工类型
     selectEmployeeType(e) {
       console.log("选择员工类型", e);
+      this.workData.tabledatas[0].employeeType = e
     },
     // 选择员工状态
     selectemployeeStatus(e) {
       console.log("选择员工状态", e);
+      this.workData.tabledatas[0].status = e
     },
     // 选择试用期
     selectPeriods(e) {
       console.log("选择试用期", e);
+      this.workData.tabledatas[0].periods = e
     },
     // 选择转正日期
     selectFormalDate(e) {
       console.log("选择转正日期", e);
+      this.workData.tabledatas[0].formal_date = e
     },
     // 选择出生日期
     selectBornDate(e) {
       console.log("选择出生日期", e);
+      this.personalData.tabledatas[0].born_date = e
     },
     // 选择性别
     selectGender(e) {
       console.log("选择性别", e);
+      this.personalData.tabledatas[0].gender = e
     },
     // 选择民族
     selectNation(e) {
       console.log("选择民族", e);
+      this.personalData.tabledatas[0].nation = e
     },
     // 选择婚姻情况
     selectMarriage(e) {
       console.log("选择婚姻情况", e);
+      this.personalData.tabledatas[0].marriage = e
     },
     // 选择户籍类型
     selectDomicileType(e) {
       console.log("选择户籍类型", e);
+      this.personalData.tabledatas[0].domicile_type = e
     },
     // 选择政治面貌
     selectPolitical(e) {
       console.log("选择政治面貌", e);
+      this.personalData.tabledatas[0].political = e
     },
     // 选择学历
     selectEducation(e) {
       console.log("选择学历", e);
+      this.educationData.tabledatas[0].education = e
     },
     // 选择毕业时间
     selectGraduationDate(e) {
       console.log("选择毕业时间", e);
+      this.educationData.tabledatas[0].graduation_date = e
     },
     // 选择合同类型
     selectContractType(e) {
       console.log("选择合同类型", e);
+      this.contractData.tabledatas[0].contract_type = e
     },
     // 选择首次合同起始日
     selectFirstContractStartDate(e) {
       console.log("选择首次合同起始日", e);
+      this.contractData.tabledatas[0].first_contract_start_date = e
     },
     // 选择首次合同到期日
     selectFirstContractEndDate(e) {
       console.log("选择首次合同到期日", e);
+      this.contractData.tabledatas[0].first_contract_end_date = e
     },
     // 选择现合同起始日
     selectNowContractStartDate(e) {
       console.log("选择现合同起始日", e);
+      this.contractData.tabledatas[0].now_contract_start_date = e
     },
     // 选择首次合同到期日
     selectNowContractEndDate(e) {
       console.log("选择现合同到期日", e);
+      this.contractData.tabledatas[0].now_contract_end_date = e
     },
     // 选择联系人关系
     selectContactRelationship(e) {
       console.log("选择联系人关系", e);
+      this.emergencyData.tabledatas[0].contact_relationship = e
     },
     // 选择有无子女
     selecthasChild(e) {
       console.log("选择有无子女", e);
+      this.familyData.tabledatas[0].has_child = e
     },
     // 选择子女性别
     selectChildGender(e) {
       console.log("选择子女性别", e);
+      this.familyData.tabledatas[0].child_gender = e
     },
     // 选择子女出生日期
     selectChildBornDate(e) {
       console.log("选择子女出生日期", e);
+      this.familyData.tabledatas[0].child_born_date = e
     },
     // 选择首次参加工作时间
     selectFirstWorkingTime(date) {
@@ -2109,9 +2313,12 @@ export default {
       this.personalData.tabledatas[0].hire_date = date;
       const dateNow = new Date();
       const data = this.dateDiff(date, dateNow);
-      this.personalData.tabledatas[0].work_year = `${Math.floor(
-        data / 12
-      )}年${data % 12}月`;
+      if(data / 12 == 0) {
+        this.personalData.tabledatas[0].work_year = `${data % 12}个月`;
+      } else {
+        this.personalData.tabledatas[0].work_year = `${Math.floor(data / 12)}年${data % 12}个月`;
+      }
+
     },
     // 选择入职时间
     selectHireDate(date) {
@@ -2119,8 +2326,12 @@ export default {
       console.log("选择入职时间", date);
       const dateNow = new Date();
       const data = this.dateDiff(date, dateNow);
-      this.formData.tabledatas[0].job_year = `${Math.floor(data / 12)}年${data %
-        12}月`;
+      if(data / 12 == 0) {
+        this.formData.tabledatas[0].job_year = `${data % 12}个月`;
+      } else {
+        this.formData.tabledatas[0].job_year = `${Math.floor(data / 12)}年${data % 12}个月`;
+      }
+
       console.log(this.formData.tabledatas[0].job_year);
     },
     // 计算相距日期
@@ -2155,6 +2366,34 @@ export default {
         console.log("valid", valid);
         if (valid) {
           this.base_info_show = false;
+          const id = this.memberId ? this.memberId : localStorage.getItem("user_id");
+          const name = this.formData.tabledatas[0].name;
+          const email = this.formData.tabledatas[0].email;
+          const position = this.formData.tabledatas[0].position;
+          const extension_num = this.formData.tabledatas[0].extension_num;
+          const job_num = this.formData.tabledatas[0].job_num;
+          const remark = this.formData.tabledatas[0].remarks;
+          const office_location = this.formData.tabledatas[0].office_location;
+          const job_year = this.formData.tabledatas[0].job_year;
+          const hire_date = this.formData.tabledatas[0].hire_date;
+
+          console.log("name", name);
+          changeInfo(id, {
+            real_name: name ? name : ' ',
+            email: email ? email : ' ',
+            ext_number: extension_num ? extension_num : ' ',
+            job_number: job_num ? job_num : ' ',
+            remark: remark ? remark : ' ',
+            work_address: office_location ? office_location : ' ',
+            company_age: job_year ? job_year : ' ',
+            login_company_date: hire_date ? hire_date : ' '
+          }).then(res => {
+            console.log("change info", res);
+            this.getUser(id);
+            this.$emit("infoChanged", { changed: id });
+          }).catch(err => {
+            console.log("err", err);
+          });
         }
       });
     },
@@ -2165,6 +2404,26 @@ export default {
         console.log("valid", valid);
         if (valid) {
           this.work_info_show = false;
+          const id = this.memberId ? this.memberId : localStorage.getItem("user_id");
+          const profile_id = this.userinfo.profile.id
+          const employeeType = this.workData.tabledatas[0].employeeType
+          const status = this.workData.tabledatas[0].status
+          const periods = this.workData.tabledatas[0].periods
+          const formal_date = this.workData.tabledatas[0].formal_date
+          const job_grade = this.workData.tabledatas[0].job_grade
+          changeProfileInfo(profile_id, {
+            job_type: employeeType ? employeeType : '',
+            work_status: status ? status : '',
+            try_date: periods ? periods : '',
+            to_worker_date: formal_date ? formal_date : '',
+            job_level: job_grade ? job_grade : ''
+          }).then(res => {
+            console.log("change info", res);
+            this.getUser(id);
+            this.$emit("infoChanged", { changed: id }); // 用来通知用户信息已更新
+          }).catch(err => {
+            console.log("err", err);
+          });
         }
       });
     },
@@ -2175,6 +2434,45 @@ export default {
         console.log("valid", valid);
         if (valid) {
           this.personal_info_show = false;
+          const id = this.memberId ? this.memberId : localStorage.getItem("user_id");
+          const id_card = this.personalData.tabledatas[0].id_card 
+          const born_date = this.personalData.tabledatas[0].born_date
+          const age = this.personalData.tabledatas[0].age
+          const gender = this.personalData.tabledatas[0].gender
+          const nation = this.personalData.tabledatas[0].nation
+          const id_card_address = this.personalData.tabledatas[0].id_card_address
+          const valid_until = this.personalData.tabledatas[0].valid_until
+          const marriage = this.personalData.tabledatas[0].marriage
+          const first_working_time = this.personalData.tabledatas[0].first_working_time
+          const work_year = this.personalData.tabledatas[0].work_year
+          const domicile_type = this.personalData.tabledatas[0].domicile_type
+          const address = this.personalData.tabledatas[0].address
+          const political = this.personalData.tabledatas[0].political
+          const social_insurance = this.personalData.tabledatas[0].social_insurance
+          const accumulation_fund = this.personalData.tabledatas[0].accumulation_fund
+          changeInfo(id, {
+            id_card: id_card ? id_card : '',
+            birthday: born_date ? born_date : '',
+            age: age ? age : '',
+            sex: gender ? gender : '',
+            nation_id: nation ? nation : '',
+            idcard_address: id_card_address ? id_card_address : '',
+            idcard_expire: valid_until ? valid_until : '',
+            marry_status:  marriage ? marriage : '',
+            first_work_time: first_working_time ? first_working_time : '',
+            job_age: work_year ? work_year : '',
+            census_type: domicile_type ? domicile_type : '',
+            address: address ? address : '',
+            politics_face_id: political ? political : '',
+            social_account: social_insurance ? social_insurance : '',
+            provident_fund_account: accumulation_fund ? accumulation_fund : ''
+          }).then(res => {
+            console.log("change info", res);
+            this.getUser(id);
+            this.$emit("infoChanged", { changed: id });
+          }).catch(err => {
+            console.log("err", err);
+          });
         }
       });
     },
@@ -2185,6 +2483,26 @@ export default {
         console.log("valid", valid);
         if (valid) {
           this.education_info_show = false;
+          const id = this.memberId ? this.memberId : localStorage.getItem("user_id");
+          const profile_id = this.userinfo.profile.id
+          const education = this.educationData.tabledatas[0].education
+          const school = this.educationData.tabledatas[0].school
+          const graduation_date = this.educationData.tabledatas[0].graduation_date
+          const major = this.educationData.tabledatas[0].major
+
+          changeProfileInfo(profile_id, {
+            academic_certificate: education ? education : '',
+            graduate_school: school ? school : '',
+            graduate_date: graduation_date ? graduation_date : '',
+            major: major ? major : '',
+          }).then(res => {
+            console.log("change info", res);
+            this.getUser(id);
+            this.$emit("infoChanged", { changed: id }); // 用来通知用户信息已更新
+          }).catch(err => {
+            console.log("err", err);
+          });
+
         }
       });
     },
@@ -2195,6 +2513,20 @@ export default {
         console.log("valid", valid);
         if (valid) {
           this.bank_info_show = false;
+          const id = this.memberId ? this.memberId : localStorage.getItem("user_id");
+          const profile_id = this.userinfo.profile.id
+          const bank_card = this.bankData.tabledatas[0].bank_card
+          const bank = this.bankData.tabledatas[0].bank
+          changeProfileInfo(profile_id, {
+            bank_num: bank_card ? bank_card : '',
+            bank_name: bank ? bank : '',
+          }).then(res => {
+            console.log("change info", res);
+            this.getUser(id);
+            this.$emit("infoChanged", { changed: id }); // 用来通知用户信息已更新
+          }).catch(err => {
+            console.log("err", err);
+          });
         }
       });
     },
@@ -2204,6 +2536,33 @@ export default {
         console.log("valid", valid);
         if (valid) {
           this.contract_info_show = false;
+          const id = this.memberId ? this.memberId : localStorage.getItem("user_id");
+          const profile_id = this.userinfo.profile.id
+          const contract_compony = this.contractData.tabledatas[0].contract_compony
+          const contract_type = this.contractData.tabledatas[0].contract_type
+          const first_contract_start_date = this.contractData.tabledatas[0].first_contract_start_date
+          const first_contract_end_date = this.contractData.tabledatas[0].first_contract_end_date
+          const now_contract_start_date = this.contractData.tabledatas[0].now_contract_start_date
+          const now_contract_end_date = this.contractData.tabledatas[0].now_contract_end_date
+          const contract_period = this.contractData.tabledatas[0].contract_period
+          const renewal_num = parseInt(this.contractData.tabledatas[0].renewal_num)
+
+          changeProfileInfo(profile_id, {
+            contract_company_name: contract_compony ? contract_compony : '',
+            contract_type_id: contract_type ? contract_type : '',
+            first_contract_begin_date: first_contract_start_date ? first_contract_start_date : '',
+            first_contract_end_date: first_contract_end_date ? first_contract_end_date : '',
+            current_contract_begin_date: now_contract_start_date ? now_contract_start_date : '',
+            current_contract_end_date: now_contract_end_date ? now_contract_end_date : '',
+            contract_finally: contract_period ? contract_period : '',
+            contract_times: renewal_num ? renewal_num : '',
+          }).then(res => {
+            console.log("change info", res);
+            this.getUser(id);
+            this.$emit("infoChanged", { changed: id }); // 用来通知用户信息已更新
+          }).catch(err => {
+            console.log("err", err);
+          });
         }
       });
     },
@@ -2213,6 +2572,22 @@ export default {
         console.log("valid", valid);
         if (valid) {
           this.emergency_contact_show = false;
+          const id = this.memberId ? this.memberId : localStorage.getItem("user_id");
+          const profile_id = this.userinfo.profile.id
+          const emergency_contact_person = this.emergencyData.tabledatas[0].emergency_contact_person
+          const contact_relationship = this.emergencyData.tabledatas[0].contact_relationship
+          const contact_phone = this.emergencyData.tabledatas[0].contact_phone
+          changeProfileInfo(profile_id, {
+            instancy_people: emergency_contact_person ? emergency_contact_person : '',
+            instancy_relation: contact_relationship ? contact_relationship : '',
+            instancy_phone: contact_phone ? contact_phone : '',
+          }).then(res => {
+            console.log("change info", res);
+            this.getUser(id);
+            this.$emit("infoChanged", { changed: id }); // 用来通知用户信息已更新
+          }).catch(err => {
+            console.log("err", err);
+          });
         }
       });
     },
@@ -2222,6 +2597,24 @@ export default {
         console.log("valid", valid);
         if (valid) {
           this.family_info_show = false;
+          const id = this.memberId ? this.memberId : localStorage.getItem("user_id");
+          const profile_id = this.userinfo.profile.id
+          const has_child = this.familyData.tabledatas[0].has_child
+          const child_name = this.familyData.tabledatas[0].child_name
+          const child_gender = this.familyData.tabledatas[0].child_gender
+          const child_born_date = this.familyData.tabledatas[0].child_born_date
+          changeProfileInfo(profile_id, {
+            has_child: has_child ? has_child : '',
+            child_name: child_name ? child_name : '',
+            child_grade: child_gender ? child_gender : '',
+            child_birthday: child_born_date ? child_born_date : '',
+          }).then(res => {
+            console.log("change info", res);
+            this.getUser(id);
+            this.$emit("infoChanged", { changed: id }); // 用来通知用户信息已更新
+          }).catch(err => {
+            console.log("err", err);
+          });
         }
       });
     },
@@ -2231,6 +2624,22 @@ export default {
         console.log("valid", valid);
         if (valid) {
           this.personal_material_show = false;
+          const id = this.memberId ? this.memberId : localStorage.getItem("user_id");
+          const profile_id = this.userinfo.profile.id
+          changeProfileInfo(profile_id, {
+            id_card_front: this.idFaceImg ? this.idFaceImg : '',
+            id_card_behind: this.idBackImg ? this.idBackImg : '',
+            academic_front: this.educationImg ? this.educationImg : '',
+            academic_behind: this.certificateImg ? this.certificateImg : '',
+            leave_picture: this.leave_picture ? this.leave_picture : '',
+            identification_photo: this.employeeImg ? this.employeeImg : '',
+          }).then(res => {
+            console.log("change info", res);
+            this.getUser(id);
+            this.$emit("infoChanged", { changed: id }); // 用来通知用户信息已更新
+          }).catch(err => {
+            console.log("err", err);
+          });
         }
       });
     }
@@ -2306,8 +2715,25 @@ export default {
               background-color: #d9ecff;
               color: #409eff;
             }
-            .auth {
+            .auth-no {
               width: 128px;
+              background-color: #ffdede;
+              color: #ff5a5a;
+            }
+            .auth-yes {
+              display: inline-block;
+              width: 128px;
+              height: 27px;
+              line-height: 27px;
+              text-align: center;
+              margin-right: 7px;
+              border-radius: 5px;
+              font-size: 16px;
+              background-color: #d9ecff;
+              color: #409eff;
+            }
+            .quit {
+              width: 51px;
               background-color: #ffdede;
               color: #ff5a5a;
             }
@@ -2334,7 +2760,7 @@ export default {
               border-radius: 5px;
             }
           }
-          .test {
+          .position {
             display: inline-block;
             margin-bottom: 17px;
           }
@@ -2460,11 +2886,11 @@ export default {
 }
 
 // 处理input type = number的上下箭头
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
+>>> input::-webkit-outer-spin-button,
+>>> input::-webkit-inner-spin-button {
   -webkit-appearance: none;
 }
-input[type="number"] {
+>>> input[type="number"] {
   -moz-appearance: textfield;
 }
 
@@ -2507,5 +2933,31 @@ input[type="number"] {
   margin-top: 395px;
   margin-right: 98px;
   font-size: 19px;
+}
+
+.no-avatar {
+  background-color: #409eff;
+  line-height: 4.84375rem;
+  text-align: center;
+  font-size: 1.71875rem;
+  color: #fff;
+}
+.mb-space-0 {
+  margin-bottom: 5.6rem !important;
+}
+.mb-space-1 {
+  margin-bottom: 6.6rem !important;
+}
+.mb-space-1-1 {
+  margin-bottom: 7rem !important;
+}
+.mb-space-1-2 {
+  margin-bottom: 8.3rem !important;
+}
+.mb-space-1-3 {
+  margin-bottom: 8.6rem !important;
+}
+.image-upload .item span {
+  color: #409eff;
 }
 </style>

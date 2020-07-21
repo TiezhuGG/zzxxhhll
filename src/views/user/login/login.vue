@@ -72,7 +72,7 @@
 
 <script>
 import { validMobile } from "@/utils/validate";
-import { setToken, getToken } from "@/utils/auth";
+import { setToken } from "@/utils/auth";
 import { login, getEnterpriseList } from "@/api/user";
 
 export default {

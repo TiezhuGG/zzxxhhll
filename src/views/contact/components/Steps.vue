@@ -39,36 +39,33 @@ export default {
     handleStep(index, name) {
       switch (index) {
         case 0:
-          document.getElementById("system-info").scrollIntoView();
-          break;
-        case 1:
           document.getElementById("base_info").scrollIntoView();
           break;
-        case 2:
+        case 1:
           document.getElementById("work_info").scrollIntoView();
           break;
-        case 3:
+        case 2:
           document.getElementById("personal_info").scrollIntoView();
           break;
-        case 4:
+        case 3:
           document.getElementById("education_info").scrollIntoView();
           break;
-        case 5:
+        case 4:
           document.getElementById("bank_info").scrollIntoView();
           break;
-        case 6:
+        case 5:
           document.getElementById("contract_info").scrollIntoView();
           break;
-        case 7:
+        case 6:
           document.getElementById("emergency_contact").scrollIntoView();
           break;
-        case 8:
+        case 7:
           document.getElementById("family_info").scrollIntoView();
           break;
-        case 9:
+        case 8:
           document.getElementById("personal_material").scrollIntoView();
           break;
-        case 10:
+        case 9:
           document.getElementById("salary_history").scrollIntoView();
           break;
       }

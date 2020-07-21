@@ -9,7 +9,7 @@
         <div class="userinfo" style="background-image: url('/img/avatar_userinfo_bg.png')">
           <el-avatar :src="userinfo.avatar ? userinfo.avatar : 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png'"></el-avatar>
           <div class="text">
-            <div class="name tone">{{ userinfo.user_name }}</div>
+            <div class="name tone">{{ userinfo.real_name }}</div>
             <div class="company">{{ company_name }}</div>
           </div>
         </div>
@@ -62,7 +62,6 @@ export default {
   },
   created() {
     this.company_name = localStorage.getItem('company_name')
-
     this.fetchUserInfo()
   },
   mounted() {
@@ -85,9 +84,11 @@ export default {
     async fetchUserInfo() {
       const uesr_id = localStorage.getItem('user_id')
       const res = await getUserinfo(uesr_id);
+      // const res = await getUserinfo(14);  // test
       this.$store.commit("user/setUserinfo", {
         userinfo: res.data
       });
+      localStorage.setItem("userinfo", JSON.stringify(res.data));
       this.userinfo = res.data
       console.log("getUserInfo", this.userinfo);
     }

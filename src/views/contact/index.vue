@@ -8,6 +8,7 @@
           @memberTab="switchToMember"
           @organizeTab="switchToOrganize"
           @memberDetail="getMemberDetail"
+          :changeId="changeId"
           v-show="member"
         />
         <LeftSideOrganize
@@ -19,7 +20,7 @@
       </el-aside>
       <RightOrganize v-show="index===0" />
       <RightDepartment v-show="index===1" />
-      <RightMemberDetail v-show="index===3" />
+      <RightMemberDetail @infoChanged="changed" :memberId="memberId" v-show="index===3" />
     </el-container>
   </div>
 </template>
@@ -37,13 +38,20 @@ export default {
       index: 3,
       member: true,
       organize: false,
+      memberId: "",
+      changeId: null
     };
   },
   methods: {
+    // 提醒更新联系人列表
+    changed(data) {
+      console.log(data)
+      this.changeId = data.changed
+    },
     // 获取成员详细信息
     getMemberDetail(data) {
       console.log(data)
-      this.index = data.member;
+      this.memberId = data.member;
     },
     getNewMember(data) {
       this.index = data.currentIndex;

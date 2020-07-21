@@ -225,6 +225,7 @@ export function imageUpload(data) {
     return request({
         url: 'image_upload',
         method: 'post',
+        headers: {"Content-Type": 'multipart/form-data'},
         data
     })
 }
@@ -233,5 +234,23 @@ export function imageUpload(data) {
 export function getMemberList(id) {
     return request({
         url: `company_member_list?company_id=${id}`,
+    })
+}
+
+// 修改个人基础信息
+export function changeInfo(id, data) {
+    return request({
+        url: `info/${id}`,
+        method: 'put',
+        data
+    })
+}
+
+// 修改个人详情信息
+export function changeProfileInfo(id, data) {
+    return request({
+        url: `admin_profiles/${id}`,    // id是用户详情id,在字段profile里面. 不是admin_id 
+        method: 'put',
+        data
     })
 }

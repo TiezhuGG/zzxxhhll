@@ -1,44 +1,48 @@
 <template>
-  <div v-if="$route.name === 'materialAdmin'" class="material_admin">
+  <div v-if="$route.name === 'contractFilingIndex'" class="customer_admin">
     <div class="container">
       <div class="filter block">
         <el-form inline label-width="107px">
-          <el-form-item label="材料类别">
+          <el-form-item label="生产流水号">
+            <el-input placeholder="请输入内容"></el-input>
+          </el-form-item>
+
+          <el-form-item label="客户代码">
             <el-select>
               <el-option>1</el-option>
             </el-select>
           </el-form-item>
 
-          <el-form-item label="计量单位">
+          <el-form-item label="客户名称">
             <el-select>
               <el-option>1</el-option>
             </el-select>
           </el-form-item>
 
-          <el-form-item label="材料代码">
-            <el-input placeholder="请输入"></el-input>
-          </el-form-item>
-
-          <el-form-item label="材料名称">
-            <el-input placeholder="请输入"></el-input>
-          </el-form-item>
-
-          <el-form-item label="材料规格">
+          <el-form-item label="业务部门">
             <el-select>
               <el-option>1</el-option>
             </el-select>
           </el-form-item>
 
-          <el-form-item label="颜色">
+          <el-form-item label="业务人员">
             <el-select>
               <el-option>1</el-option>
             </el-select>
           </el-form-item>
 
-          <el-form-item label="价格区间">
-            <el-input name="picre" placeholder="请输入价格" />
-            <div class="select-interval">-</div>
-            <el-input name="picre" placeholder="请输入价格" />
+          <el-form-item label="建档人员">
+            <el-select>
+              <el-option>1</el-option>
+            </el-select>
+          </el-form-item>
+
+          <el-form-item label="建档日期">
+            <el-date-picker v-model="value1" type="date" placeholder="选择日期"></el-date-picker>
+          </el-form-item>
+
+          <el-form-item label="修改日期">
+            <el-date-picker v-model="value1" type="date" placeholder="选择日期"></el-date-picker>
           </el-form-item>
 
           <el-form-item class="button">
@@ -47,33 +51,10 @@
         </el-form>
       </div>
       <div class="flex-sp">
-        <div class="channel block" style="width:240px">
-          <div class="buttons">
-            <div style="text-align: center;  margin-top: 20px">
-              <el-button type="primary" @click="dialogtype = true">
-                <svg-icon icon-class="button_new" />新增
-              </el-button>
-              <el-button type="primary">
-                <svg-icon icon-class="pencil" />编辑
-              </el-button>
-            </div>
-
-            <div style="  margin: 20px;">
-              <el-button>
-                <svg-icon icon-class="button_delete" />删除
-              </el-button>
-            </div>
-
-            <div class="heighe"></div>
-
-            <el-tree :data="data" node-key="id" />
-          </div>
-        </div>
-
         <div class="content block">
           <div class="buttons flex-sp">
             <div>
-              <el-button type="primary" @click="detailShow = true">
+              <el-button type="primary">
                 <svg-icon icon-class="button_new" />新增
               </el-button>
               <el-button type="primary">
@@ -117,6 +98,7 @@
               </div>
             </el-collapse-transition>
           </div>
+
           <div class="table_container">
             <el-table
               ref="multipleTable"
@@ -139,14 +121,17 @@
                   width="200"
                 />
               </template>
-              <el-table-column fixed="right" label="操作" width="120">
-                <el-link type="primary" @click="detailShow = true">编辑</el-link>
+              <el-table-column fixed="right" label="操作" width="165">
+                <el-link
+                  type="primary"
+                  @click="$router.push({ path: 'contractFiling_index/contractFiling_detail' })"
+                >编辑</el-link>
                 <el-link type="primary" @click="deleteById">删除</el-link>
                 <el-link type="primary">打印</el-link>
               </el-table-column>
             </el-table>
           </div>
-             <el-pagination
+          <el-pagination
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
             :current-page="currentPage4"
@@ -156,33 +141,6 @@
             :total="400"
           ></el-pagination>
         </div>
-
-        <el-dialog title="材料新增" :visible.sync="detailShow">
-          <material-detail />
-        </el-dialog>
-
-        <el-dialog class="dialogtype" title="新增材料类别" :visible.sync="dialogtype" width="536px">
-         
-        <div class="">
-
-          <el-form class="dialogTypecss" inline label-width="107px">
-            <el-form-item   label="分类名称">
-              <el-input class="w520" placeholder="请输入"></el-input>
-            </el-form-item>
-
-            <el-form-item label="上级分类">
-              <el-select class="w520" >
-                <el-option>1</el-option>
-              </el-select>
-            </el-form-item>
-          </el-form>
-         </div>
-
-          <span slot="footer" class="dialog-footer">
-            <el-button @click="dialogtype = false">取 消</el-button>
-            <el-button type="primary" @click="dialogtype = false">确 定</el-button>
-          </span>
-        </el-dialog>
       </div>
     </div>
   </div>
@@ -190,37 +148,43 @@
 </template>
 
 <script>
-import materialDetail from "./components/materialDetail";
+// import config from './mixin/config'
 export default {
-  components: { materialDetail },
+  //   mixins: [config],
   data() {
     return {
-        currentPage4: 4,
-      dialogtype: false,
-      detailShow: false,
+      currentPage4: 4,
       value: "",
       checkboxShow: false,
       checkAll: false,
-      checkedRows: ["材料类别", "计量单位"],
+      checkedRows: ["客户代码"],
       tableRwos: [
         {
-          name: "材料类别",
+          name: "客户代码",
           data_key: "name"
         },
         {
-          name: "计量单位",
+          name: "客户名称",
           data_key: "name"
         },
         {
-          name: "材料代码",
+          name: "业务部门",
           data_key: "date"
         },
         {
-          name: "材料名称",
+          name: "业务人员",
           data_key: "date"
         },
         {
-          name: "材料规格",
+          name: "建档人员",
+          data_key: "date"
+        },
+        {
+          name: "建档日期",
+          data_key: "date"
+        },
+        {
+          name: "修改日期",
           data_key: "date"
         }
       ],
@@ -234,34 +198,15 @@ export default {
           date: "2016-05-02",
           name: "王小虎"
         }
-      ],
-      data: [
-        {
-          id: 1,
-          label: "面料类",
-          children: [
-            {
-              id: 11,
-              label: "分类一"
-            },
-            {
-              id: 12,
-              label: "分类二"
-            }
-          ]
-        }
       ]
     };
   },
   methods: {
-           handleSizeChange(val) {
+    handleSizeChange(val) {
       console.log(`每页 ${val} 条`);
     },
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
-    },
-    isCheckbox(name) {
-      return this.checkedRows.includes(name);
     },
     isCheckbox(name) {
       return this.checkedRows.includes(name);
@@ -307,36 +252,10 @@ export default {
 
 <style lang="scss" scoped>
 @import "./static.scss";
-.dialogTypecss{
-    >>> .el-form-item__label{
-        // margin-left: 50px;
-        text-align: left    ;
-    }
+>>> .el-tabs__header{
+    background-color: #ebebeb;
 }
-.w520{
-    width: 520px;
-}
-.dialogtype {
-  >>> .el-dialog__header {
-    background-color: #fff;
-  }
-}
->>> .el-dialog {
-  width: 848px;
-  &__header {
-    padding: 0 27px;
-    line-height: 67px;
-    background: rgba(243, 243, 243, 1);
-    border-radius: 5px 5px 0px 0px;
-  }
-  &__body {
-    padding: 27px 32px;
-  }
-}
->>> .el-tree-node__label {
-  font-size: 19px;
-}
-.material_admin {
+.customer_admin {
   height: 100%;
   padding: 11px;
   .container {
@@ -352,30 +271,28 @@ export default {
       width: 100%;
       display: flex;
       justify-content: space-between;
-      .channel {
-        width: 240px;
-        flex-shrink: 0;
-        .channel_ {
-          &list {
-            padding: 27px 0;
+
+      .channel_ {
+        &list {
+          padding: 27px 0;
+        }
+        &item {
+          display: flex;
+          align-items: center;
+          padding: 0 27px;
+          height: 59px;
+          font-size: 19px;
+          transition: background-color 0.2s;
+          &:hover,
+          &.active {
+            background-color: rgba(217, 236, 255, 1);
           }
-          &item {
-            display: flex;
-            align-items: center;
-            padding: 0 27px;
-            height: 59px;
-            font-size: 19px;
-            transition: background-color 0.2s;
-            &:hover,
-            &.active {
-              background-color: rgba(217, 236, 255, 1);
-            }
-            .svg-icon {
-              margin-right: 13px;
-            }
+          .svg-icon {
+            margin-right: 13px;
           }
         }
       }
+
       .content {
         width: 100px;
         flex: 1;
@@ -388,9 +305,5 @@ export default {
       }
     }
   }
-}
-.heighe {
-  width: 100%;
-  border: 1px solid #e6e6e6;
 }
 </style>

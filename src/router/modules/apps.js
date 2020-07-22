@@ -121,6 +121,89 @@ const apps = {
       }
     }]
   },
+  {
+    path: 'materialSupplier_index',
+    name: 'materialSupplierIndex',
+    component: resolve => require(['@/views/apps/materialSupplier/index.vue'], resolve),
+    meta: {
+      title: '材料供应商',
+      icon: 'collect',
+      activeMenu: '/index'
+    },
+    children: [{
+      path: 'materialSupplier_detail',
+      name: 'materialSupplierDetail',
+      component: resovle => require(['@/views/apps/materialSupplier/detail'], resovle),
+      meta: {
+        title: '材料供应商详情',
+        icon: 'collect',
+        activeMenu: '/index'
+      }
+    }]
+  },
+  {
+    path: 'machining_index',
+    name: 'machiningIndex',
+    component: resolve => require(['@/views/apps/machining/index.vue'], resolve),
+    meta: {
+      title: '外加工厂',
+      icon: 'collect',
+      activeMenu: '/index'
+    },
+    children: [{
+      path: 'machining_detail',
+      name: 'machiningDetail',
+      component: resovle => require(['@/views/apps/machining/detail'], resovle),
+      meta: {
+        title: '外加工厂详情',
+        icon: 'collect',
+        activeMenu: '/index'
+      }
+    }]
+  },
+  {
+    path: 'logisticsSupplier_index',
+    name: 'logisticsSupplierIndex',
+    component: resolve => require(['@/views/apps/logisticsSupplier/index.vue'], resolve),
+    meta: {
+      title: '物流供应商',
+      icon: 'collect',
+      activeMenu: '/index'
+    },
+    children: [{
+      path: 'logisticsSupplier_detail',
+      name: 'logisticsSupplierDetail',
+      component: resovle => require(['@/views/apps/logisticsSupplier/detail'], resovle),
+      meta: {
+        title: '物流供应商详情',
+        icon: 'collect',
+        activeMenu: '/index'
+      }
+    }]
+  },
+  {
+    path: 'contractFiling_index',
+    name: 'contractFilingIndex',
+    component: resolve => require(['@/views/apps/contractFiling/index.vue'], resolve),
+    meta: {
+      title: '合同备案',
+      icon: 'collect',
+      activeMenu: '/index'
+    },
+    children: [
+      {
+      path: 'contractFiling_detail',
+      name: 'contractFilingDetail',
+      component: resovle => require(['@/views/apps/contractFiling/detail'], resovle),
+      meta: {
+        title: '合同备案详情',
+        icon: 'collect',
+        activeMenu: '/index'
+      }
+    },
+
+  ]
+  },
 
 ]
 }

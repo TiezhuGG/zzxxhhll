@@ -65,7 +65,27 @@ export default {
           url: "/apps/consumption_index",
           icon: "collect",
           name: "单耗管理"
-        }
+        },
+         {
+          url: "/apps/materialSupplier_index",
+          icon: "collect",
+          name: "材料供应商"
+        },
+         {
+          url: "/apps/machining_index",
+          icon: "collect",
+          name: "外加工厂"
+        },
+         {
+          url: "/apps/logisticsSupplier_index",
+          icon: "collect",
+          name: "物流供应商"
+        },
+         {
+          url: "/apps/contractFiling_index",
+          icon: "collect",
+          name: "合同备案"
+        },
       ],
       company_id: null,
       dialogFormVisible: false

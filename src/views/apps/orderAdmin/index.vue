@@ -138,7 +138,7 @@
                 />
               </template>
               <el-table-column fixed="right" label="操作" width="165">
-                <el-link type="primary" @click="$router.push({ path: 'order_admin/detail' })">编辑</el-link>
+                <el-link type="primary" @click="$router.push({ path: 'order_admin/contractFiling_detail' })">编辑</el-link>
                 <el-link type="primary" @click="deleteById">删除</el-link>
                 <el-link type="primary">打印</el-link>
               </el-table-column>

@@ -123,6 +123,16 @@
                 </el-table-column>
               </el-table>
 
+                  <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="currentPage4"
+             :page-sizes="[10,100, 200, 300, 400]"
+            :page-size="limit"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="total"
+          ></el-pagination>
+
               <div style="text-align: center;margin-top: 30px">
                 <el-button
                   v-if="formData.id"
@@ -218,14 +228,19 @@ export default {
       api.materials_suppliers_add({ ...this.formData });
     },
 
-    getList(page = 1) {
-      if (page === 1) this.currentPage4 = 1;
+       handleSizeChange(val) {
+       this.limit = val
+      console.log(`每页 ${val} 条`);
+       this.getList()
+    },
+    handleCurrentChange(val) {
+      console.log(`当前页: ${val}`);
+      this.page = val 
+      this.getList()
+    },
 
-      api
-        .materials_supplier_linkers({
-          id: this.formData.id,
-          page,
-          limit: this.limit
+    getList() {
+      api.materials_supplier_linkers({id: this.formData.id, page:this.page, limit: this.limit
         })
         .then(res => {
           this.currentPage4 = res.data.current_page;

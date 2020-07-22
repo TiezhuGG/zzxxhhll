@@ -103,8 +103,8 @@
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
             :current-page="currentPage4"
-            :page-sizes="[100, 200, 300, 400]"
-            :page-size="100"
+             :page-sizes="[10,100, 200, 300, 400]"
+            :page-size="limit"
             layout="total, sizes, prev, pager, next, jumper"
             :total="total"
           ></el-pagination>
@@ -204,9 +204,8 @@ export default {
       },
 
       // 列表
-      getList(page = 1) {
-      if (page === 1) this.currentPage4 = 1;
-      api.manufacturers({ page, limit: this.limit, ...this.querydata })
+      getList() {
+      api.manufacturers({ page:this.page, limit: this.limit, ...this.querydata })
         .then((res) => {
           this.currentPage4 = res.data.current_page
           this.total =  res.data.total
@@ -217,13 +216,15 @@ export default {
     },
 
 
-     handleSizeChange(val) {
+         handleSizeChange(val) {
        this.limit = val
       console.log(`每页 ${val} 条`);
        this.getList()
     },
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
+      this.page = val 
+      this.getList()
     },
     isCheckbox(name) {
       return this.checkedRows.includes(name);
@@ -241,28 +242,6 @@ export default {
     handleSelectionChange(value) {
       console.log(value);
     },
-    // deleteById(id) {
-    //   const h = this.$createElement;
-    //   this.$msgbox({
-    //     title: "提示",
-    //     message: h("div", null, [
-    //       h("svg-icon", {
-    //         style: {
-    //           "margin-right": "12px",
-    //           "font-size": "22px",
-    //           "vertical-align": "middle"
-    //         },
-    //         attrs: {
-    //           iconClass: "stop"
-    //         }
-    //       }),
-    //       h("span", null, "此操作将永久删除该文件，是否继续？")
-    //     ]),
-    //     showCancelButton: true,
-    //     confirmButtonText: "确定",
-    //     cancelButtonText: "取消"
-    //   });
-    // }
   }
 };
 </script>

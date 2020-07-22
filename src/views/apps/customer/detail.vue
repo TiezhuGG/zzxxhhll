@@ -121,6 +121,16 @@
                 </el-table-column>
               </el-table>
 
+                 <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="currentPage4"
+            :page-sizes="[10,100, 200, 300, 400]"
+            :page-size="limit"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="total"
+          ></el-pagination>
+
               <div style="text-align: center;margin-top: 30px">
                 <el-button v-if="formData.id" type="primary" @click="customs_put">提交</el-button>
                 <el-button v-else type="primary" @click="customs_add">增加</el-button>
@@ -153,6 +163,9 @@ export default {
   },
   data() {
     return {
+        limit:10,
+      total:1,
+       currentPage4: 1,
       formData: {},
       msgInput: "",
       isApprover: true,
@@ -185,10 +198,17 @@ export default {
       console.log(row)
     },
     adduser(row) {
-      delete row.newid;
-      api.custom_linkers_add({ ...row }).then(()=>{
-        this.getList();
-      });
+  if (row.email.length != 0) {
+        const reg = /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/;
+        if ( reg.test(row.email)) {
+          delete row.newid;
+            api.custom_linkers_add({ ...row }).then(()=>{
+              this.getList();
+            });
+        }else{
+          this.$message('邮箱格式错误!');
+        }
+      }
     },
     custom_linkers_add() {
       this.tableData.unshift({
@@ -213,12 +233,28 @@ export default {
       api.customs_add({...this.formData})
     },
 
-    getList() {
-      api.custom_linkers({ id: this.formData.id }).then(res => {
-        console.log(res, 999);
-        this.tableData = res.data;
-      });
-    }
+  handleSizeChange(val) {
+       this.limit = val
+      console.log(`每页 ${val} 条`);
+       this.getList()
+    },
+    handleCurrentChange(val) {
+      console.log(`当前页: ${val}`);
+      this.page = val 
+      this.getList()
+    },
+      getList() {
+      api.custom_linkers({  page:this.page, limit: this.limit})
+        .then((res) => {
+          this.currentPage4 = res.data.current_page
+          this.total =  res.data.total
+          this.tableData = res.data.data
+          console.log( res,6666)
+          console.log( this.tableData,77777)
+        });
+    },
+
+
   }
 };
 </script>

@@ -149,6 +149,7 @@ export default {
                 .then(res => {
                   const token = res.data.token
                   setToken(token)
+                  localStorage.setItem('user_id', res.data.id)
                   this.loading = false;
                   // this.$router.push("/user/login");
                   this.$router.push("/user/enterprise");

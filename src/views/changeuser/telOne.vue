@@ -30,7 +30,7 @@
 <script>
 import { Contact, Layout } from "./index";
 import { validMobile, validCode } from "@/utils/validate";
-import { getVerifyCode, checkPassword, changeMobile } from "@/api/user";
+import { getVerifyCode, checkPassword, changeMobile, checkCode } from "@/api/user";
 import { removeToken } from '@/utils/auth'
 import { Message } from "element-ui";
 export default {
@@ -85,7 +85,13 @@ export default {
   methods: {
     // 验证密码
     checkPassword() {
-      checkPassword({ password: this.formData.password })
+      checkPassword({ password: this.formData.password }).then(() => {
+        Message({
+          message: "验证密码成功",
+          type: "success",
+          duration: 5 * 1000
+        });
+      })
     },
     // 获取验证码
     async getCode() {
@@ -109,16 +115,21 @@ export default {
       this.$refs.formData.validate(valid => {
         if (valid) {
           this.loading = true;
-          changeMobile({
-            mobile: this.formData.mobile,
-            code: this.formData.verifyCode
-          }).then(() => {
-            removeToken()
-            this.loading = false;
-            this.$router.push("/user/login");
-          }).catch(() => {
-            this.loading = false;
+          checkPassword({ password: this.formData.password }).then(() => {
+            changeMobile({
+              mobile: this.formData.mobile,
+              code: this.formData.verifyCode
+            }).then(() => {
+              checkCode({ type:'change', mobile: this.formData.mobile, code: this.formData.verifyCode }).then(() => {
+                removeToken()
+                this.loading = false;
+                this.$router.push("/user/login");
+              })
+            }).catch(() => {
+              this.loading = false;
+            })
           })
+
         } else {
           Message({
             message: "请填写完整的资料",

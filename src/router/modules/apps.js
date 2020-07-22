@@ -69,6 +69,15 @@ const apps = {
         icon: 'collect',
         activeMenu: '/index'
       }
+    }, {
+      path: 'add',
+      name: 'Add',
+      component: resovle => require(['@/views/apps/orderAdmin/add'], resovle),
+      meta: {
+        title: '添加订单',
+        icon: 'collect',
+        activeMenu: '/index'
+      }
     }]
   },
   {

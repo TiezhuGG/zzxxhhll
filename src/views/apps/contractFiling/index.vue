@@ -1,32 +1,52 @@
 <template>
-  <div v-if="$route.name === 'customerIndex'" class="customer_admin">
+  <div v-if="$route.name === 'contractFilingIndex'" class="customer_admin">
     <div class="container">
       <div class="filter block">
         <el-form inline label-width="107px">
-          <el-form-item label="客户简称">
-                <el-input  v-model="querydata.short_name" placeholder="请输入内容"></el-input>
+          <el-form-item label="生产流水号">
+            <el-input placeholder="请输入内容"></el-input>
           </el-form-item>
 
-          <el-form-item label="公司名称">
-            <el-input v-model="querydata.custom_company" placeholder="请输入内容"></el-input>
-          </el-form-item>
-
-          <el-form-item label="主要产品">
-            <el-input v-model="querydata.produce" placeholder="请输入内容"></el-input>
-          </el-form-item>
-
-          <el-form-item label="国家或地区">
-            <el-input v-model="querydata.arer"  placeholder="请输入内容"></el-input>
-          </el-form-item>
-
-          <!-- <el-form-item label="国家或地区">
+          <el-form-item label="客户代码">
             <el-select>
               <el-option>1</el-option>
             </el-select>
-          </el-form-item> -->
+          </el-form-item>
+
+          <el-form-item label="客户名称">
+            <el-select>
+              <el-option>1</el-option>
+            </el-select>
+          </el-form-item>
+
+          <el-form-item label="业务部门">
+            <el-select>
+              <el-option>1</el-option>
+            </el-select>
+          </el-form-item>
+
+          <el-form-item label="业务人员">
+            <el-select>
+              <el-option>1</el-option>
+            </el-select>
+          </el-form-item>
+
+          <el-form-item label="建档人员">
+            <el-select>
+              <el-option>1</el-option>
+            </el-select>
+          </el-form-item>
+
+          <el-form-item label="建档日期">
+            <el-date-picker v-model="value1" type="date" placeholder="选择日期"></el-date-picker>
+          </el-form-item>
+
+          <el-form-item label="修改日期">
+            <el-date-picker v-model="value1" type="date" placeholder="选择日期"></el-date-picker>
+          </el-form-item>
 
           <el-form-item class="button">
-            <el-button type="primary" icon="el-icon-search" @click="getList">查询</el-button>
+            <el-button type="primary" icon="el-icon-search">查询</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -34,7 +54,7 @@
         <div class="content block">
           <div class="buttons flex-sp">
             <div>
-              <el-button type="primary"  @click="$router.push({ path: 'customer_index/customer_detail'}) "  >
+              <el-button type="primary">
                 <svg-icon icon-class="button_new" />新增
               </el-button>
               <el-button type="primary">
@@ -43,13 +63,13 @@
               <el-button type="primary">
                 <svg-icon icon-class="button_log" />打印
               </el-button>
-              <el-button >
+              <el-button>
                 <svg-icon icon-class="button_delete" />删除
               </el-button>
             </div>
             <div>
               <el-button type="primary">
-                <svg-icon icon-class="button_down" />导入
+                <svg-icon icon-class="button_down" />新增
               </el-button>
               <el-button type="plain">下载导入模板</el-button>
             </div>
@@ -80,28 +100,34 @@
           </div>
 
           <div class="table_container">
-            <el-table ref="multipleTable" :data="tableData" :border="true" tooltip-effect="dark" style="width: 100%" @selection-change="handleSelectionChange" >
+            <el-table
+              ref="multipleTable"
+              :data="tableData"
+              :border="true"
+              tooltip-effect="dark"
+              style="width: 100%"
+              @selection-change="handleSelectionChange"
+            >
               <el-table-column type="selection" width="55"></el-table-column>
-              <el-table-column label="序号" width="55">
-                <template slot-scope="scope">{{ scope.$index+1 }}</template>
+              <el-table-column label="ID">
+                <template slot-scope="scope">{{ scope.row.date }}</template>
               </el-table-column>
-
               <template v-for="(row, index) of tableRwos">
                 <el-table-column
                   v-if="isCheckbox(row.name)"
                   :key="index"
                   :prop="row.data_key"
                   :label="row.name"
+                  width="200"
                 />
               </template>
               <el-table-column fixed="right" label="操作" width="165">
-                <template slot-scope="scope">
                 <el-link
                   type="primary"
-                  @click="$router.push({ path: 'customer_index/customer_detail', query: scope.row} )" >编辑</el-link>
-                <el-link type="primary" @click="customs_del(scope.row.id)">删除</el-link>
+                  @click="$router.push({ path: 'contractFiling_index/contractFiling_detail' })"
+                >编辑</el-link>
+                <el-link type="primary" @click="deleteById">删除</el-link>
                 <el-link type="primary">打印</el-link>
-                </template>
               </el-table-column>
             </el-table>
           </div>
@@ -109,10 +135,10 @@
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
             :current-page="currentPage4"
-            :page-sizes="[10,100, 200, 300, 400]"
-            :page-size="limit"
+            :page-sizes="[100, 200, 300, 400]"
+            :page-size="100"
             layout="total, sizes, prev, pager, next, jumper"
-            :total="total"
+            :total="400"
           ></el-pagination>
         </div>
       </div>
@@ -122,60 +148,44 @@
 </template>
 
 <script>
-import * as api from "@/api/customer.js"; 
+// import config from './mixin/config'
 export default {
   //   mixins: [config],
   data() {
     return {
-      limit:10,
-      total:1,
-       currentPage4: 1,
-      querydata:{},
+      currentPage4: 4,
       value: "",
       checkboxShow: false,
       checkAll: false,
-      checkedRows: ["客户简称","客户编号",'公司名称','主要产品','主要产品','国家或地区','公司电话'
-      ,'公司传真','公司地址','公司网站'],
+      checkedRows: ["客户代码"],
       tableRwos: [
         {
-          name: "客户简称",
-          data_key: "short_name"
+          name: "客户代码",
+          data_key: "name"
         },
         {
-          name: "客户编号",
-          data_key: "custom_no"
+          name: "客户名称",
+          data_key: "name"
         },
         {
-          name: "公司名称",
-          data_key: "custom_company"
+          name: "业务部门",
+          data_key: "date"
         },
         {
-          name: "主要产品",
-          data_key: "produce"
+          name: "业务人员",
+          data_key: "date"
         },
         {
-          name: "国家或地区",
-          data_key: "area"
-        },
-        // {
-        //   name: "联系人",
-        //   data_key: "date"
-        // },
-        {
-          name: "公司电话",
-          data_key: "mobile"
+          name: "建档人员",
+          data_key: "date"
         },
         {
-          name: "公司传真",
-          data_key: "fax"
+          name: "建档日期",
+          data_key: "date"
         },
         {
-          name: "公司地址",
-          data_key: "address"
-        },
-        {
-          name: "公司网站",
-          data_key: "site"
+          name: "修改日期",
+          data_key: "date"
         }
       ],
       isIndeterminate: true,
@@ -191,46 +201,12 @@ export default {
       ]
     };
   },
-  created(){
-    this.getList()
-  },
   methods: {
-
-    customs_del(id){
-         this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-              api.customs_del(id)
-              .then(()=>{
-                this.getList();
-              })
-          })
-      },
-
-      // 列表
-      getList() {
-      api.customs({ page:this.page, limit: this.limit, ...this.querydata })
-        .then((res) => {
-          this.currentPage4 = res.data.current_page
-          this.total =  res.data.total
-          this.tableData = res.data.data
-          console.log( res,6666)
-          console.log( this.tableData,77777)
-        });
-    },
-
-
-     handleSizeChange(val) {
-       this.limit = val
+    handleSizeChange(val) {
       console.log(`每页 ${val} 条`);
-       this.getList()
     },
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
-      this.page = val 
-      this.getList()
     },
     isCheckbox(name) {
       return this.checkedRows.includes(name);
@@ -248,34 +224,37 @@ export default {
     handleSelectionChange(value) {
       console.log(value);
     },
-    // deleteById(id) {
-    //   const h = this.$createElement;
-    //   this.$msgbox({
-    //     title: "提示",
-    //     message: h("div", null, [
-    //       h("svg-icon", {
-    //         style: {
-    //           "margin-right": "12px",
-    //           "font-size": "22px",
-    //           "vertical-align": "middle"
-    //         },
-    //         attrs: {
-    //           iconClass: "stop"
-    //         }
-    //       }),
-    //       h("span", null, "此操作将永久删除该文件，是否继续？")
-    //     ]),
-    //     showCancelButton: true,
-    //     confirmButtonText: "确定",
-    //     cancelButtonText: "取消"
-    //   });
-    // }
+    deleteById(id) {
+      const h = this.$createElement;
+      this.$msgbox({
+        title: "提示",
+        message: h("div", null, [
+          h("svg-icon", {
+            style: {
+              "margin-right": "12px",
+              "font-size": "22px",
+              "vertical-align": "middle"
+            },
+            attrs: {
+              iconClass: "stop"
+            }
+          }),
+          h("span", null, "此操作将永久删除该文件，是否继续？")
+        ]),
+        showCancelButton: true,
+        confirmButtonText: "确定",
+        cancelButtonText: "取消"
+      });
+    }
   }
 };
 </script>
 
 <style lang="scss" scoped>
 @import "./static.scss";
+>>> .el-tabs__header{
+    background-color: #ebebeb;
+}
 .customer_admin {
   height: 100%;
   padding: 11px;

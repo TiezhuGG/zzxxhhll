@@ -1,5 +1,5 @@
 <template>
-  <div v-if="$route.name === 'customerIndex'" class="customer_admin">
+  <div v-if="$route.name === 'materialSupplierIndex'" class="customer_admin">
     <div class="container">
       <div class="filter block">
         <el-form inline label-width="107px">
@@ -19,12 +19,6 @@
             <el-input v-model="querydata.arer"  placeholder="请输入内容"></el-input>
           </el-form-item>
 
-          <!-- <el-form-item label="国家或地区">
-            <el-select>
-              <el-option>1</el-option>
-            </el-select>
-          </el-form-item> -->
-
           <el-form-item class="button">
             <el-button type="primary" icon="el-icon-search" @click="getList">查询</el-button>
           </el-form-item>
@@ -34,7 +28,7 @@
         <div class="content block">
           <div class="buttons flex-sp">
             <div>
-              <el-button type="primary"  @click="$router.push({ path: 'customer_index/customer_detail'}) "  >
+              <el-button type="primary"  @click="$router.push({ path: 'materialSupplier_index/materialSupplier_detail'}) "  >
                 <svg-icon icon-class="button_new" />新增
               </el-button>
               <el-button type="primary">
@@ -98,8 +92,8 @@
                 <template slot-scope="scope">
                 <el-link
                   type="primary"
-                  @click="$router.push({ path: 'customer_index/customer_detail', query: scope.row} )" >编辑</el-link>
-                <el-link type="primary" @click="customs_del(scope.row.id)">删除</el-link>
+                  @click="$router.push({ path: 'materialSupplier_index/materialSupplier_detail', query: scope.row} )" >编辑</el-link>
+                <el-link type="primary" @click="materials_suppliers_del(scope.row.id)">删除</el-link>
                 <el-link type="primary">打印</el-link>
                 </template>
               </el-table-column>
@@ -109,7 +103,7 @@
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
             :current-page="currentPage4"
-            :page-sizes="[10,100, 200, 300, 400]"
+             :page-sizes="[10,100, 200, 300, 400]"
             :page-size="limit"
             layout="total, sizes, prev, pager, next, jumper"
             :total="total"
@@ -122,15 +116,15 @@
 </template>
 
 <script>
-import * as api from "@/api/customer.js"; 
+import * as api from "@/api/materialSupplier.js"; 
 export default {
   //   mixins: [config],
   data() {
     return {
       limit:10,
       total:1,
-       currentPage4: 1,
       querydata:{},
+       currentPage4: 1,
       value: "",
       checkboxShow: false,
       checkAll: false,
@@ -196,13 +190,13 @@ export default {
   },
   methods: {
 
-    customs_del(id){
+    materials_suppliers_del(id){
          this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-              api.customs_del(id)
+              api.materials_suppliers_del(id)
               .then(()=>{
                 this.getList();
               })
@@ -211,7 +205,7 @@ export default {
 
       // 列表
       getList() {
-      api.customs({ page:this.page, limit: this.limit, ...this.querydata })
+      api.materials_suppliers({ page:this.page, limit: this.limit, ...this.querydata })
         .then((res) => {
           this.currentPage4 = res.data.current_page
           this.total =  res.data.total
@@ -222,7 +216,7 @@ export default {
     },
 
 
-     handleSizeChange(val) {
+      handleSizeChange(val) {
        this.limit = val
       console.log(`每页 ${val} 条`);
        this.getList()

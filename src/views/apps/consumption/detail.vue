@@ -4,46 +4,51 @@
       <div class="filter block">
         <el-form inline label-width="107px">
           <el-form-item style="float:left">
-            <div class="imgwarp img-box">
-              <img src="/img/timg.jpg" />
+            <div class="imgwarp">
+              <!-- <img src="/img/timg.jpg" /> -->
+              <product-img />
             </div>
           </el-form-item>
 
-          <el-form-item label="客户简称">
+          <el-form-item label="单耗来源">
             <el-select>
               <el-option>1</el-option>
             </el-select>
           </el-form-item>
 
-          <el-form-item label="公司明朝">
+          <el-form-item label="公司货号">
             <el-input placeholder="请输入内容"></el-input>
           </el-form-item>
 
-          <el-form-item label="主要联系人">
+          <el-form-item label="客户代码">
             <el-input placeholder="请输入内容"></el-input>
           </el-form-item>
 
-          <el-form-item label="主要产品">
-            <el-select>
-              <el-option>1</el-option>
-            </el-select>
+          <el-form-item label="客户货号">
+             <el-input placeholder="请输入内容"></el-input>
           </el-form-item>
 
-          <el-form-item label="国家地区">
-            <el-select>
-              <el-option>1</el-option>
-            </el-select>
+          <el-form-item label="商品品名">
+             <el-input placeholder="请输入内容"></el-input>
           </el-form-item>
-          <el-form-item label="国家地区">
-            <el-select>
-              <el-option>1</el-option>
-            </el-select>
+
+          <el-form-item label="尺寸规格">
+             <el-input placeholder="请输入内容"></el-input>
           </el-form-item>
-          <el-form-item label="国家地区">
-            <el-select>
-              <el-option>1</el-option>
-            </el-select>
+
+          <el-form-item label="纸格编码">
+             <el-input placeholder="请输入内容"></el-input>
           </el-form-item>
+
+          <el-form-item label="开发人员">
+             <el-input placeholder="请输入内容"></el-input>
+          </el-form-item>
+
+          <el-form-item label="建档人员">
+             <el-input placeholder="请输入内容"></el-input>
+          </el-form-item>
+
+    
         </el-form>
       </div>
       <div class="flex-sp">
@@ -55,15 +60,15 @@
                 <div class="cont">合计3项</div>
                 <div class="button_">
                   <el-button size="mini">
-                    <svg-icon icon-class="button_delete" />批量删除
+                    <svg-icon icon-class="button_delete" /> 批量删除
                   </el-button>
                   <el-button type="primary" size="mini">
-                    <svg-icon icon-class="button_new" />新增主料
+                    <svg-icon icon-class="button_new" /> 新增主料
                   </el-button>
                 </div>
               </div>
 
-              <div class="table_container">
+              <div class="table_container top2">
                 <el-table :data="tableData">
                   <el-table-column type="selection" width="55"></el-table-column>
 
@@ -111,20 +116,69 @@
                     <template slot-scope="scope">{{ scope.row.name }}</template>
                   </el-table-column>
 
-
-                 
                   <el-table-column fixed="right" label="操作" width="120">
                     <el-link type="primary">编辑</el-link>
-                    <el-link type="primary" >删除</el-link>
+                    <el-link type="primary">删除</el-link>
                   </el-table-column>
                 </el-table>
               </div>
+              <el-pagination
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+                :current-page="currentPage4"
+                :page-sizes="[100, 200, 300, 400]"
+                :page-size="100"
+                layout="total, sizes, prev, pager, next, jumper"
+                :total="400"
+              ></el-pagination>
             </el-tab-pane>
             <el-tab-pane class="product" label="辅料">88</el-tab-pane>
             <el-tab-pane class="product" label="配件">88</el-tab-pane>
             <el-tab-pane class="product" label="商标">88</el-tab-pane>
             <el-tab-pane class="product" label="包装">88</el-tab-pane>
-            <el-tab-pane class="product" label="材料汇总">88</el-tab-pane>
+            <el-tab-pane class="product" label="材料汇总">
+              <div style="display: flex;">
+                <div>
+                  <el-tabs tab-position="left" style="height: 200px;">
+                    <el-tab-pane label="主料">主料</el-tab-pane>
+                    <el-tab-pane label="辅料">辅料</el-tab-pane>
+                    <el-tab-pane label="配件">配件</el-tab-pane>
+                    <el-tab-pane label="商标">商标</el-tab-pane>
+                    <el-tab-pane label="包装">包装</el-tab-pane>
+                  </el-tabs>
+                </div>
+                <div style="padding-top:20px">
+                  <div class="table_container top2">
+                    <el-table :data="tableData">
+                      <el-table-column type="selection" width="55"></el-table-column>
+
+                      <el-table-column label="商标类别" prop="name" width="130"></el-table-column>
+
+                      <el-table-column label="计量单位" prop="name" width="130"></el-table-column>
+
+                      <el-table-column label="材料名称" prop="name" width="250"></el-table-column>
+
+                      <el-table-column label="数量" prop="name" width="130"></el-table-column>v
+                      <el-table-column label="理论耗量" prop="name" width="130"></el-table-column>
+
+                      <el-table-column fixed="right" label="操作" width="120">
+                        <el-link type="primary">编辑</el-link>
+                        <el-link type="primary">删除</el-link>
+                      </el-table-column>
+                    </el-table>
+                  </div>
+                </div>
+              </div>
+              <el-pagination
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+                :current-page="currentPage4"
+                :page-sizes="[100, 200, 300, 400]"
+                :page-size="100"
+                layout="total, sizes, prev, pager, next, jumper"
+                :total="400"
+              ></el-pagination>
+            </el-tab-pane>
           </el-tabs>
         </div>
       </div>
@@ -132,26 +186,39 @@
   </div>
   <router-view v-else />
 </template>
-
 <script >
+import ProductImg from "./components/productImg";
 export default {
+  components: { ProductImg },
   data() {
     return {
+      currentPage4: 4,
       tableData: [
         {
-          name: "王小虎"
+          name: "隔壁老王"
         },
         {
           name: "王小虎"
         }
       ]
     };
+  },
+  methods: {
+    handleSizeChange(val) {
+      console.log(`每页 ${val} 条`);
+    },
+    handleCurrentChange(val) {
+      console.log(`当前页: ${val}`);
+    }
   }
 };
 </script>
 
 <style lang="scss" scoped>
 @import "./static.scss";
+.top2 {
+  margin-top: 20px;
+}
 .headers {
   position: relative;
   display: flex;
@@ -186,11 +253,12 @@ export default {
   }
 }
 .imgwarp {
-  margin-top: 30px;
-  margin-left: 42px;
-  width: 165px;
-  height: 165px;
-}
+  width: 200px;
+  height: 200px;
+  margin-left: 50px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  }
 
 .customer_admin {
   height: 100%;

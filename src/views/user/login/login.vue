@@ -72,7 +72,7 @@
 
 <script>
 import { validMobile } from "@/utils/validate";
-import { setToken } from "@/utils/auth";
+import { setToken, setInfo } from "@/utils/auth";
 import { login, getEnterpriseList } from "@/api/user";
 
 export default {
@@ -137,6 +137,7 @@ export default {
               const id = res.data.id;
               const default_company = res.data.default_company;
               setToken(token); // 将token存入本地Cookie
+              setInfo(res.data)
               localStorage.setItem("user_id", id);
               this.$store.commit("user/setPassword", {
                 password: password

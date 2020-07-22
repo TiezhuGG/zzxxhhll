@@ -357,7 +357,7 @@
                         v-model="scope.row.job_grade"
                       ></el-input>
                       <div class="item" v-show="!work_info_show">
-                        <label>岗位职责：</label>
+                        <label>岗位职级：</label>
                         <span>{{scope.row.job_grade}}</span>
                       </div>
                     </div>
@@ -1138,7 +1138,7 @@
                 </el-table-column>
                 <el-table-column>
                   <template slot-scope="scope">
-                    <div class="table-item" :class="emergency_contact_show ? 'mb-space-1-3' : 'mb-space-1-1'">
+                    <div class="table-item" :class="emergency_contact_show ? 'mb-space-1-2' : 'mb-space-1-1'">
                       <el-form-item
                         :prop="'tabledatas.' + scope.$index + '.contact_relationship'"
                         :rules="emergencyRules.contact_relationship"
@@ -1303,7 +1303,7 @@
                         v-show="personal_material_show"
                       >
                         <img v-if="idFaceImg" :src="idFaceImg" class="avatar" />
-                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                        <i v-else class="avatar-uploader-icon">上传身份证(人像面)</i>
                       </el-upload>
                       <div class="item" v-show="!personal_material_show">
                         <label :class="idFaceImg ? 'mt' : ''">身份证(人像面)：</label>
@@ -1323,10 +1323,10 @@
                         v-show="personal_material_show"
                       >
                         <img v-if="educationImg" :src="educationImg" class="avatar" />
-                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                        <i v-else class="avatar-uploader-icon">上传学历证书</i>
                       </el-upload>
                       <div class="item" v-show="!personal_material_show">
-                        <label :class="educationImg ? 'mt' : ''">学历证书：</label>
+                        <label :class="educationImg ? 'mt' : ''">上传学历证书：</label>
                         <img v-if="educationImg" :src="educationImg" class="avatar" />
                         <span v-else>未上传</span>
                       </div>
@@ -1343,7 +1343,7 @@
                         v-show="personal_material_show"
                       >
                         <img v-if="certificateImg" :src="certificateImg" class="avatar" />
-                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                        <i v-else class="avatar-uploader-icon">上传离职证明</i>
                       </el-upload>
                       <div class="item" v-show="!personal_material_show">
                         <label :class="certificateImg ? 'mt' : ''">离职证明：</label>
@@ -1367,7 +1367,7 @@
                         v-show="personal_material_show"
                       >
                         <img v-if="idBackImg" :src="idBackImg" class="avatar" />
-                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                        <i v-else class="avatar-uploader-icon">上传身份证(国徽面)</i>
                       </el-upload>
                       <div class="item" v-show="!personal_material_show">
                         <label :class="idBackImg ? 'mt' : ''">身份证(国徽面)：</label>
@@ -1388,7 +1388,7 @@
                         v-show="personal_material_show"
                       >
                         <img v-if="degreeImg" :src="degreeImg" class="avatar" />
-                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                        <i v-else class="avatar-uploader-icon">上传学位证书</i>
                       </el-upload>
                       <div class="item" v-show="!personal_material_show">
                         <label :class="degreeImg ? 'mt' : ''">学位证书：</label>
@@ -1408,7 +1408,7 @@
                         v-show="personal_material_show"
                       >
                         <img v-if="employeeImg" :src="employeeImg" class="avatar" />
-                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                        <i v-else class="avatar-uploader-icon">上传员工照片</i>
                       </el-upload>
                       <div class="item" v-show="!personal_material_show">
                         <label :class="employeeImg ? 'mt' : ''">员工照片：</label>
@@ -1552,7 +1552,7 @@ export default {
       },
       rules: {
         // 基础信息验证
-        name: [{ trigger: "blur", validator: validateName }]
+        // name: [{ trigger: "blur", validator: validateName }]
         // email: [{ trigger: "blur", validator: validateEmail }],
         // phone: [{ trigger: "blur", validator: validateMobile }]
         // department: [
@@ -1737,7 +1737,7 @@ export default {
       personalRules: {
         // 个人信息验证
         id_card: [
-          { required: true, trigger: "blur", validator: validateIdcard }
+          { trigger: "blur", validator: validateIdcard }
         ]
         // name_in_id: [
         //   { required: true, trigger: "blur", message: "请输入身份证姓名" }
@@ -1915,9 +1915,9 @@ export default {
         // contact_relationship: [
         //   { required: true, trigger: "change", message: "请选择联系人关系" }
         // ],
-        contact_phone: [
-          { required: true, trigger: "blur", validator: validateMobile }
-        ]
+        // contact_phone: [
+        //   { required: true, trigger: "blur", validator: validateMobile }
+        // ]
       },
       familyData: {
         tabledatas: [
@@ -2069,8 +2069,8 @@ export default {
         this.formData.tabledatas[0].email = this.userinfo.email ? this.userinfo.email : '';
         this.formData.tabledatas[0].department = this.userinfo.department ? this.userinfo.department.name : '';
         this.formData.tabledatas[0].position = this.userinfo.post ? this.userinfo.post.name : '';
-        // this.formData.tabledatas[0].department = this.userinfo.department.name ? this.userinfo.department.name : '';
-        // this.formData.tabledatas[0].position = this.userinfo.post.name ? this.userinfo.post.name : '';
+        this.formData.tabledatas[0].department = this.userinfo.department ? this.userinfo.department.name : '';
+        this.formData.tabledatas[0].position = this.userinfo.post ? this.userinfo.post.name : '';
         this.formData.tabledatas[0].phone = this.userinfo.mobile ? this.userinfo.mobile : '';
         this.formData.tabledatas[0].job_num = this.userinfo.job_number ? this.userinfo.job_number : '';
         this.formData.tabledatas[0].extension_num = this.userinfo.ext_number ? this.userinfo.ext_number : '';

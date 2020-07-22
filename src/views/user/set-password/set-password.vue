@@ -14,7 +14,7 @@
         <span class="warning">请输入8-20位密码，且同时包含数字与字母。</span>
       </div>
 
-      <el-form-item prop="username" v-if="find_password">
+      <el-form-item prop="username" v-if="!find_password">
         <el-input
           placeholder="请输入你的姓名"
           ref="username"
@@ -59,7 +59,7 @@
         type="primary"
         @click.native.prevent="next"
         class="login-button"
-        :class="find_password ? 'login-button-1' : 'login-button-2'"
+        :class="find_password ? 'login-button-2' : 'login-button-1'"
       >{{ this.find_password ? '确定' : '注册'}}</el-button>
     </el-form>
   </div>
@@ -149,6 +149,7 @@ export default {
                 .then(res => {
                   const token = res.data.token
                   setToken(token)
+                  localStorage.setItem('user_id', res.data.id)
                   this.loading = false;
                   // this.$router.push("/user/login");
                   this.$router.push("/user/enterprise");

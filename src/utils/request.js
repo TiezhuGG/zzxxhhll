@@ -85,6 +85,12 @@ service.interceptors.response.use(
     },
     error => {
         console.log('response error', error.response)
+        // if(error.response.status === 422) {
+        //     const data = Object.keys(error.response.data.errors)
+        //     Message({
+        //         message: error.response.data.errors[data[0]][0],
+        //         type: 'error',
+        //         duration: 5 * 1000
         if (error.response.status === 422) {
             Object.values(error.response.data.errors).forEach(item => {
                 item.forEach(message => {

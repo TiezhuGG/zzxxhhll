@@ -100,7 +100,7 @@
                 width="160"
               >
                 <template slot-scope="scope">
-                  <product-img v-if="key === 'image'" v-model="scope.row[key]" :is-one="true" />
+                  <product-img v-if="key === 'image'" v-model="scope.row[key]" />
                   <table-input v-else v-model="scope.row[key]" />
                 </template>
               </el-table-column>

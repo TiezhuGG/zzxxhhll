@@ -6,7 +6,7 @@
       :class="{ no_more: isOne }"
       @click="!isOne && (dialogTableVisible = true)"
     >
-      <el-image :src="activeImgs[activeImgIndex]" fit="cover" />
+      <el-image :src="value[0]" fit="cover" />
     </div>
     <el-upload
       v-else
@@ -36,10 +36,9 @@
               :key="index"
               class="img-box"
               :class="{ 'on': activeImgIndex === index }"
-              @click.self="activeImgIndex = index"
             >
-              <span @click.stop="deleteByIndex(index)"></span>
-              <img :src="item" />
+              <span @click="deleteByIndex(index)"></span>
+              <img :src="item" draggable="false" @click="activeImgIndex = index"/>
             </div>
           </div>
           <div class="pages">
@@ -215,6 +214,7 @@ export default {
             > div {
               width: 80px;
               height: 80px;
+              transition: all .2s;
               &:active {
                 opacity: 0.8;
               }

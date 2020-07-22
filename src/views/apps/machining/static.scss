@@ -71,7 +71,7 @@
         font-size: 0;
         border-radius: 5px;
         &__input {
-          line-height: inherit;
+          vertical-align: sub;
         }
         &__inner {
           width: 19px;

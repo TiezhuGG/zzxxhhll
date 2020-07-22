@@ -74,7 +74,7 @@ export default {
 
     return {
       enterpriseForm: {
-        username: "",
+        // username: "",
         enterpriseName: ""
       },
       enterpriseRules: {

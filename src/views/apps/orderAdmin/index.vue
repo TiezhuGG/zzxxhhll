@@ -25,11 +25,11 @@
           <el-form-item label="工厂订单号码">
             <el-input placeholder="请输入内容"></el-input>
           </el-form-item>
-          <el-form-item label="交货日期">
-            <el-date-picker v-model="value1" type="date" placeholder="选择日期"></el-date-picker>
-          </el-form-item>
           <el-form-item label="交货地点">
             <el-input placeholder="请输入内容"></el-input>
+          </el-form-item>
+          <el-form-item label="交货日期">
+            <el-date-picker v-model="value1" type="date" placeholder="选择日期"></el-date-picker>
           </el-form-item>
           <el-form-item label="业务部门">
             <el-select>
@@ -71,7 +71,7 @@
         <div class="content block">
           <div class="buttons flex-sp">
             <div>
-              <el-button type="primary">
+              <el-button type="primary" @click="$router.push({ path: 'order_admin/add' })">
                 <svg-icon icon-class="button_new" />新增
               </el-button>
               <el-button type="primary">
@@ -152,12 +152,25 @@
 </template>
 
 <script>
-import config from './mixin/config'
+import { getOrders } from '@/api/apps/orderAdmin'
 export default {
-  mixins: [config],
   data() {
     return {
       value: '',
+      loading: false,
+      getData: {
+        order_status: '',
+        order_sn: '',
+        business_from: '',
+        custom_code: '',
+        custom_name: '',
+        factory_order_sn: '',
+        consignment_date: '',
+        consignment_address: '',
+        business_department: '',
+        business_member: '',
+        creator: ''
+      },
       checkboxShow: false,
       checkAll: false,
       checkedRows: ['订单状态', '客户订单号码'],
@@ -228,7 +241,19 @@ export default {
       ]
     }
   },
+  created() {
+    this.getList()
+  },
   methods: {
+    getList() {
+      this.loading = true
+      getOrders(this.getData)
+        .then(({ data }) => {
+          console.log(data)
+        }).finally(() => {
+          this.loading = false
+        })
+    },
     isCheckbox(name) {
       return this.checkedRows.includes(name)
     },

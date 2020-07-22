@@ -5,7 +5,7 @@
         <el-tab-pane class="product" label="客户档案">
           <custom-header title="基本资料" />
 
-        <el-form inline label-width="107px">
+          <el-form inline label-width="107px">
             <el-form-item label="客户简称">
               <el-input v-model="formData.short_name" placeholder="请输入内容"></el-input>
             </el-form-item>
@@ -72,7 +72,7 @@
               <svg-icon icon-class="button_delete" />
               <span>批量删除</span>
             </el-button>
-            <el-button type="primary" @click="custom_linkers_add"  v-if="formData.id">
+            <el-button type="primary" @click="materials_linkers_add"  v-if="formData.id">
               <svg-icon icon-class="button_new" />
               <span>增加联系人</span>
             </el-button>
@@ -80,11 +80,13 @@
 
           <div style="margin-top: 30px">
             <div class="table_container">
-              <el-table :data="tableData" :border="true"   @selection-change="handleSelectionChange" style="width: 100%" >
-                 <el-table-column
-                    type="selection"
-                    width="55">
-                  </el-table-column>
+              <el-table
+                :data="tableData"
+                :border="true"
+                @selection-change="handleSelectionChange"
+                style="width: 100%"
+              >
+                <el-table-column type="selection" width="55"></el-table-column>
                 <el-table-column label="ID" width="50">
                   <template slot-scope="scope">
                     <span>{{scope.$index+1}}</span>
@@ -116,14 +118,18 @@
                       type="primary"
                       @click="adduser(scope.row)"
                     >保存</el-link>
-                    <el-link type="primary" @click="custom_linkers_del(scope.row.id)">删除</el-link>
+                    <el-link type="primary" @click="manufacturer_linkers_del(scope.row.id)">删除</el-link>
                   </template>
                 </el-table-column>
               </el-table>
 
               <div style="text-align: center;margin-top: 30px">
-                <el-button v-if="formData.id" type="primary" @click="customs_put">提交</el-button>
-                <el-button v-else type="primary" @click="customs_add">增加</el-button>
+                <el-button
+                  v-if="formData.id"
+                  type="primary"
+                  @click="manufacturers_put"
+                >提交</el-button>
+                <el-button v-else type="primary" @click="manufacturers_add">增加</el-button>
 
                 <el-button>暂存</el-button>
               </div>
@@ -138,7 +144,7 @@
 </template>
 
 <script>
-import * as api from "@/api/customer.js";
+import * as api from "@/api/machining.js";
 export default {
   components: {
     "custom-header": {
@@ -153,6 +159,10 @@ export default {
   },
   data() {
     return {
+      limit: 10,
+      total: 1,
+      querydata: {},
+      currentPage4: 1,
       formData: {},
       msgInput: "",
       isApprover: true,
@@ -167,30 +177,28 @@ export default {
     this.getList();
   },
   methods: {
-  
-      custom_linkers_del(id){
-         this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-              api.custom_linkers_del(id)
-              .then(()=>{
-                this.getList();
-              })
-          })
-      },
+    manufacturer_linkers_del(id) {
+      this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      }).then(() => {
+        api.manufacturer_linkers_del(id).then(() => {
+          this.getList();
+        });
+      });
+    },
 
-    handleSelectionChange(row){
-      console.log(row)
+    handleSelectionChange(row) {
+      console.log(row);
     },
     adduser(row) {
       delete row.newid;
-      api.custom_linkers_add({ ...row }).then(()=>{
-        this.getList();
+      api.manufacturer_linkers_add({ ...row }).then(()=>{
+         this.getList();
       });
     },
-    custom_linkers_add() {
+    materials_linkers_add() {
       this.tableData.unshift({
         custom_id: this.formData.id,
         real_name: "",
@@ -198,26 +206,29 @@ export default {
         email: "",
         newid: "yan"
       });
-
-   
     },
-    customs_put(){
-         console.log(this.formData,5555)
-      api.customs_put({...this.formData}, this.formData.id,)
+    manufacturers_put() {
+      console.log(this.formData, 5555);
+      api.manufacturers_put( { ...this.formData },  this.formData.id );
     },
 
-    customs_add(){
+    manufacturers_add() {
+      this.formData.company_id = 67;
 
-      this.formData.company_id = 67
-
-      api.customs_add({...this.formData})
+      api.manufacturers_add({ ...this.formData });
     },
 
-    getList() {
-      api.custom_linkers({ id: this.formData.id }).then(res => {
-        console.log(res, 999);
-        this.tableData = res.data;
-      });
+    getList(page = 1) {
+      if (page === 1) this.currentPage4 = 1;
+
+      api.manufacturer_linkers({ id: this.formData.id,  page, limit: this.limit })
+        .then(res => {
+          this.currentPage4 = res.data.current_page;
+          this.total = res.data.total;
+          this.tableData = res.data.data;
+          console.log(res, 6666);
+          console.log(this.tableData, 77777);
+        });
     }
   }
 };

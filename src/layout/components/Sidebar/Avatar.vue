@@ -77,8 +77,9 @@ export default {
       this.userSettingShow = false;
     },
     logout() {
-      removeToken();
-      this.$api.topage("/user/login");
+      this.$store.dispatch('user/logout').then(() => {
+        this.$api.topage("/user/login");
+      })
     },
     // 获取用户信息
     async fetchUserInfo() {

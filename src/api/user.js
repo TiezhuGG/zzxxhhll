@@ -9,6 +9,14 @@ export function register(data) {
     })
 }
 
+export function logout() {
+    return request({
+      baseURL: '/dev-api',
+      url: '/vue-admin-template/user/logout',
+      method: 'post'
+    })
+}
+
 // 获取验证码
 export function getVerifyCode(data) {
     return request({

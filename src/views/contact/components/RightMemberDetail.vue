@@ -1138,7 +1138,7 @@
                 </el-table-column>
                 <el-table-column>
                   <template slot-scope="scope">
-                    <div class="table-item" :class="emergency_contact_show ? 'mb-space-1-3' : 'mb-space-1-1'">
+                    <div class="table-item" :class="emergency_contact_show ? 'mb-space-1-2' : 'mb-space-1-1'">
                       <el-form-item
                         :prop="'tabledatas.' + scope.$index + '.contact_relationship'"
                         :rules="emergencyRules.contact_relationship"

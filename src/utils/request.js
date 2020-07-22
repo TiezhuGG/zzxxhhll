@@ -85,11 +85,12 @@ service.interceptors.response.use(
     },
     error => {
         console.log('response error', error.response)
-        if (error.response.status === 422 && error.response.data.errors.mobile) {
+        if(error.response.status === 422) {
+            const data = Object.keys(error.response.data.errors)
             Message({
-                message: error.response.data.errors.mobile[0],
-                type: "error",
-                duration: 5000
+                message: error.response.data.errors[data[0]][0],
+                type: 'error',
+                duration: 5 * 1000
             })
         } else {
             Message({
